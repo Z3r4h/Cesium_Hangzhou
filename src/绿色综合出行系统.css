@@ -139,7 +139,7 @@ body {
 
 
 /* 拓展栏1：出行导航 */
-#extendedBar1 {
+/* #extendedBar1 {
     position: absolute;
     top: 124.5px;
     left: 90px;
@@ -147,7 +147,7 @@ body {
     z-index: 1;
     background-color: #f4f7ff;
     padding: 10px;
-}
+} */
 
 #extendedBar1 h3 {
     text-align: center;
@@ -296,7 +296,7 @@ body {
 
 
 /* 拓展栏2：多点出行 */
-#extendedBar2 {
+/* #extendedBar2 {
     position: absolute;
     top: 124.5px;
     left: 90px;
@@ -304,7 +304,7 @@ body {
     z-index: 1;
     background-color: #f4f7ff;
     padding: 10px;
-}
+} */
 
 #extendedBar2 h3 {
     text-align: center;

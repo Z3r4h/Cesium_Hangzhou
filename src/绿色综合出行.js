@@ -71,7 +71,7 @@ function extendedBarclose(activeIndex){
             break;
         case 1:
             buttons[activeIndex].classList.remove("active");
-            buttons[activeIndex].src = "assets/多地点导航_white.png";
+            buttons[activeIndex].src = "assets/城市设施_white.png";
             extendedBars[activeIndex].style.display = "none";
             break;
         case 2:
@@ -96,7 +96,7 @@ function extendedBaropen(activeIndex){
             break;
         case 1:
             buttons[activeIndex].classList.add("active");
-            buttons[activeIndex].src = "assets/多地点导航_blue.png";
+            buttons[activeIndex].src = "assets/城市设施_blue.png";
             extendedBars[activeIndex].style.display = "block";
             break;
         case 2:
