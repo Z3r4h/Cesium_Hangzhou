@@ -1,0 +1,135 @@
+{
+  "id": "4065607",
+  "name": "GIS应用开发",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "658039",
+      "name": "时间",
+      "font_class": "shijian",
+      "unicode": "e665",
+      "unicode_decimal": 58981
+    },
+    {
+      "icon_id": "3715395",
+      "name": "直线放样",
+      "font_class": "zhixianfangyang",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "9626897",
+      "name": "路线",
+      "font_class": "luxian",
+      "unicode": "e874",
+      "unicode_decimal": 59508
+    },
+    {
+      "icon_id": "22899483",
+      "name": "测距",
+      "font_class": "ceju1",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "31229440",
+      "name": "空间测距",
+      "font_class": "kongjianceju",
+      "unicode": "e765",
+      "unicode_decimal": 59237
+    },
+    {
+      "icon_id": "139577",
+      "name": "指定范围",
+      "font_class": "zhidingfanwei",
+      "unicode": "e6d4",
+      "unicode_decimal": 59092
+    },
+    {
+      "icon_id": "167204",
+      "name": "标记",
+      "font_class": "biaoji",
+      "unicode": "e672",
+      "unicode_decimal": 58994
+    },
+    {
+      "icon_id": "1370251",
+      "name": "地图-缓冲区分析",
+      "font_class": "icon-chongdie",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "32907123",
+      "name": "测距",
+      "font_class": "ceju",
+      "unicode": "e66e",
+      "unicode_decimal": 58990
+    },
+    {
+      "icon_id": "5207064",
+      "name": "天气",
+      "font_class": "tianqi",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "26528695",
+      "name": "天气",
+      "font_class": "tianqi1",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "29358779",
+      "name": "icon／空气质量",
+      "font_class": "a-iconkongqizhiliang",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "6805558",
+      "name": "天气系列",
+      "font_class": "Hailstorm-Night",
+      "unicode": "e9ad",
+      "unicode_decimal": 59821
+    },
+    {
+      "icon_id": "8658543",
+      "name": "空气质量预警",
+      "font_class": "kongqizhiliangyujing",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "9833435",
+      "name": "路况_line",
+      "font_class": "road-conditions_line",
+      "unicode": "e70e",
+      "unicode_decimal": 59150
+    },
+    {
+      "icon_id": "17583242",
+      "name": "空气质量分析",
+      "font_class": "kongqizhiliangfenxi",
+      "unicode": "ec97",
+      "unicode_decimal": 60567
+    },
+    {
+      "icon_id": "3461117",
+      "name": "公交",
+      "font_class": "gongjiao",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "8783519",
+      "name": "地铁路线",
+      "font_class": "dibudaohanglan-",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    }
+  ]
+}
