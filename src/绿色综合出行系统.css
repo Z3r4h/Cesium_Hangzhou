@@ -642,6 +642,18 @@ body {
     text-indent: 10px;
     /* 缩进 */
 }
+/* 报表按钮 */
+#extendedBar4  button {
+    position:fixed;
+    bottom:20px;
+    margin-left: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #0090d2;
+    color: #fff;
+}
 
 #history {
     display: block;
