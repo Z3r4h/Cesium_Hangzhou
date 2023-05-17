@@ -654,6 +654,13 @@ body {
 #CReduction {
     display: none;
 }
+#CReduction h4 {
+    margin: 0;
+    padding: 10px 15px;
+    height: 40px;
+    box-sizing: border-box;
+    text-indent: 0;
+}
 
 /* 个人中心-个人收藏 小面板 */
 .myFavorite {
