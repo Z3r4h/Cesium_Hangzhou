@@ -9,9 +9,9 @@ body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    background-color: #3561ce;
+    background-color: rgba(98, 122, 83, 0.547);
     padding: 5px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .topbar-link {
@@ -28,14 +28,21 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #3561ce;
-    padding: 15px;
+    background-color: rgba(221, 235, 212, 0.773);
+    padding: 13px;
     color: white;
+}
+
+#logo1 {
+    display: flex;
+    align-items: center;
 }
 
 #logo {
     display: flex;
     align-items: center;
+    position: relative;
+    left:150px
 }
 
 #logo img {
@@ -57,12 +64,20 @@ body {
     margin-right: 15px;
 }
 
-#login,
-#register {
-    color: white;
+#login {
+    color: rgb(51, 172, 51);
     background-color: transparent;
     padding: 5px 15px;
-    border: 1px solid white;
+    border: 2px solid rgb(51, 172, 51);
+    border-radius: 15px;
+    text-decoration: none;
+    margin-right: 5px;
+ }
+#register {
+    color: rgb(151, 151, 151);
+    background-color: transparent;
+    padding: 5px 15px;
+    border: 2px solid rgb(166, 166, 166);
     border-radius: 15px;
     text-decoration: none;
     margin-right: 5px;
@@ -84,7 +99,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 90px;
-    background-color: #3561ce;
+    background-color: rgba(221, 235, 212, 0.773);
 }
 
 #sidebar img {
@@ -98,7 +113,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 15px;
-    background-color: #3561ce;
+    background-color: rgba(221, 235, 212, 0.773);
 
 }
 
@@ -109,11 +124,11 @@ body {
 }
 
 #sidebar .button:hover:not(.active) {
-    background-color: #4871da;
+    background-color: rgba(235, 255, 223, 0.773);
 }
 
 #sidebar .active {
-    background-color: #f4f7ff;
+    background-color: rgb(255, 255, 255);
 }
 
 
@@ -123,7 +138,7 @@ body {
 /* 通用的扩展栏样式 */
 .extendedBar {
     position: absolute;
-    top: 124.5px;
+    top: 105px;
     /* 距离顶部的距离，根据需要调整 */
     left: 90px;
     /* 与侧边栏的距离，根据需要调整 */
@@ -131,7 +146,7 @@ body {
     /* 扩展栏宽度，根据需要调整 */
     height: calc(100vh - 70px);
     padding: 15px;
-    background-color: #f4f7ff;
+    background-color: #ffffff;
     border: 1px solid #ccc;
     z-index: 1000;
 }
