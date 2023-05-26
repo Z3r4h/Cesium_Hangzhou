@@ -118,11 +118,10 @@ body {
 }
 
 .map {
-
     height: 90vh;
     width: 100vw;
-}
-
+  }
+  
 
 #sidebar .button:hover:not(.active) {
     background-color: rgba(235, 255, 223, 0.773);

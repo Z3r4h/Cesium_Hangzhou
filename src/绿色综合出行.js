@@ -77,48 +77,43 @@ function extendedBaropen(activeIndex){
 }
 init();
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
-const map = new mapboxgl.Map({
-    container: 'mainmap', // container ID
-    style: 'mapbox://styles/mapbox/streets-v11', // style URL
-    center: [120.155070, 30.274085],  // 杭州市的经纬度
-    zoom: 10  // 初始缩放级别 
-});
 
 
 
-function Mapopen(event,mapid){
-    var Maps = document.getElementsByClassName("map")
-    for (var i = 0; i < Maps.length; i++) {
-        Maps[i].style.display = "none";
+var map = L.map('mainmap').setView([30.274085, 120.155070], 11);
+    var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
+
+    var mapboxLayer = L.tileLayer(mapboxUrl, {
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+    }).addTo(map);
+
+    var aqiLayer = null;
+    var pm25Layer = null;
+
+    function showAQIMap() {
+      if (pm25Layer) {
+        map.removeLayer(pm25Layer);
+        pm25Layer = null;
+      }
+
+      if (!aqiLayer) {
+        aqiLayer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
+      }
     }
-    document.getElementById(mapid).style.display = "block";
-}
 
-// AQI地图
-var aqimap = L.map('AQI_map').setView([30.274085, 120.155070], 11);
-var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
-L.tileLayer(mapboxUrl, {
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-}).addTo(aqimap);
-var  WAQI_URL    =  "https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed";  
-var  waqiLayer  =  L.tileLayer(WAQI_URL).addTo(aqimap);  
+    function showPM25Map() {
+      if (aqiLayer) {
+        map.removeLayer(aqiLayer);
+        aqiLayer = null;
+      }
 
-// PM2.5地图
-var pm25map = L.map('PM2_5_map').setView([30.274085, 120.155070], 11);
-var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
-L.tileLayer(mapboxUrl, {
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-}).addTo(pm25map);
-var  pm25_URL    =  "https://tiles.waqi.info/tiles/usepa-pm25/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed";  
-var  pm25Layer  =  L.tileLayer(pm25_URL).addTo(pm25map);  
-
+      if (!pm25Layer) {
+        pm25Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm25/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
+      }
+    }
 
 // 拓展栏1
 function openTab(event, tabName) {

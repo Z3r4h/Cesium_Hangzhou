@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <!-- 拓展栏 -->
+    <!-- 主体部分 -->
     <div id="main">
         <div id="sidebar">
             <img class="button" id="button1" onclick="changeButton(1)" src="assets/出行导航_blue.png" alt="出行导航" title="出行导航">
@@ -45,8 +45,6 @@
             <img class="button" id="button4" onclick="changeButton(4)" src="assets/个人中心_white.png" alt="个人中心" title="个人中心">
         </div>
         <div id="mainmap" class="map" style="display: block;"></div>
-        <div id="AQI_map" class="map" style="display: none;"></div>
-        <div id="PM2_5_map" class="map" style="display: none;"></div>
     </div>
 
 
@@ -246,8 +244,8 @@
             <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量</div>
             <div id="AQI_select" class="toolPanel">
                 <h5>空气质量指数选择</h5>
-                <div class="button" onclick="Mapopen(event,'AQI_map')"><span class="iconfont icon-ceju1" ></span> &nbsp;AQI</div>
-                <div class="button" onclick="Mapopen(event,'PM2_5_map')"><span class="iconfont icon-kongjianceju" ></span> &nbsp;PM2.5</div>
+                <div class="button" onclick="showAQIMap()"><span class="iconfont icon-ceju1" ></span> &nbsp;AQI</div>
+                <div class="button" onclick="showPM25Map()"><span class="iconfont icon-kongjianceju" ></span> &nbsp;PM2.5</div>
          </div>
          </div>
     </div>
