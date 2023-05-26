@@ -117,11 +117,12 @@ body {
 
 }
 
-#cesiumContainer {
-    flex-grow: 1;
+.map {
+
     height: 90vh;
-    width: 100%;
+    width: 100vw;
 }
+
 
 #sidebar .button:hover:not(.active) {
     background-color: rgba(235, 255, 223, 0.773);
@@ -130,6 +131,7 @@ body {
 #sidebar .active {
     background-color: rgb(255, 255, 255);
 }
+
 
 
 
@@ -548,47 +550,7 @@ body {
 }
 
 /* 测距工具 */
-#distanceMeasure {
-    display: none;
-}
-
-/* 缓冲区工具 */
-#buffer {
-    display: none;
-    height: 180px;
-    width: 220px;
-    margin-left: 5px;
-}
-
-#buffer .button {
-    width: 180px;
-    text-indent: 15px;
-}
-
-#buffer .bufferInput {
-    margin: 15px 22px;
-    width: 200px;
-}
-
-#buffer input {
-    margin: 5px 0;
-    height: 20px;
-    width: 150px;
-}
-
-#timeLine input {
-    width: 136px;
-}
-
-#straightLine {
-    display: none;
-}
-
-#routeLine {
-    display: none;
-}
-
-#timeLine {
+#AQI_select {
     display: none;
 }
 
@@ -599,7 +561,6 @@ body {
 #extendedBar4 {
     font-size: 0;
 }
-
 #extendedBar4 span {
     display: inline-block;
     color: #0090d2;
