@@ -73,22 +73,11 @@ body {
     text-decoration: none;
     margin-right: 5px;
  }
-#register {
-    color: rgb(151, 151, 151);
-    background-color: transparent;
-    padding: 5px 15px;
-    border: 2px solid rgb(166, 166, 166);
-    border-radius: 15px;
-    text-decoration: none;
-    margin-right: 5px;
-}
 
 #login:hover,
 #register:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
-
-
 
 /* 下面是主体部分 */
 #main {
