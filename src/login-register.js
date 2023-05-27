@@ -8,7 +8,7 @@ let register_box=document.getElementsByClassName('register-box')[0];
 let login_box=document.getElementsByClassName('login-box')[0];
 // 去注册按钮点击事件
 register.addEventListener('click',()=>{
-    form_box.style.transform='translateX(80%)';
+    form_box.style.transform='translateX(90%)';
     login_box.classList.add('hidden');
     register_box.classList.remove('hidden');
 })

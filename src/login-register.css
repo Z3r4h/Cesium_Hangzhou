@@ -15,9 +15,9 @@ body{
 }
 .container{
     background-color: #fff;
-    width: 650px;
-    height: 415px;
-    border-radius: 5px;
+    width: 740px;
+    height: 500px;
+    border-radius: 15px;
     /* 阴影 */
     box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
     /* 相对定位 */
@@ -27,10 +27,10 @@ body{
     /* 绝对定位 */
     position: absolute;
     top: -10%;
-    left: 5%;
-    background-color: #d3b7d8;
-    width: 320px;
-    height: 500px;
+    left: 2%;
+    background-color: #c2e7bb;
+    width: 375px;
+    height: 600px;
     border-radius: 5px;
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
     display: flex;
@@ -63,7 +63,7 @@ h1{
 input{
     background-color: transparent;
     width: 70%;
-    color: #fff;
+    color: #089a3e;
     border: none;
     /* 下边框样式 */
     border-bottom: 1px solid rgba(255,255,255,0.4);
@@ -74,12 +74,12 @@ input{
     letter-spacing: 2px;
 }
 input::placeholder{
-    color: #fff;
+    color: #41974e;
 }
 input:focus{
-    color: #a262ad;
+    color: #2b4624;
     outline: none;
-    border-bottom: 1px solid #a262ad80;
+    border-bottom: 1px solid #30683f80;
     transition: 0.5s;
 }
 input:focus::placeholder{
@@ -92,13 +92,13 @@ input:focus::placeholder{
     outline: none;
     border-radius: 8px;
     padding: 13px;
-    color: #a262ad;
+    color: #09360e;
     letter-spacing: 2px;
     border: none;
     cursor: pointer;
 }
 .form-box button:hover{
-    background-color: #a262ad;
+    background-color: #c2f2c7;
     color: #f6f6f6;
     transition: background-color 0.5s ease;
 }
@@ -135,7 +135,7 @@ input:focus::placeholder{
     text-align: center;
 }
 .con-box span{
-    color: #d3b7d8;
+    color: #1a6800;
 }
 .con-box img{
     width: 150px;
@@ -146,8 +146,8 @@ input:focus::placeholder{
 .con-box button{
     margin-top: 3%;
     background-color: #fff;
-    color: #a262ad;
-    border: 1px solid #d3b7d8;
+    color: #2d5c3a;
+    border: 1px solid #3d512b;
     padding: 6px 10px;
     border-radius: 5px;
     letter-spacing: 1px;
@@ -155,6 +155,6 @@ input:focus::placeholder{
     cursor: pointer;
 }
 .con-box button:hover{
-    background-color: #d3b7d8;
+    background-color: #7c9551;
     color: #fff;
 }
