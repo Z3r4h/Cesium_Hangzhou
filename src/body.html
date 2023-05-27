@@ -10,6 +10,14 @@
     <link rel="stylesheet" href="../script/Cesium/Widgets/widgets.css">
     <link rel="stylesheet" href="./绿色综合出行系统.css">
     <link rel="stylesheet" href="../iconfont/iconfont.css" />
+
+    <!-- mapboxgl文件 -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+    <!-- leaflet文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+
 </head>
 
 <body>
@@ -27,15 +35,15 @@
         </div>
     </div>
 
-    <!-- 拓展栏 -->
+    <!-- 主体部分 -->
     <div id="main">
         <div id="sidebar">
             <img class="button" id="button1" onclick="changeButton(1)" src="assets/出行导航_blue.png" alt="出行导航" title="出行导航">
             <img class="button" id="button2" onclick="changeButton(2)" src="assets/城市设施_white.png" alt="城市设施" title="城市设施">
-            <img class="button" id="button3" onclick="changeButton(3)" src="assets/拓展功能_white.png" alt="拓展功能" title="拓展功能">
+            <img class="button" id="button3" onclick="changeButton(3)" src="assets/绿色地图_white.png" alt="绿色地图" title="绿色地图">
             <img class="button" id="button4" onclick="changeButton(4)" src="assets/个人中心_white.png" alt="个人中心" title="个人中心">
         </div>
-        <div id="cesiumContainer"></div>
+        <div id="mainmap" class="map" style="display: block;"></div>
     </div>
 
 
@@ -221,7 +229,7 @@
 
     <!-- 拓展栏3 -->
     <div id="extendedBar3" class="extendedBar" style="display:none;">
-        <h3>拓展功能</h3>
+        <h3>绿色地图</h3>
         <div class="extendedFunction">
             <h4>杭州公共交通线路</h4>
             <div class="button"><span class="iconfont icon-dibudaohanglan-"></span> &nbsp;地铁线路图</div>
@@ -231,48 +239,15 @@
             <h4>地图可视化</h4>
             <div class="button"><span class="iconfont icon-tianqi"></span> &nbsp;天气状况</div>
             <div class="button"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
-            <div class="button"><span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量</div>
-        </div>
-        <div class="extendedFunction">
-            <h4>工具箱</h4>
-            <div id="toolBtn1" class="button toolBtn" onclick="toolPanelOpen(event, 'toolBtn1', 'distanceMeasure')">
-                <span class="iconfont icon-ceju"></span> &nbsp;测距
-            </div>
-            <div id="toolBtn2" class="button toolBtn" onclick="toolPanelOpen(event, 'toolBtn2', 'mark')"><span
-                    class="iconfont icon-biaoji"></span> &nbsp;标记</div>
-            <div id="toolBtn3" class="button toolBtn" onclick="toolPanelOpen(event, 'toolBtn3', 'buffer')"><span
-                    class="iconfont icon-icon-chongdie"></span> &nbsp;缓冲区</div>
-            <div id="distanceMeasure" class="toolPanel">
-                <h5>测距工具面板</h5>
-                <div class="button"><span class="iconfont icon-ceju1"></span> &nbsp;直线距离</div>
-                <div class="button"><span class="iconfont icon-kongjianceju"></span> &nbsp;路线距离</div>
-            </div>
-            <div id="mark" class="toolPanel" style="display: none;"></div>
-            <div id="buffer" class="toolPanel">
-                <h5>缓冲区工具面板</h5>
-                <div id="bufferBtn1" class="button bufferBtn"
-                    onclick="bufferInputOpen(event, 'bufferBtn1', 'straightLine')"><span
-                        class="iconfont icon-zhixianfangyang"></span> &nbsp;直线可达</div>
-                <div id="bufferBtn2" class="button bufferBtn"
-                    onclick="bufferInputOpen(event, 'bufferBtn2', 'routeLine')"><span
-                        class="iconfont icon-luxian"></span> &nbsp;路线可达</div>
-                <div id="bufferBtn3" class="button bufferBtn"
-                    onclick="bufferInputOpen(event, 'bufferBtn3', 'timeLine')"><span
-                        class="iconfont icon-shijian"></span> &nbsp;时间可达</div>
-                <div id="straightLine" class="bufferInput">请输入距离：<br><input type="number" id="SLinput"> m</div>
-                <div id="routeLine" class="bufferInput">请输入距离：<br><input type="number" id="RLinput"> m</div>
-                <div id="timeLine" class="bufferInput">请输入时间：<br><input type="number" id="TLinput"> min <br>
-                    输入速度/选择出行方式：<br>
-                    <input id="tripMode" type="text" list="modeNamelist"> km/h
-                    <datalist id="modeNamelist">
-                        <option>步行</option>
-                        <option>骑行</option>
-                        <option>公交</option>
-                        <option>地铁</option>
-                    </datalist>
-                </div>
-            </div>
-        </div>
+            <div class="button toolBtn" id="AQI_button" onclick="toolPanelOpen(event, 'AQI_button', 'AQI_select')">
+            <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量</div>
+            <div id="AQI_select" class="toolPanel">
+                <h5>空气质量指数选择</h5>
+                <div class="button" onclick="showAQIMap()"><span class="iconfont icon-ceju1" ></span> &nbsp;AQI</div>
+                <div class="button" onclick="showPM25Map()"><span class="iconfont icon-kongjianceju" ></span> &nbsp;PM2.5</div>
+                <div class="button" onclick="showPM10Map()"><span class="iconfont icon-kongjianceju" ></span> &nbsp;PM10</div>
+         </div>
+         </div>
     </div>
 
     <!-- 拓展栏4 -->
@@ -300,9 +275,8 @@
             <div id="route" class="myFavorite">还没有出行历史！</div>
             <h4>已减少碳排放量</h4>
             <div id="location" class="myFavorite">还没有出行历史！</div>
-            <div></div>
+         </div>
     </div>
-
     <script src="绿色综合出行.js"></script>
 </body>
 
