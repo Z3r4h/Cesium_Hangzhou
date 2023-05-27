@@ -1,5 +1,3 @@
-
-
 //侧边栏点击出现拓展栏
 var buttons = document.getElementsByClassName("button");
 var extendedBars = document.getElementsByClassName("extendedBar");
