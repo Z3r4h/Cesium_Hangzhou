@@ -76,43 +76,65 @@ function extendedBaropen(activeIndex){
 init();
 
 
-
-
 var map = L.map('mainmap').setView([30.274085, 120.155070], 11);
-    var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
+var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
 
-    var mapboxLayer = L.tileLayer(mapboxUrl, {
-      maxZoom: 18,
-      id: 'mapbox/streets-v11',
-      tileSize: 512,
-      zoomOffset: -1,
-    }).addTo(map);
 
-    var aqiLayer = null;
-    var pm25Layer = null;
+var mapboxLayer = L.tileLayer(mapboxUrl, {
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+  }).addTo(map);
 
-    function showAQIMap() {
-      if (pm25Layer) {
-        map.removeLayer(pm25Layer);
-        pm25Layer = null;
-      }
+  var aqiLayer = null;
+  var pm25Layer = null;
+  var pm10Layer = null;
 
-      if (!aqiLayer) {
-        aqiLayer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
-      }
+  function showAQIMap() {
+    if (pm25Layer) {
+      map.removeLayer(pm25Layer);
+      pm25Layer = null;
+    }
+    if (pm10Layer) {
+      map.removeLayer(pm10Layer);
+      pm10Layer = null;
     }
 
-    function showPM25Map() {
-      if (aqiLayer) {
-        map.removeLayer(aqiLayer);
-        aqiLayer = null;
-      }
+    if (!aqiLayer) {
+      aqiLayer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
+    }
+  }
 
-      if (!pm25Layer) {
-        pm25Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm25/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
-      }
+  function showPM25Map() {
+    if (aqiLayer) {
+      map.removeLayer(aqiLayer);
+      aqiLayer = null;
+    }
+    if (pm10Layer) {
+      map.removeLayer(pm10Layer);
+      pm10Layer = null;
     }
 
+    if (!pm25Layer) {
+      pm25Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm25/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
+    }
+  }
+
+  function showPM10Map() {
+    if (aqiLayer) {
+      map.removeLayer(aqiLayer);
+      aqiLayer = null;
+    }
+    if (pm25Layer) {
+      map.removeLayer(pm25Layer);
+      pm25Layer = null;
+    }
+
+    if (!pm10Layer) {
+      pm10Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm10/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
+    }
+  }
 // 拓展栏1
 function openTab(event, tabName) {
     //获取tab content的所有元素并隐藏它们
@@ -241,7 +263,7 @@ function toolPanelOpen(event, toolButton, toolPanelId) {
     let toolPanel = document.getElementById(toolPanelId); // 按钮对应的的工具面板
     if (toolPanel.style.display == "block") { // 如果原来恰好是其打开，将其关闭
         toolPanel.style.display = "none";
-        buttonClick.style.backgroundColor = "#f5f4f4";
+        buttonClick.style.backgroundColor = null;
     } else {   // 如果原来该扩展栏未打开，将其打开，将其他关闭
         let toolPanels = document.getElementsByClassName('toolPanel');
         let toolButtons = document.getElementsByClassName('toolBtn');
@@ -250,7 +272,7 @@ function toolPanelOpen(event, toolButton, toolPanelId) {
             toolButtons[i].style.backgroundColor = "#f5f4f4";
         }
         toolPanel.style.display = "block";
-        buttonClick.style.backgroundColor = "#9595957a";
+        buttonClick.style.backgroundColor = null;
     }
 }
 
