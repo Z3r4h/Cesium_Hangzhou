@@ -12,6 +12,9 @@ body{
     align-items: center;
     /* 渐变背景 */
     background: linear-gradient(200deg,#f3e7e9,#e3eeff);
+    background-image: url("assets/缪尔赛思.png");
+    background-repeat: no-repeat; /* 可选：设置图片不重复 */
+    background-size: cover; /* 可选：设置图片铺满整个屏幕 */
 }
 .container{
     background-color: #fff;
