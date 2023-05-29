@@ -24,8 +24,8 @@ function changeButton(index) {
     }
 }
 
-function extendedBarclose(activeIndex){
-    switch(activeIndex){
+function extendedBarclose(activeIndex) {
+    switch (activeIndex) {
         case 0:
             buttons[activeIndex].classList.remove("active");
             buttons[activeIndex].src = "assets/出行导航_white.png";
@@ -49,8 +49,8 @@ function extendedBarclose(activeIndex){
     }
 }
 
-function extendedBaropen(activeIndex){
-    switch(activeIndex){
+function extendedBaropen(activeIndex) {
+    switch (activeIndex) {
         case 0:
             buttons[activeIndex].classList.add("active");
             buttons[activeIndex].src = "assets/出行导航_blue.png";
@@ -75,66 +75,111 @@ function extendedBaropen(activeIndex){
 }
 init();
 
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94LXhzIiwiYSI6ImNsaTVvcXByMDFmZTMzZm8zOGtsbXUwN2IifQ.qQmT-APr8yb1gPDAxR2P0A';
+var map = new mapboxgl.Map({
+    container: 'mainmap',
+    style: 'mapbox://styles/mapbox/streets-v10',
+    center: [120.155070, 30.274085], // starting position
+    zoom: 11
+});
 
-var map = L.map('mainmap').setView([30.274085, 120.155070], 11);
-var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
+// 设置语言
+mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
+map.addControl(new MapboxLanguage({defaultLanguage: 'zh'}));
 
 
-var mapboxLayer = L.tileLayer(mapboxUrl, {
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-  }).addTo(map);
+  // 创建Leaflet地图对象
+  var leafletMap = L.map('mainmap').setView([30.274085, 120.155070], 11);
 
-  var aqiLayer = null;
-  var pm25Layer = null;
-  var pm10Layer = null;
+  // 定义Mapbox底图URL
+  var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
 
-  function showAQIMap() {
+  // 创建Leaflet地图图层，并添加到地图上
+  var mapboxLayer = L.tileLayer(mapboxUrl, {
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+  });
+
+var aqiLayer = null;
+var pm25Layer = null;
+var pm10Layer = null;
+// 找到切换按钮
+var MapButton = document.getElementById('button3');
+var NavigationButton = document.getElementById('button1');
+
+// 添加点击事件处理程序
+MapButton.addEventListener('click', function() {
+    // 切换底图
+    if (!leafletMap.hasLayer(mapboxLayer)) {
+        leafletMap.addLayer(mapboxLayer);
+    } 
+});
+NavigationButton.addEventListener('click', function() {
+    // 切换底图
+    if (leafletMap.hasLayer(mapboxLayer)) {
+        if (pm25Layer) {
+            leafletMap.removeLayer(pm25Layer);
+            pm25Layer = null;
+        }
+        if (pm10Layer) {
+            leafletMap.removeLayer(pm10Layer);
+            pm10Layer = null;
+        }
+        if (aqiLayer) {
+            leafletMap.removeLayer(aqiLayer);
+            aqiLayer = null;
+        }
+        leafletMap.removeLayer(mapboxLayer);
+    } 
+});
+
+
+function showAQIMap() {
     if (pm25Layer) {
-      map.removeLayer(pm25Layer);
-      pm25Layer = null;
+        leafletMap.removeLayer(pm25Layer);
+        pm25Layer = null;
     }
     if (pm10Layer) {
-      map.removeLayer(pm10Layer);
-      pm10Layer = null;
+        leafletMap.removeLayer(pm10Layer);
+        pm10Layer = null;
     }
 
     if (!aqiLayer) {
-      aqiLayer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
+        aqiLayer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(leafletMap);
     }
-  }
+}
 
-  function showPM25Map() {
+function showPM25Map() {
     if (aqiLayer) {
-      map.removeLayer(aqiLayer);
-      aqiLayer = null;
+        leafletMap.removeLayer(aqiLayer);
+        aqiLayer = null;
     }
     if (pm10Layer) {
-      map.removeLayer(pm10Layer);
-      pm10Layer = null;
+        leafletMap.removeLayer(pm10Layer);
+        pm10Layer = null;
     }
 
     if (!pm25Layer) {
-      pm25Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm25/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
+        pm25Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm25/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(leafletMap);
     }
-  }
+}
 
-  function showPM10Map() {
+function showPM10Map() {
     if (aqiLayer) {
-      map.removeLayer(aqiLayer);
-      aqiLayer = null;
+        leafletMap.removeLayer(aqiLayer);
+        aqiLayer = null;
     }
     if (pm25Layer) {
-      map.removeLayer(pm25Layer);
-      pm25Layer = null;
+        leafletMap.removeLayer(pm25Layer);
+        pm25Layer = null;
     }
 
     if (!pm10Layer) {
-      pm10Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm10/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(map);
+        pm10Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm10/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(leafletMap);
     }
-  }
+}
 // 拓展栏1
 function openTab(event, tabName) {
     //获取tab content的所有元素并隐藏它们

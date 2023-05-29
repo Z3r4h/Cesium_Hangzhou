@@ -27,7 +27,10 @@ function carbonCalc(tripMode, distance, unit='kg'){
     return carbonEmission;
 }
 
-// 多种交通方式
+// 一次出行中有多种交通方式
+// tripMode为数组，依次存放交通方式，字符串类型数组
+// distance为数组，依次存放与tripMode对应的距离，数字类型数组，单位为公里
+// unit指返回值的单位，默认为kg, 还可以设置为g
 function carbonCalcMul(tripMode, distance, unit='kg'){
     let carbonEmission = 0; // 碳排放
     for(let i=0; i<tripMode.length; i++){

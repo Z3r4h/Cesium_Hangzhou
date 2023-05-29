@@ -14,10 +14,21 @@
     <!-- mapboxgl文件 -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.0/mapbox-gl-language.js'></script>    <!-- language --> 
     <!-- leaflet文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
-
+    <!-- 高德文件 -->
+    <!-- <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" /> -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: '2abe2c00ec220cf92c4ca347e0266ccf',
+        }
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=5f91f7cd497a71f556a2729a53d3477c"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=5f91f7cd497a71f556a2729a53d3477c"></script>
+    <!-- axios -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.4/axios.js"></script>
 </head>
 
 <body>
@@ -38,10 +49,14 @@
     <!-- 主体部分 -->
     <div id="main">
         <div id="sidebar">
-            <img class="button" id="button1" onclick="changeButton(1)" src="assets/出行导航_blue.png" alt="出行导航" title="出行导航">
-            <img class="button" id="button2" onclick="changeButton(2)" src="assets/城市设施_white.png" alt="城市设施" title="城市设施">
-            <img class="button" id="button3" onclick="changeButton(3)" src="assets/绿色地图_white.png" alt="绿色地图" title="绿色地图">
-            <img class="button" id="button4" onclick="changeButton(4)" src="assets/个人中心_white.png" alt="个人中心" title="个人中心">
+            <img class="button" id="button1" onclick="changeButton(1)" src="assets/出行导航_blue.png" alt="出行导航"
+                title="出行导航">
+            <img class="button" id="button2" onclick="changeButton(2)" src="assets/城市设施_white.png" alt="城市设施"
+                title="城市设施">
+            <img class="button" id="button3" onclick="changeButton(3)" src="assets/绿色地图_white.png" alt="绿色地图"
+                title="绿色地图">
+            <img class="button" id="button4" onclick="changeButton(4)" src="assets/个人中心_white.png" alt="个人中心"
+                title="个人中心">
         </div>
         <div id="mainmap" class="map" style="display: block;"></div>
     </div>
@@ -64,7 +79,7 @@
             <span class="tablinks" onclick="openTab(event, 'tab6')">雨天出行</span>
         </div>
         <div id="search-box2">
-            <button id="search-button">搜索</button>
+            <button id="search-button" onclick="routePlan('search-text1', 'search-text2')">搜索</button>
             <button id="filterBtn1">筛选</button>
         </div>
         <div id="filterBoxContent1">
@@ -240,14 +255,17 @@
             <div class="button"><span class="iconfont icon-tianqi"></span> &nbsp;天气状况</div>
             <div class="button"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
             <div class="button toolBtn" id="AQI_button" onclick="toolPanelOpen(event, 'AQI_button', 'AQI_select')">
-            <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量</div>
+                <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量
+            </div>
             <div id="AQI_select" class="toolPanel">
                 <h5>空气质量指数选择</h5>
-                <div class="button" onclick="showAQIMap()"><span class="iconfont icon-ceju1" ></span> &nbsp;AQI</div>
-                <div class="button" onclick="showPM25Map()"><span class="iconfont icon-kongjianceju" ></span> &nbsp;PM2.5</div>
-                <div class="button" onclick="showPM10Map()"><span class="iconfont icon-kongjianceju" ></span> &nbsp;PM10</div>
-         </div>
-         </div>
+                <div class="button" onclick="showAQIMap()"><span class="iconfont icon-ceju1"></span> &nbsp;AQI</div>
+                <div class="button" onclick="showPM25Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM2.5
+                </div>
+                <div class="button" onclick="showPM10Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM10
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 拓展栏4 -->
@@ -275,9 +293,11 @@
             <div id="route" class="myFavorite">还没有出行历史！</div>
             <h4>已减少碳排放量</h4>
             <div id="location" class="myFavorite">还没有出行历史！</div>
-         </div>
+        </div>
     </div>
+    <script src="carbonCalc.js"></script>
     <script src="绿色综合出行.js"></script>
+    <script src="navigation.js"></script>
 </body>
 
 </html>
