@@ -9,6 +9,7 @@ let login_box=document.getElementsByClassName('login-box')[0];
 let username = document.getElementById('username');
 let psd = document.getElementById('password');
 let rpsd = document.getElementById('re_password');
+var email = document.getElementById("email");
 // 去注册按钮点击事件
 register.addEventListener('click',()=>{
     form_box.style.transform='translateX(90%)';
@@ -29,6 +30,12 @@ function checkForm() {
     } else {
         username.style.border = " 1px solid rgba(255,255,255,0.3)";
     }
+    // 使用正则表达式进行邮箱格式验证
+    var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    if (!emailRegex.test(email.value)) {
+        alert("请输入有效的邮箱地址");
+        return;
+    }
     if (rpsd.value == '' || psd.value == '') {
         alert("密码不能为空！");
         return;
@@ -44,4 +51,7 @@ function checkForm() {
         alert("密码不一致！");
         rpsd.value = "";
     }
+}
+function goback(){
+    window.history.back();
 }

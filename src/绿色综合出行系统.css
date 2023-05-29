@@ -74,9 +74,8 @@ body {
     margin-right: 5px;
  }
 
-#login:hover,
-#register:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+#login:hover {
+    background-color: rgba(138, 255, 183, 0.403);
 }
 
 /* 下面是主体部分 */
