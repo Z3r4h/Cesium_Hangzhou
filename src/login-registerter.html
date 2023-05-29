@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../src/login-register.css" />
+    <title>开启你的绿色出行！</title>
+</head>
+<body>
+    <div class="container">
+        <div class="form-box">
+            <!-- 注册 -->
+            <div class="register-box hidden">
+                <h1>register</h1>
+                <input type="text" id="username" placeholder="用户名">
+                <!--上面这个框，只有手动输入才不会出现奇怪的东西，为什么？？-->
+                <input type="email" id="email" placeholder="邮箱">
+                <input type="password" id='password' placeholder="密码">
+                <input type="password" id="re_password" placeholder="确认密码">
+                <button onclick="checkForm()">注册</button>
+            </div>
+            <!-- 登录 -->
+            <div class="login-box">
+                <h1>login</h1>
+                <input type="text" placeholder="用户名">
+                <input type="password" placeholder="密码">
+                <button onclick="goback()">登录</button>
+            </div>
+        </div>
+        <div class="con-box left">
+            <h2>欢迎来到</h2>
+            <h2><span>杭州市绿色综合出行系统</span></h2>
+            <p>快来开启你的<span>绿色出行</span>吧</p>
+            <img src="assets/杭州.png" alt=""style="width: 250px; height: auto;"> 
+            <p>已有账号</p>
+            <button id="btn_login">去登录</button>
+        </div>
+        <div class="con-box right">
+            <h2>欢迎来到</h2>
+            <h2><span>杭州市绿色综合出行系统</span></h2>
+            <p>一起来<span>绿色出行</span>吧</p>
+            <img src="assets/树叶求是鹰.png" alt=""style="width: 250px; height: auto;">
+            <p>没有账号？</p>
+            <button id="btn_register">去注册</button>
+        </div>
+    </div>
+    <script src="login-register.js"></script>
+</body>
+</html>
