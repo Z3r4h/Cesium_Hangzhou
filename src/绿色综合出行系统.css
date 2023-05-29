@@ -1,6 +1,7 @@
 body {
     margin: 0;
     font-family: Helvetica,Arial,sans-serif;
+    background: linear-gradient(200deg,#f3e7e9,#e3eeff)
 }
 
 
@@ -65,14 +66,50 @@ body {
 }
 
 #login {
-    color: rgb(51, 172, 51);
-    background-color: transparent;
-    padding: 5px 15px;
-    border: 2px solid rgb(51, 172, 51);
-    border-radius: 15px;
+    width: 90px;
+    height: 28px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    font-size: 16px;
+    color: #fff;
+    /* 渐变背景 */
+    background: linear-gradient(to right,#03a9f4,#f441a5,#ffeb3b,#09a8f4);
+    /* 背景渐变色大小 */
+    background-size: 400%;
+    /* 圆角 */
+    border-radius: 50px;
+    z-index: 1;
     text-decoration: none;
     margin-right: 5px;
  }
+ #login::before{
+    /* 渐变背景 */
+    background: linear-gradient(to right,#03a9f4,#f441a5,#ffeb3b,#09a8f4);
+    /* 背景渐变色大小 */
+    background-size: 400%;
+    /* 圆角 */
+    border-radius: 50px;
+    /* 位于按钮之下 */
+    z-index: -1;
+    /* 设置模糊度 显示发光效果 */
+    filter: blur(20px);
+}
+/* 鼠标移入执行动画 */
+#login:hover{
+    /* 动画：名称 时间 infinite是无限次播放 */
+    animation: streamer 8s infinite;
+}
+#login:hover::before{
+    animation: streamer 8s infinite;
+}
+/* 接下来定义动画 */
+@keyframes streamer{
+    100%{
+        /* 背景位置 */
+        background-position: -400% 0;
+    }
+}
 
 #login:hover {
     background-color: rgba(138, 255, 183, 0.403);
