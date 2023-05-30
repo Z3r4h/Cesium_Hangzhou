@@ -76,9 +76,14 @@ body {
     width: 170px;
     height: 100%;
     border:none;
-    font-size: 17px;
+    font-size: 15px;
     border-bottom: 2px solid #c0c0c0;
 }
+
+#search-box{
+    outline: none;
+}
+
 /* 输入框获得焦点时 */
 #search-login .input-data #search-box:focus ~ label,
 /* 输入框的值为合法时 */
@@ -91,7 +96,7 @@ body {
 #search-login .input-data label{
     /* 绝对定位 */
     position: absolute;
-    bottom: 10px;
+    bottom: 5px;
     left: 0px;
     color: #808080;
     /* 这个属性可以使点击label穿透到输入框 */
@@ -114,10 +119,6 @@ body {
 #search-login .input-data input:valid ~ .underline{
     /* 沿X轴放大 */
     transform: scaleX(1);
-}
-
-#search-box:active{
-    border: none;
 }
 
 #login {
