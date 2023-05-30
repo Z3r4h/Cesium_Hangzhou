@@ -42,7 +42,7 @@
         </div>
         <div id="search-login">
             <div class="input-data">
-                <input type="text" required id="search-box">
+                <input type="text" id="search-box" required>
                 <div class="underline"></div>
                 <label>搜索地点</label>
             </div>
@@ -71,8 +71,14 @@
     <div id="extendedBar1" class="extendedBar" style="display:none;">
         <h3>出行</h3>
         <div id="search-box1">
-            <input id="search-text1" type="text" placeholder="请输入起点">
-            <input id="search-text2" type="text" placeholder="请输入终点">
+            <div class="inputBox">
+                <input type="text" id="search-text1"  required="required">
+                <span>请输入起点</span>
+            </div>
+            <div class="inputBox">
+                <input type="text" id="search-text2"  required="required">
+                <span>请输入终点</span>
+            </div>
         </div>
         <div class="tab">
             <span class="tablinks active" onclick="openTab(event, 'tab1')">最短时间</span>
