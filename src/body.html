@@ -14,7 +14,8 @@
     <!-- mapboxgl文件 -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.0/mapbox-gl-language.js'></script>    <!-- language --> 
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.0/mapbox-gl-language.js'></script>
+    <!-- language -->
     <!-- leaflet文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -25,10 +26,19 @@
             securityJsCode: '2abe2c00ec220cf92c4ca347e0266ccf',
         }
     </script>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=5f91f7cd497a71f556a2729a53d3477c"></script>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=5f91f7cd497a71f556a2729a53d3477c"></script>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=5f91f7cd497a71f556a2729a53d3477c"></script>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=5f91f7cd497a71f556a2729a53d3477c"></script>
     <!-- axios -->
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.4/axios.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
+    <!-- 百度地图公交路线
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=y7I42kWI1lRqTPmv2l5SOBU8"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova-1.9.0.js"></script>
+    <script src="baidumapjs/busLineMap.js"></script> -->
 </head>
 
 <body>
@@ -41,12 +51,8 @@
             <img src="assets/title1.png" alt="Logo" width="300" height="700">
         </div>
         <div id="search-login">
-            <div class="input-data">
-                <input type="text" id="search-box" required>
-                <div class="underline"></div>
-                <label>搜索地点</label>
-            </div>
-            <a href="..\src\login-registerter.html" id="login" >登录/注册</a>
+            <input type="text" id="search-box" placeholder="搜索地点...">
+            <a href="..\src\login-registerter.html" id="login">登录/注册</a>
         </div>
     </div>
 
@@ -72,11 +78,11 @@
         <h3>出行</h3>
         <div id="search-box1">
             <div class="inputBox">
-                <input type="text" id="search-text1"  required="required">
+                <input type="text" id="search-text1" required="required">
                 <span>请输入起点</span>
             </div>
             <div class="inputBox">
-                <input type="text" id="search-text2"  required="required">
+                <input type="text" id="search-text2" required="required">
                 <span>请输入终点</span>
             </div>
         </div>
@@ -270,7 +276,18 @@
         <div class="extendedFunction">
             <h4>杭州公共交通线路</h4>
             <div class="button"><span class="iconfont icon-dibudaohanglan-"></span> &nbsp;地铁线路图</div>
-            <div class="button"><span class="iconfont icon-gongjiao"></span> &nbsp;公交线路图</div>
+            <div class="button" , id="toggleButton"><span class="iconfont icon-gongjiao"></span> &nbsp;公交线路图</div>
+            <div id="mypanel" data-role="panel" data-display="overlay" data-position-fixed="true">
+
+            </div>
+            <div id="mypanel01" data-role="panel" data-display="overlay" data-position-fixed="true">
+
+            </div>
+
+            <div id="search-container">
+                <input type="text" id="keyword" placeholder="输入公交线路号">
+                <button id="query">查询</button>
+            </div>
         </div>
         <div class="extendedFunction">
             <h4>地图可视化</h4>

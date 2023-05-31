@@ -86,22 +86,22 @@ var map = new mapboxgl.Map({
 
 // 设置语言
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
-map.addControl(new MapboxLanguage({defaultLanguage: 'zh'}));
+map.addControl(new MapboxLanguage({ defaultLanguage: 'zh' }));
 
 
-  // 创建Leaflet地图对象
-  var leafletMap = L.map('mainmap').setView([30.274085, 120.155070], 11);
+// 创建Leaflet地图对象
+var leafletMap = L.map('mainmap').setView([30.274085, 120.155070], 11);
 
-  // 定义Mapbox底图URL
-  var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
+// 定义Mapbox底图URL
+var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
 
-  // 创建Leaflet地图图层，并添加到地图上
-  var mapboxLayer = L.tileLayer(mapboxUrl, {
-      maxZoom: 18,
-      id: 'mapbox/streets-v11',
-      tileSize: 512,
-      zoomOffset: -1,
-  });
+// 创建Leaflet地图图层，并添加到地图上
+var mapboxLayer = L.tileLayer(mapboxUrl, {
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+});
 
 var aqiLayer = null;
 var pm25Layer = null;
@@ -111,13 +111,13 @@ var MapButton = document.getElementById('button3');
 var NavigationButton = document.getElementById('button1');
 
 // 添加点击事件处理程序
-MapButton.addEventListener('click', function() {
+MapButton.addEventListener('click', function () {
     // 切换底图
     if (!leafletMap.hasLayer(mapboxLayer)) {
         leafletMap.addLayer(mapboxLayer);
-    } 
+    }
 });
-NavigationButton.addEventListener('click', function() {
+NavigationButton.addEventListener('click', function () {
     // 切换底图
     if (leafletMap.hasLayer(mapboxLayer)) {
         if (pm25Layer) {
@@ -133,7 +133,7 @@ NavigationButton.addEventListener('click', function() {
             aqiLayer = null;
         }
         leafletMap.removeLayer(mapboxLayer);
-    } 
+    }
 });
 
 
@@ -321,6 +321,42 @@ function toolPanelOpen(event, toolButton, toolPanelId) {
         buttonClick.style.backgroundColor = null;
     }
 }
+
+map.on('style.load', function () {
+    map.addSource('wms-source', {
+        'type': 'raster',
+        'tiles': [
+            'http://localhost:8080/geoserver/green/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&STYLES&LAYERS=green%3Abus_lines&exceptions=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A3857&WIDTH=768&HEIGHT=769&BBOX={bbox-epsg-3857}',
+        ],
+        'tileSize': 256
+    });
+    // var toggleButton = document.getElementById('toggleButton');
+    // var isLayerVisible = false;
+    var hangzhouluxian = 'green:bus_lines';
+
+    // // 监听按钮点击事件
+    // toggleButton.addEventListener('click', function () {
+    //     if (!isLayerVisible) {
+    //         // 添加WMS图层
+    map.addLayer(
+        {
+            'id': 'wms-layer',
+            'type': 'raster',
+            'source': 'wms-source',
+            'paint': {
+                'raster-opacity': 0.3
+            }
+        },
+        '' // 将WMS图层插入到指定图层之前
+    );
+});
+//         isLayerVisible = true;
+//     } else {
+//         // 移除WMS图层
+//         map.removeLayer(hangzhouluxian);
+//         isLayerVisible = false;
+//     }
+// });
 
 // 拓展栏4
 function personalPanelOpen(event, personalBtn, personalPanelId) {
