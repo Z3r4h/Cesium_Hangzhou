@@ -8,6 +8,7 @@ function init() {
     buttons[activeIndex].src = "assets/出行导航_blue.png";
     extendedBars[activeIndex].style.display = "block";
 }
+//拓展栏1
 
 function changeButton(index) {
     if (index !== activeIndex + 1) {

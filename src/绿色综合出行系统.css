@@ -313,7 +313,70 @@ body {
 .inputBox input:focus {
     border: 2px solid #50c9c3;
 }
+/*到这结束*/
 
+.tab {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.tzl_box {
+    width: 78px;
+    height: 40px;
+    border-radius: 5px;
+    position: relative;
+    left: -15px;
+    overflow: hidden;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+    margin: 8px;
+    user-select: none;
+    border: 3px solid transparent; /* 添加默认的透明边框 */
+    transition: border-color 0.3s ease-in-out;
+}
+
+.tzl_box:nth-of-type(1) {
+    background-image: linear-gradient(45deg, #F43f3b, #Ec008c);
+}
+
+.tzl_box:nth-of-type(2) {
+    background-image: linear-gradient(45deg, #Ff9700, #Ed1c24);
+}
+
+.tzl_box:nth-of-type(3) {
+    background-image: linear-gradient(45deg, #39b54a, #8dc63f);
+}
+
+.tzl_box:nth-of-type(4) {
+    background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+}
+
+.tzl_box:nth-of-type(5) {
+    background-image: linear-gradient(45deg, #9000ff, #5e00ff);
+}
+
+.tzl_box:nth-of-type(6) {
+    background-image: linear-gradient(45deg, #Ec008c, #6739b6);
+}
+.tablinks {
+    display: flex;
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+.tablinks.active {
+    color: #126820;
+    background-color: rgb(132, 214, 107);
+}
+
+.tzl_box:hover {
+    border-color: #ffffff; /* 鼠标悬停状态下的边框颜色 */
+}
 
 #extendedBar1 h3 {
     text-align: center;
@@ -359,7 +422,7 @@ body {
     cursor: pointer;
 }
 
-#extendedBar1 .tab {
+/*#extendedBar1 .tab {
     width: 254px;
     overflow: hidden;
     border: 1px solid #bcbbbb;
@@ -388,7 +451,7 @@ body {
     background-color: #b4cedf;
     border: 100px;
     border-color: #2a7fff;
-}
+}*/
 
 #extendedBar1 .tabcontent {
     display: none;
