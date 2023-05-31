@@ -4,6 +4,25 @@ body {
     background: linear-gradient(200deg,#f3e7e9,#e3eeff)
 }
 
+/* 阿里图标库 */
+.icon {
+  width: 1.7em;
+  height: 1.7em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  background-color:rgba(63, 222, 196, 0);
+}
+
+.icon:hover{
+    background-color:rgba(63, 222, 196, 0.5);
+}
+
+.icon:active{
+    width: 1.6em;
+    height: 1.6em;
+    background-color:rgba(63, 222, 196, 0.7);
+}
 
 /* 上面板 */
 #topbar {
@@ -791,4 +810,28 @@ body {
 
 body {
     overflow: hidden;
+}
+
+.generateRoute{
+    color:rgb(0, 0, 0);
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+}
+
+.generateRoute b{
+    color:rgb(0, 166, 255);
+    font-size: 15px;
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+}
+
+.generateRoute .amap-call{
+    display: none;
+}
+
+.generateRoute .afterdt{
+    /* width: 5px; */
+    background-color: rgba(241, 165, 0, 0.612);
 }
