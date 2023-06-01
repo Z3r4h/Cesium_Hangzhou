@@ -11,7 +11,7 @@
 // distance指出行距离，单位为公里
 // unit指返回值的单位，默认为kg, 还可以设置为g
 function carbonCalc(tripMode, distance, unit = 'kg') {
-    let carbonEmission = 0; // 碳排放
+    let carbonEmission = 0; // 碳减排
     // 私家车/汽油车
     if (tripMode == 'car') carbonEmission = (0.192-0.192) * distance;
     // 公交车
@@ -23,7 +23,7 @@ function carbonCalc(tripMode, distance, unit = 'kg') {
     // 电动汽车
     else if (tripMode == 'electricCar') carbonEmission = (0.192-0.053) * distance;
     // 自行车
-    else if (tripMode == 'bicycle') carbonEmission = (0.192-0.0015) * distance;
+    else if (tripMode == 'ride') carbonEmission = (0.192-0.0015) * distance;
     // 步行
     else if (tripMode == 'walk') carbonEmission = (0.192-0.0005) * distance;
     if (unit == 'g') carbonEmission = carbonEmission * 1000;
@@ -35,7 +35,7 @@ function carbonCalc(tripMode, distance, unit = 'kg') {
 // distance为数组，依次存放与tripMode对应的距离，数字类型数组，单位为公里
 // unit指返回值的单位，默认为kg, 还可以设置为g
 function carbonCalcMul(tripMode, distance, unit = 'kg') {
-    let carbonEmission = 0; // 碳排放
+    let carbonEmission = 0; // 碳减排
     for (let i = 0; i < tripMode.length; i++) {
         carbonEmission += carbonCalc(tripMode[i], distance[i], unit);
     }

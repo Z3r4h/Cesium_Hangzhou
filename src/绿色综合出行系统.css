@@ -1104,3 +1104,31 @@ body {
     /* width: 5px; */
     background-color: rgba(241, 165, 0, 0.612);
 }
+
+.generateRoute h3{
+    text-align: left !important;
+}
+
+.generateRoute .subwayline {
+    font-size: 12px;
+}
+
+.generateRoute .busline{
+    color: black;
+    font-size: 12px;
+}
+
+.generateRoute .busstop {
+    font-size: 12px;
+    left: 0px;
+}
+
+.generateRoute h4{
+    font-size: 12px;
+    text-align: left !important;
+    margin-top: 8px !important;
+}
+
+.generateRoute .busstop+span{
+    font-size: 12px;
+}
