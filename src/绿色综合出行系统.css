@@ -125,7 +125,7 @@ body {
 }
 #search-login .input-data .underline{
     position: absolute;
-    bottom: -4px;
+    bottom: -2px;
     height: 2px;
     width: 175px;
     background-color: #2c6fdb;
