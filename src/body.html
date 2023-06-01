@@ -94,8 +94,8 @@
             </div>
         </div>
         <div class="tab">
-            <div class="tzl_box">
-                <span class="tablinks" onclick="openTab(event, 'tab1')">最短时间</span>
+            <!--<div class="tzl_box">
+                <span class="tablinks active" onclick="openTab(event, 'tab1')">最短时间</span>
             </div>
             <div class="tzl_box">
                 <span class="tablinks" onclick="openTab(event, 'tab2')">最短路径</span>
@@ -111,6 +111,37 @@
             </div>
             <div class="tzl_box">
                 <span class="tablinks" onclick="openTab(event, 'tab6')">雨天出行</span>
+            </div>-->
+            <nav class="nav">
+                <input type="radio" name="nav-item-opt" id="nav-item-opt-1" checked>
+                <label class="nav-item" for="nav-item-opt-1">步行</label>
+        
+                <input type="radio" name="nav-item-opt" id="nav-item-opt-2">
+                <label class="nav-item" for="nav-item-opt-2">骑行</label>
+        
+                <input type="radio" name="nav-item-opt" id="nav-item-opt-3">
+                <label class="nav-item" for="nav-item-opt-3">公交</label>
+        
+                <div class="tracker"></div>
+            </nav>
+        
+            <div class="buttons_box">
+                <div class="content active" id="content-1">
+                    <span class="sub-button" onclick="openTab(event, 'tab1')">最短时间</span>
+                    <span class="sub-button" onclick="openTab(event, 'tab2')">最舒适</span>
+                </div>
+                <div class="content" id="content-2">
+                    <span class="sub-button" onclick="openTab(event, 'tab3')">最短时间</span>
+                    <span class="sub-button" onclick="openTab(event, 'tab4')">最舒适</span>
+                </div>
+                <div class="content" id="content-3">
+                    <span class="sub-button" onclick="openTab(event, 'tab5')">少换乘</span>
+                    <span class="sub-button" onclick="openTab(event, 'tab6')">少步行</span>
+                </div>
+                <div class="content " id="content-4">
+                <span class="sub-button" onclick="openTab(event, 'tab7')">最短时间</span>
+                <span class="sub-button" onclick="openTab(event, 'tab8')">最舒适</span>
+                </div>
             </div>
         </div>
         <div id="search-box2">
@@ -175,6 +206,22 @@
             </span>
         </div>
         <div id="tab6" class="tabcontent">
+            <h4>雨天出行路线</h4>
+            <p>这里是雨天出行路线的内容。</p>
+            <span>
+                <button>收藏</button>
+                <button>分享</button>
+            </span>
+        </div>
+        <div id="tab7" class="tabcontent">
+            <h4>雨天出行路线</h4>
+            <p>这里是雨天出行路线的内容。</p>
+            <span>
+                <button>收藏</button>
+                <button>分享</button>
+            </span>
+        </div>
+        <div id="tab8" class="tabcontent">
             <h4>雨天出行路线</h4>
             <p>这里是雨天出行路线的内容。</p>
             <span>

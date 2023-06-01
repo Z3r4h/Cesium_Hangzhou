@@ -182,6 +182,23 @@ function showPM10Map() {
     }
 }
 // 拓展栏1
+
+//nav切换
+const navItems = document.querySelectorAll('.nav-item');
+const contentSections = document.querySelectorAll('.content');
+
+navItems.forEach((item, index) => {
+  item.addEventListener('click', () => {
+    contentSections.forEach((section, sectionIndex) => {
+      if (sectionIndex === index || (index === 2 && (sectionIndex === 2 || sectionIndex === 3))) {
+        section.style.display = 'flex';
+      } else {
+        section.style.display = 'none';
+      }
+    });
+  });
+});
+
 function openTab(event, tabName) {
     //获取tab content的所有元素并隐藏它们
     var tabContents = document.getElementsByClassName("tabcontent");
@@ -190,7 +207,7 @@ function openTab(event, tabName) {
     }
 
     //使用tab button获取所有元素，并删除类active
-    var tabButtons = document.getElementsByClassName("tablinks");
+    var tabButtons = document.getElementsByClassName("sub-button");
     for (var i = 0; i < tabButtons.length; i++) {
         tabButtons[i].classList.remove("active");
     }
