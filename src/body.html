@@ -52,7 +52,12 @@
             <img src="assets/title1.png" alt="Logo" width="300" height="700">
         </div>
         <div id="search-login">
-            <input type="text" id="search-box" placeholder="搜索地点...">
+            <div class="input-data">
+                <input type="text" id="search-box" required>
+                <div class="underline"></div>
+                <label>搜索地点</label>
+            </div>
+            <!--<input type="text" id="search-box" placeholder="搜索地点...">-->
             <a href="..\src\login-registerter.html" id="login">登录/注册</a>
         </div>
     </div>
@@ -109,8 +114,8 @@
             </div>
         </div>
         <div id="search-box2">
-            <button id="search-button" onclick="routePlan('search-text1', 'search-text2')">搜索</button>
-            <button id="filterBtn1">筛选</button>
+            <button class="sb_button" id="search-button" onclick="routePlan('search-text1', 'search-text2')">搜索</button>
+            <button class="sb_button" id="filterBtn1">筛选</button>
         </div>
         <div id="filterBoxContent1">
             <h5>天气可视化</h5>
