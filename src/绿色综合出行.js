@@ -227,7 +227,25 @@ confirmBtn1.addEventListener('click', () => {
     });
     filterBoxContent1.style.display = 'none';
 });
+//search-button、筛选
+const sb_button = document.querySelector("#search-button,#filterBtn1");
 
+      sb_button.addEventListener("click", (e) => {
+        e.preventDefault;
+        sb_button.classList.add("animate");
+        setTimeout(() => {
+          sb_button.classList.remove("animate");
+        }, 600);
+      });
+const sb_button2 = document.querySelector("#filterBtn1");
+
+      sb_button2.addEventListener("click", (e) => {
+        e.preventDefault;
+        sb_button2.classList.add("animate");
+        setTimeout(() => {
+          sb_button2.classList.remove("animate");
+        }, 600);
+      });
 
 
 // 拓展栏2
