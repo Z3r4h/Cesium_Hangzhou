@@ -73,14 +73,33 @@ var walkOption = {
     // hideMarkers: false,    // 是否隐藏起始点图标
     // isOutline: true,        // 路线是否描边
     // outlineColor: "black",  // 描边颜色 
-    // autoFitView: true,      // 自动移动视野使路线在窗口中央
+    autoFitView: true,      // 自动移动视野使路线在窗口中央
+}
+var rideOption = {
+    // map: gdmap,
+    panel: "shortestTime",  // 结果列表的HTML容器id或容器元素，提供此参数后，结果列表将在此容器中进行展示。可选参数
+    // hideMarkers: false,    // 是否隐藏起始点图标
+    // isOutline: true,        // 路线是否描边
+    // outlineColor: "black",  // 描边颜色 
+    autoFitView: true,      // 自动移动视野使路线在窗口中央
+}
+var transferOption = {
+    // map: gdmap,
+    panel: "shortestTime",  // 结果列表的HTML容器id或容器元素，提供此参数后，结果列表将在此容器中进行展示。可选参数
+    city: '杭州',
+    // hideMarkers: false,    // 是否隐藏起始点图标
+    // isOutline: true,        // 路线是否描边
+    // outlineColor: "black",  // 描边颜色 
+    autoFitView: true,      // 自动移动视野使路线在窗口中央
 }
 
+
 var walking = new AMap.Walking(walkOption);
+var riding = new AMap.Riding(rideOption);
+var transfer = new AMap.Transfer(transferOption);
 
 // 路线规划函数
-// 输入多个
-function routePlan(startId, endId) {
+function routePlan(startId, endId, strategy = 'walking') {
     let startInput = document.getElementById(startId);
     let endInput = document.getElementById(endId);
     let startPosition, endPosition;
@@ -93,15 +112,15 @@ function routePlan(startId, endId) {
     axios.get(startUrl)
         .then(res => {
             if (res.data.count != 0) {
-                let i=0;
-                while(startPosition==null&&i<parseInt(res.data.count)){
+                let i = 0;
+                while (startPosition == null && i < parseInt(res.data.count)) {
                     startPosition = res.data.tips[i].location;
                     i++;
                 }
-                if(startPosition==''){
+                if (startPosition == '') {
                     alert("输入的开始地点无法识别");
                     return 0;
-                } 
+                }
                 startPosition = startPosition.split(',').map(Number); // 字符串划分转数组 -> 数组内字符串转数字，此时为“[经度，维度]”形式
                 startInput.value = res.data.tips[0].name;
             }
@@ -117,14 +136,14 @@ function routePlan(startId, endId) {
                 .then(res => {
                     let i = 0;
                     if (res.data.count != 0) {
-                        while(endPosition==null&&i<parseInt(res.data.count)){
+                        while (endPosition == null && i < parseInt(res.data.count)) {
                             endPosition = res.data.tips[i].location;
                             i++;
                         }
-                        if(endPosition==''){
+                        if (endPosition == '') {
                             alert("输入的结束地点无法识别");
                             return 0;
-                        }    
+                        }
                         endPosition = endPosition.split(',').map(Number);
                         endInput.value = res.data.tips[0].name;
                     }
@@ -133,32 +152,75 @@ function routePlan(startId, endId) {
                         return 0;
                     }
                     // 步行导航
-                   
-                    walking.search(startPosition, endPosition, function (status, result) {
-                        // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
-                        if (status === 'complete') {
-                            if (result.routes && result.routes.length) {
-                                drawRoute(result.routes[0], gdmap)
-                                log.success('绘制步行路线完成')
+                    if (strategy === 'walking') {
+                        walking.search(startPosition, endPosition, function (status, result) {
+                            // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+                            if (status === 'complete') {
+                                if (result.routes && result.routes.length) {
+                                    let carbonReduction = carbonCalc('walk', result.routes[0].distance / 1000); // 减碳量
+                                    document.getElementById("carbonReduction-walk").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                                    drawRoute(result.routes[0], gdmap);
+                                    log.success('绘制步行路线完成');
+                                }
+                            } else {
+                                log.error('步行路线数据查询失败' + result);
                             }
-                        } else {
-                            log.error('步行路线数据查询失败' + result)
-                        } 
-                    });
+                        });
+                    }
+                    // 骑行
+                    // 注意，这里还是carbonReduction-walk,需要改成ride
+                    // 注意，这里还是carbonReduction-walk
+                    // 注意，这里还是carbonReduction-walk
+                    else if (strategy === 'riding') {
+                        walking.search(startPosition, endPosition, function (status, result) {
+                            // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+                            if (status === 'complete' && result.routes.length) {
+                                let carbonReduction = carbonCalc('ride', result.routes[0].distance / 1000); // 减碳量
+                                document.getElementById("carbonReduction-walk").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                                drawRoute(result.routes[0], gdmap);
+                                log.success('绘制步行路线完成')
+                            } else {
+                                log.error('步行路线数据查询失败' + result)
+                            }
+                        });
+                    }
+                    // 公交
+                    else {
+                        if (strategy === 'transfer-LeastTime') transfer.setPolicy(AMap.TransferPolicy.LEAST_TIME); // 最少时间
+                        else if (strategy === 'transfer-LeastTransfer') transfer.setPolicy(AMap.TransferPolicy.LEAST_TRANSFER); // 最少换乘
+                        else if (strategy === 'transfer-LeastWalk') transfer.setPolicy(AMap.TransferPolicy.LEAST_WALK); // 最少步行
+                        else if (strategy === 'transfer-MostComfort') transfer.setPolicy(AMap.TransferPolicy.MOST_COMFORT); // 最舒适
+                        else return 0;
+                        transfer.search(startPosition, endPosition, function (status, result) {
+                            if (status === 'complete' && result.plans && result.plans.length) {
+                                let tripMode = ["walk", "bus", "car", "subway"];
+                                let tripDis = [result.plans[0].walking_distance/1000, 
+                                                result.plans[0].transit_distance/1000,
+                                                result.plans[0].taxi_distance/1000,
+                                                result.plans[0].railway_distance/1000];
+                                carbonReduction = carbonCalcMul(tripMode, tripDis);
+                                document.getElementById("carbonReduction-walk").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                                drawRouteTransfer(result.plans[0], gdmap);
+                                log.success('绘制公共交通路线完成')
+                            } else {
+                                log.error('公共交通路线数据查询失败' + result)
+                            }
+                        });
+                    }
                 })
                 .catch(err => {
                     console.log(err);
                 });
-
         })
         .catch(err => {
             console.log(err);
         });
 };
 
-// 路线绘制
-// 传入路线数据和需要绘制在其上的地图
-function drawRoute (route, map) {
+// 路线绘制 - 步行和骑行
+// route表示传入路线数据
+// map表示需要绘制在其上的地图
+function drawRoute(route, map) {
     var path = parseRouteToPath(route);
     var startMarker = new AMap.Marker({
         position: path[0],
@@ -166,7 +228,6 @@ function drawRoute (route, map) {
         offset: new AMap.Pixel(-15, -30),
         map: map,
     });
-    startMarker.setMap(map);
 
     var endMarker = new AMap.Marker({
         position: path[path.length - 1],
@@ -187,7 +248,7 @@ function drawRoute (route, map) {
     routeLine.setMap(map);
 
     // 调整视野达到最佳显示区域
-    map.setFitView([ startMarker, endMarker, routeLine ]);
+    map.setFitView([startMarker, endMarker, routeLine]);
 }
 
 // 解析WalkRoute对象，构造成AMap.Polyline的path参数需要的格式
@@ -198,9 +259,81 @@ function parseRouteToPath(route) {
         var step = route.steps[i]
 
         for (var j = 0, n = step.path.length; j < n; j++) {
-          path.push(step.path[j])
+            path.push(step.path[j])
         }
     }
     return path;
 }
 
+// 路线绘制 - 公共交通
+function drawRouteTransfer(route, map) {
+    var startMarker = new AMap.Marker({
+        position: route.segments[0].transit.origin,
+        icon: './assets/start.png',
+        offset: new AMap.Pixel(-15, -30),
+        map: map
+    })
+
+    var endMarker = new AMap.Marker({
+        position: route.segments[route.segments.length - 1].transit.destination,
+        icon: './assets/end.png',
+        offset: new AMap.Pixel(-15, -30),
+        map: map
+    })
+
+    var routeLines = []
+
+    for (var i = 0, l = route.segments.length; i < l; i++) {
+        var segment = route.segments[i]
+        var line = null
+
+        // 绘制步行路线
+        if (segment.transit_mode === 'WALK') {
+            line = new AMap.Polyline({
+                path: segment.transit.path,
+                isOutline: true,
+                outlineColor: '#ecc45f',
+                borderWeight: 1,
+                strokeWeight: 5,
+                strokeColor: '#388b68',
+                lineJoin: 'round',
+                strokeStyle: 'dashed'
+            })
+            line.setMap(map)
+            routeLines.push(line)
+        }
+        // 绘制公交和地铁路线
+        else if (segment.transit_mode === 'SUBWAY' || segment.transit_mode === 'BUS') {
+            line = new AMap.Polyline({
+                path: segment.transit.path,
+                isOutline: true,
+                outlineColor: 'black',
+                borderWeight: 2,
+                strokeWeight: 5,
+                strokeColor: '#5becff',
+                lineJoin: 'round',
+                strokeStyle: 'solid'
+            })
+
+            line.setMap(map)
+            routeLines.push(line)
+        } else {
+            line = new AMap.Polyline({
+                path: segment.transit.path,
+                isOutline: true,
+                outlineColor: 'black',
+                borderWeight: 2,
+                strokeWeight: 5,
+                strokeColor: '#5becff',
+                lineJoin: 'round',
+                strokeStyle: 'solid'
+            })
+
+            line.setMap(map)
+            routeLines.push(line)
+        }
+    }
+
+    // 调整视野达到最佳显示区域
+    map.setFitView([startMarker, endMarker].concat(routeLines))
+}
