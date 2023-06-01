@@ -239,11 +239,12 @@ let counter = 1;
 
 addButton1.addEventListener("click", () => {
     const input = document.createElement("input");
-    input.id = `searchtext${counter++}`;
+    input.id = `pass-search-text${counter++}`;
     input.type = "text";
     input.placeholder = "请输入中间点";
     input.classList.add("searchtext");
     searchBox3.insertBefore(input, searchBox3.lastChild.previousSibling);
+    addButton1.value = counter - 1; // add-button1的value记录存在的中间输入框
 });
 
 deleteButton1.addEventListener("click", () => {
@@ -251,6 +252,7 @@ deleteButton1.addEventListener("click", () => {
     if (inputs.length > 2) {
         searchBox3.removeChild(inputs[inputs.length - 2]);
         counter--;
+        addButton1.value = counter - 1;
     }
 });
 

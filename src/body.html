@@ -105,7 +105,7 @@
             </div>
         </div>
         <div id="search-box2">
-            <button id="search-button" onclick="routePlan('search-text1', 'search-text2', 'transfer-LeastTime')">搜索</button>
+            <button id="search-button" onclick="routePlan('search-text1', 'search-text2', 'walking')">搜索</button>
             <button id="filterBtn1">筛选</button>
         </div>
         <div id="filterBoxContent1">
@@ -198,7 +198,7 @@
             <span class="tablinks2" onclick="openTab2(event, 'tab26')">雨天出行</span>
         </div>
         <div id="search-box4">
-            <button id="search-button">搜索</button>
+            <button id="search-button" onclick="routePlanMul()" value=0>搜索</button>
             <button id="filterBtn2">筛选</button>
         </div>
         <div id="filterBoxContent2">
@@ -221,10 +221,11 @@
         </div>
         <div id="tab21" class="tabcontent2" style="display:block">
             <h4>最短时间</h4>
-            <p>这里是最短时间的内容。</p>
+            <div id="shortestTimeMul" class="generateRoute"></div>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
+                <span id="carbonReduction-walk-mul" calss="carbonReduction" style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;" value=0></span>
             </span>
         </div>
         <div id="tab22" class="tabcontent2">
