@@ -7,7 +7,8 @@
 var isSearching = 0; // 点击了搜索？
 var startPosition, endPosition; // 两点出行，开始、结束坐标
 // var tripModeBtnId; // 在绿色综合出行.js声明
-var nowPosition;
+var nowPosition;    // 您所在的位置
+var searchPosition;  // 右上角搜索框搜索结果所在位置
 
 // 导入高德底图至单独的容器
 var gdmap = new AMap.Map('mapNavigation', {
@@ -17,29 +18,31 @@ var gdmap = new AMap.Map('mapNavigation', {
     // viewMode: '3D',
 });
 
-// 右上角搜索框添加回车事件
+// 右上角搜索框添加回车事件,移动到对应位置
 let searchMarker = new AMap.Marker({
     zIndex: 200,
 });
-gdmap.add(searchMarker);
+
 document.getElementById('search-box').addEventListener('keydown', async () => {
     if (event.keyCode === 13) { // 输入回车
         let tempInput = document.getElementById('search-box');
         let tempUrl = "https://restapi.amap.com/v3/assistant/inputtips?output=json&city=杭州&keywords=" + tempInput.value + "&key=f1dbdde4f534703472073cece6811628";
         // let startUrl = "https://restapi.amap.com/v3/place/text?keywords=" + startInput.value + "&city=杭州&offset=20&page=1&key=f1dbdde4f534703472073cece6811628&extensions=all";
-        let tempPosition = await getPosition(tempUrl, tempInput);
-        if(tempPosition == 0){
+        searchPosition = await getPosition(tempUrl, tempInput);
+        if(searchPosition == 0){
             alert("地点查找失败！");
             return 0;
         }
-        gdmap.setZoomAndCenter(17, tempPosition);
+        gdmap.setZoomAndCenter(17, searchPosition);
         // 注意，其他地图也应调整到相应位置！！！！！！
         // 注意，其他地图也应调整到相应位置！！！！！！
         // 注意，其他地图也应调整到相应位置！！！！！！
 
         // 添加标记
-        searchMarker.setPosition(tempPosition);
+        searchMarker.setPosition(searchPosition);
+        searchMarker.setTitle(tempInput.value);
         searchMarker.setAnimation('AMAP_ANIMATION_DROP');
+        gdmap.add(searchMarker);
     }
 })
 
@@ -74,11 +77,54 @@ gdmap.plugin('AMap.Geolocation', function () {
 function onComplete(data) {
     nowPosition = [data.position.lng, data.position.lat];
     searchMarker.setPosition(nowPosition);
+    gdmap.add(searchMarker);
 }
 //解析定位错误信息
 function onError(data) {
     alert('定位失败!');
 }
+
+// 逆地理编码，经纬度->位置
+function getAddressName(url){
+    const promise = new Promise((resolve, reject) => {
+        axios.get(url)
+            .then(res => {
+                console.log(res);
+                if (res.data.status == 1) {
+                    resolve(res.data.regeocode.pois[0].name);
+                }
+                else {
+                    resolve(0);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+    );
+    return promise;
+}
+
+// 为searchMarker添加点击事件，点击则创建路线
+searchMarker.on('click', async function(){
+    let url = "https://restapi.amap.com/v3/geocode/regeo?output=json&location="+nowPosition[0]+","+nowPosition[1]+"&key=f1dbdde4f534703472073cece6811628&radius=1000&extensions=all"
+    let tempName = await getAddressName(url);
+    if(tempName==0) {
+        alert('识别您所在的位置失败！'); 
+        return 0;
+    }
+    document.getElementById('search-text1').value = tempName;
+    document.getElementById('search-text2').value = document.getElementById('search-box').value;
+    searchClear();
+    if(nowPosition&&searchPosition){
+        isSearching = 1;
+        gdmap.clearMap();
+        startPosition = nowPosition;
+        endPosition = searchPosition;
+        getRoute(startPosition, endPosition, getStratery());
+        gdmap.remove(searchMarker);
+    }
+})
 
 // 搜索框输入提示 - 高德API - 配额每日100
 // AMap.plugin('AMap.Autocomplete', function () {
@@ -232,14 +278,14 @@ async function routePlan(startId, endId, strategy = 'walking-LeastTime') {
         return 0;
     }
 
-    strategy = getStartery();
+    strategy = getStratery();
 
     getRoute(startPosition, endPosition, strategy);
 
 };
 
 // 根据现在点亮的按钮判断出行模式
-function getStartery() {
+function getStratery() {
     let strategy = null;
     if (tripModeBtnId == 'walk-time') strategy = 'walking-LeastTime';
     else if (tripModeBtnId == 'walk-comfort') strategy = 'walking-MostComfort';
