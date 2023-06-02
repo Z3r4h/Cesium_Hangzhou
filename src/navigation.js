@@ -3,6 +3,12 @@
 // 使用高德API
 // div.mapNavigation
 
+// 判断变量
+var isSearching = 0; // 点击了搜索？
+var startPosition, endPosition; // 两点出行，开始、结束坐标
+// var tripModeBtnId; // 在绿色综合出行.js声明
+var nowPosition;
+
 // 导入高德底图至单独的容器
 var gdmap = new AMap.Map('mapNavigation', {
     resizeEnable: true, //是否监控地图容器尺寸变化
@@ -10,6 +16,32 @@ var gdmap = new AMap.Map('mapNavigation', {
     center: [120.155070, 30.274085], //初始化地图中心点
     // viewMode: '3D',
 });
+
+// 右上角搜索框添加回车事件
+let searchMarker = new AMap.Marker({
+    zIndex: 200,
+});
+gdmap.add(searchMarker);
+document.getElementById('search-box').addEventListener('keydown', async () => {
+    if (event.keyCode === 13) { // 输入回车
+        let tempInput = document.getElementById('search-box');
+        let tempUrl = "https://restapi.amap.com/v3/assistant/inputtips?output=json&city=杭州&keywords=" + tempInput.value + "&key=f1dbdde4f534703472073cece6811628";
+        // let startUrl = "https://restapi.amap.com/v3/place/text?keywords=" + startInput.value + "&city=杭州&offset=20&page=1&key=f1dbdde4f534703472073cece6811628&extensions=all";
+        let tempPosition = await getPosition(tempUrl, tempInput);
+        if(tempPosition == 0){
+            alert("地点查找失败！");
+            return 0;
+        }
+        gdmap.setZoomAndCenter(17, tempPosition);
+        // 注意，其他地图也应调整到相应位置！！！！！！
+        // 注意，其他地图也应调整到相应位置！！！！！！
+        // 注意，其他地图也应调整到相应位置！！！！！！
+
+        // 添加标记
+        searchMarker.setPosition(tempPosition);
+        searchMarker.setAnimation('AMAP_ANIMATION_DROP');
+    }
+})
 
 // 定位到当前位置
 gdmap.plugin('AMap.Geolocation', function () {
@@ -29,47 +61,61 @@ gdmap.plugin('AMap.Geolocation', function () {
         useNative: true,
     });
     gdmap.addControl(geolocation);
-    geolocation.getCurrentPosition();
-    AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-    AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
-})
+    geolocation.getCurrentPosition(function (status, result) {
+        if (status == 'complete') {
+            onComplete(result)
+        } else {
+            onError(result)
+        }
+    });
+    // AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+    // AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+});
+function onComplete(data) {
+    nowPosition = [data.position.lng, data.position.lat];
+    searchMarker.setPosition(nowPosition);
+}
+//解析定位错误信息
+function onError(data) {
+    alert('定位失败!');
+}
 
 // 搜索框输入提示 - 高德API - 配额每日100
-AMap.plugin('AMap.Autocomplete', function () {
-    // 实例化Autocomplete
-    var autoOptions = {
-        city: '杭州',       //city 限定城市，默认全国
-        citylimit: false,   // 是否强制限制在设置的城市内搜索,默认值为：false
-        input: 'search-box', // 可选参数，用来指定一个input输入框，设定之后，在input输入文字将自动生成下拉选择列表。
-    }
-    var autoOptions1 = {
-        //city 限定城市，默认全国
-        city: '杭州',
-        input: 'search-text1',
-    }
-    var autoOptions2 = {
-        //city 限定城市，默认全国
-        city: '杭州',
-        input: 'search-text2',
-    }
-    var autoComplete = new AMap.Autocomplete(autoOptions);
-    var autoComplete1 = new AMap.Autocomplete(autoOptions1);
-    var autoComplete2 = new AMap.Autocomplete(autoOptions2);
-    autoComplete.search(keyword, function (status, result) {
-        // 搜索成功时，result即是对应的匹配数据
-    })
-    autoComplete1.search(keyword, function (status, result) {
-        // 搜索成功时，result即是对应的匹配数据
-    })
-    autoComplete2.search(keyword, function (status, result) {
-        // 搜索成功时，result即是对应的匹配数据
-    })
-})
+// AMap.plugin('AMap.Autocomplete', function () {
+//     // 实例化Autocomplete
+//     var autoOptions = {
+//         city: '杭州',       //city 限定城市，默认全国
+//         citylimit: false,   // 是否强制限制在设置的城市内搜索,默认值为：false
+//         input: 'search-box', // 可选参数，用来指定一个input输入框，设定之后，在input输入文字将自动生成下拉选择列表。
+//     }
+//     var autoOptions1 = {
+//         //city 限定城市，默认全国
+//         city: '杭州',
+//         input: 'search-text1',
+//     }
+//     var autoOptions2 = {
+//         //city 限定城市，默认全国
+//         city: '杭州',
+//         input: 'search-text2',
+//     }
+//     var autoComplete = new AMap.Autocomplete(autoOptions);
+//     var autoComplete1 = new AMap.Autocomplete(autoOptions1);
+//     var autoComplete2 = new AMap.Autocomplete(autoOptions2);
+//     autoComplete.search(keyword, function (status, result) {
+//         // 搜索成功时，result即是对应的匹配数据
+//     })
+//     autoComplete1.search(keyword, function (status, result) {
+//         // 搜索成功时，result即是对应的匹配数据
+//     })
+//     autoComplete2.search(keyword, function (status, result) {
+//         // 搜索成功时，result即是对应的匹配数据
+//     })
+// })
 
 // 导航
 var walkOption = {
     // map: gdmap,
-    panel: "shortestTime",  // 结果列表的HTML容器id或容器元素，提供此参数后，结果列表将在此容器中进行展示。可选参数
+    panel: "routeContent",  // 结果列表的HTML容器id或容器元素，提供此参数后，结果列表将在此容器中进行展示。可选参数
     // hideMarkers: false,    // 是否隐藏起始点图标
     // isOutline: true,        // 路线是否描边
     // outlineColor: "black",  // 描边颜色 
@@ -77,7 +123,7 @@ var walkOption = {
 }
 var rideOption = {
     // map: gdmap,
-    panel: "shortestTime",  // 结果列表的HTML容器id或容器元素，提供此参数后，结果列表将在此容器中进行展示。可选参数
+    panel: "routeContent",  // 结果列表的HTML容器id或容器元素，提供此参数后，结果列表将在此容器中进行展示。可选参数
     // hideMarkers: false,    // 是否隐藏起始点图标
     // isOutline: true,        // 路线是否描边
     // outlineColor: "black",  // 描边颜色 
@@ -85,7 +131,7 @@ var rideOption = {
 }
 var transferOption = {
     // map: gdmap,
-    panel: "shortestTime",  // 结果列表的HTML容器id或容器元素，提供此参数后，结果列表将在此容器中进行展示。可选参数
+    panel: "routeContent",  // 结果列表的HTML容器id或容器元素，提供此参数后，结果列表将在此容器中进行展示。可选参数
     city: '杭州',
     // hideMarkers: false,    // 是否隐藏起始点图标
     // isOutline: true,        // 路线是否描边
@@ -98,7 +144,7 @@ var walking = new AMap.Walking(walkOption);
 var riding = new AMap.Riding(rideOption);
 var transfer = new AMap.Transfer(transferOption);
 
-var walkingMul = new AMap.Walking({ panel: "shortestTimeMul" })
+var walkingMul = new AMap.Walking({ panel: "routeContentMul" })
 
 function searchClear() {
     walking.clear();
@@ -137,21 +183,42 @@ function getPosition(url, inputBox) {
     return promise;
 }
 
+// 路线规划 - 各按钮
+function getRoteForModeBtn(startPosition, endPosition, strategy) {
+    if (this.strategy)
+        searchClear(); // 清楚之前的搜索结果
+    gdmap.clearMap(); // 清除之前的路线
+    getRoute(startPosition, endPosition, strategy);
+}
+
+document.getElementById('walk').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId.split('-')[0]) getRoteForModeBtn(startPosition, endPosition, 'walking-LeastTime'); }, true);
+document.getElementById('ride').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId.split('-')[0]) getRoteForModeBtn(startPosition, endPosition, 'riding-LeastTime'); }, true);
+document.getElementById('transfer').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId.split('-')[0]) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastWalk'); }, true);
+
+document.getElementById('walk-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'walking-LeastTime'); }, true);
+document.getElementById('ride-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'riding-LeastTime'); }, true);
+document.getElementById('transfer-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastWalk'); }, true);
+document.getElementById('transfer-walk').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTime'); }, true);
+document.getElementById('transfer-transit').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTransfer'); }, true);
+document.getElementById('transfer-comfort').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-MostComfort'); }, true);
+
+
 // 导航 - 路线规划
-async function routePlan(startId, endId, strategy = 'walking') {
+async function routePlan(startId, endId, strategy = 'walking-LeastTime') {
+    isSearching = 1;
     let startInput = document.getElementById(startId);
     let endInput = document.getElementById(endId);
-    let startPosition, endPosition;
     searchClear(); // 清楚之前的搜索结果
     gdmap.clearMap(); // 清除之前的路线
 
-    // 如果用上面第二种方式，需要将下面的tips改为pois
     // city设置为杭州
+    // 使用第二种方式检索，返回值请参考高德api开发文档
     let startUrl = "https://restapi.amap.com/v3/assistant/inputtips?output=json&city=杭州&keywords=" + startInput.value + "&key=f1dbdde4f534703472073cece6811628";
     // let startUrl = "https://restapi.amap.com/v3/place/text?keywords=" + startInput.value + "&city=杭州&offset=20&page=1&key=f1dbdde4f534703472073cece6811628&extensions=all";
     startPosition = await getPosition(startUrl, startInput);
-    if (startPosition == 0) {
+    if (startPosition == 0) { // getPosition()返回值为0
         alert("输入的开始地点无法识别！");
+        isSearching = 0;
         return 0;
     }
 
@@ -161,16 +228,41 @@ async function routePlan(startId, endId, strategy = 'walking') {
     endPosition = await getPosition(endUrl, endInput);
     if (endPosition == 0) {
         alert("输入的结束地点无法识别！");
+        isSearching = 0;
         return 0;
     }
+
+    strategy = getStartery();
+
+    getRoute(startPosition, endPosition, strategy);
+
+};
+
+// 根据现在点亮的按钮判断出行模式
+function getStartery() {
+    let strategy = null;
+    if (tripModeBtnId == 'walk-time') strategy = 'walking-LeastTime';
+    else if (tripModeBtnId == 'walk-comfort') strategy = 'walking-MostComfort';
+    else if (tripModeBtnId == 'ride-time') strategy = 'riding-LeastTime';
+    else if (tripModeBtnId == 'ride-comfort') strategy = 'riding-MostComfort';
+    else if (tripModeBtnId == 'transfer-time') strategy = 'transfer-LeastTime';
+    else if (tripModeBtnId == 'transfer-walk') strategy = 'transfer-LeastWalk';
+    else if (tripModeBtnId == 'transfer-transit') strategy = 'transfer-LeastTransfer';
+    else if (tripModeBtnId == 'transfer-comfort') strategy = 'transfer-MostComfort';
+    else strategy = null;
+    return strategy;
+}
+
+// 传入url, 获得路线
+function getRoute(startPosition, endPosition, strategy) {
     // 步行导航
-    if (strategy === 'walking') {
+    if (strategy === 'walking-LeastTime') {
         walking.search(startPosition, endPosition, function (status, result) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
                 if (result.routes && result.routes.length) {
                     let carbonReduction = carbonCalc('walk', result.routes[0].distance / 1000); // 减碳量
-                    document.getElementById("carbonReduction-walk").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                    document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                     drawRoute(result.routes[0], gdmap);
                     log.success('绘制步行路线完成');
                 }
@@ -180,19 +272,18 @@ async function routePlan(startId, endId, strategy = 'walking') {
         });
     }
     // 骑行
-    // 注意，这里还是carbonReduction-walk,需要改成ride
-    // 注意，这里还是carbonReduction-walk
-    // 注意，这里还是carbonReduction-walk
-    else if (strategy === 'riding') {
-        walking.search(startPosition, endPosition, function (status, result) {
+    else if (strategy === 'riding-LeastTime') {
+        riding.search(startPosition, endPosition, function (status, result) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
-            if (status === 'complete' && result.routes.length) {
-                let carbonReduction = carbonCalc('ride', result.routes[0].distance / 1000); // 减碳量
-                document.getElementById("carbonReduction-walk").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
-                drawRoute(result.routes[0], gdmap);
-                log.success('绘制步行路线完成')
-            } else {
-                alert('步行路线数据查询失败' + result)
+            if (status === 'complete') {
+                if (result.routes && result.routes.length) {
+                    let carbonReduction = carbonCalc('ride', result.routes[0].distance / 1000); // 减碳量
+                    document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                    drawRoute(result.routes[0], gdmap);
+                    log.success('绘制骑行路线完成')
+                } else {
+                    alert('骑行路线数据查询失败' + result)
+                }
             }
         });
     }
@@ -211,7 +302,7 @@ async function routePlan(startId, endId, strategy = 'walking') {
                 result.plans[0].taxi_distance / 1000,
                 result.plans[0].railway_distance / 1000];
                 carbonReduction = carbonCalcMul(tripMode, tripDis);
-                document.getElementById("carbonReduction-walk").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                 drawRouteTransfer(result.plans[0], gdmap);
                 log.success('绘制公共交通路线完成')
             } else {
@@ -219,16 +310,18 @@ async function routePlan(startId, endId, strategy = 'walking') {
             }
         });
     }
-};
+}
 
 // 路线绘制 - 步行和骑行
 // route表示传入路线数据
 // map表示需要绘制在其上的地图
 // num表示第几条路线，默认为1
 // all表示总路线，默认为1
-function drawRoute(route, map, num=1, all=1) {
-    var path = parseRouteToPath(route);
-    if(num==1){
+function drawRoute(route, map, num = 1, all = 1) {
+    var path;
+    if (route.steps) path = parseRouteToPathWalk(route);
+    else path = parseRouteToPathRide(route)
+    if (num == 1) {
         var startMarker = new AMap.Marker({
             position: path[0],
             icon: './assets/start.png',
@@ -236,8 +329,8 @@ function drawRoute(route, map, num=1, all=1) {
             map: map,
         });
     }
-    
-    if(num>1){
+
+    if (num > 1) {
         var passMarker = new AMap.Marker({
             position: path[0],
             icon: './assets/pass.png',
@@ -245,8 +338,8 @@ function drawRoute(route, map, num=1, all=1) {
             map: map,
         });
     }
-    
-    if(num==all){
+
+    if (num == all) {
         var endMarker = new AMap.Marker({
             position: path[path.length - 1],
             icon: './assets/end.png',
@@ -254,8 +347,6 @@ function drawRoute(route, map, num=1, all=1) {
             map: map,
         });
     }
-    console.log(num, all);
-    console.log(startMarker, passMarker, endMarker);
 
     var routeLine = new AMap.Polyline({
         path: path,
@@ -269,12 +360,12 @@ function drawRoute(route, map, num=1, all=1) {
     routeLine.setMap(map);
 
     // 调整视野达到最佳显示区域
-    if(startMarker) map.setFitView([startMarker, startMarker, routeLine]);
+    if (startMarker) map.setFitView([startMarker, startMarker, routeLine]);
 }
 
 // 解析WalkRoute对象，构造成AMap.Polyline的path参数需要的格式
 // WalkRoute对象的结构文档 https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkRoute
-function parseRouteToPath(route) {
+function parseRouteToPathWalk(route) {
     var path = [];
     for (var i = 0, l = route.steps.length; i < l; i++) {
         var step = route.steps[i]
@@ -284,6 +375,21 @@ function parseRouteToPath(route) {
         }
     }
     return path;
+}
+// 解析RidingRoute对象，构造成AMap.Polyline的path参数需要的格式
+// RidingResult对象结构参考文档 https://lbs.amap.com/api/javascript-api/reference/route-search#m_RideRoute
+function parseRouteToPathRide(route) {
+    var path = []
+
+    for (var i = 0, l = route.rides.length; i < l; i++) {
+        var step = route.rides[i]
+
+        for (var j = 0, n = step.path.length; j < n; j++) {
+            path.push(step.path[j])
+        }
+    }
+
+    return path
 }
 
 // 路线绘制 - 公共交通
@@ -498,7 +604,7 @@ async function routePlanMul() {
     // 路线规划
     let carbonReduction = 0;
     for (let i = 0; i < size - 1; i++) {
-        let backValue = await getWalking(routePosit[i], routePosit[i + 1], (i+1), (size-1));
+        let backValue = await getWalking(routePosit[i], routePosit[i + 1], (i + 1), (size - 1));
         if (backValue == -1) {
             alert('规划路线失败！');
             return 0;
@@ -506,5 +612,5 @@ async function routePlanMul() {
             carbonReduction += backValue;
         }
     }
-    document.getElementById("carbonReduction-walk-mul").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+    document.getElementById("carbonReduction-mul").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
 }
