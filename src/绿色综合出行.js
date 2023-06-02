@@ -1,3 +1,6 @@
+// 当前出行模式id记录, 全局、将在navigation.js中用到
+var tripModeBtnId = 'walk-time';
+
 //侧边栏点击出现拓展栏
 var buttons = document.getElementsByClassName("button");
 var extendedBars = document.getElementsByClassName("extendedBar");
@@ -8,8 +11,8 @@ function init() {
     buttons[activeIndex].src = "assets/出行导航_blue.png";
     extendedBars[activeIndex].style.display = "block";
 }
-//拓展栏1
 
+//拓展栏1
 function changeButton(index) {
     if (index !== activeIndex + 1) {
         extendedBarclose(activeIndex);
@@ -182,22 +185,62 @@ function showPM10Map() {
     }
 }
 // 拓展栏1
-function openTab(event, tabName) {
-    //获取tab content的所有元素并隐藏它们
-    var tabContents = document.getElementsByClassName("tabcontent");
-    for (var i = 0; i < tabContents.length; i++) {
-        tabContents[i].style.display = "none";
+
+//nav切换
+const navItems = document.querySelectorAll('.nav-item');
+const contentSections = document.querySelectorAll('.content');
+
+navItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        contentSections.forEach((section, sectionIndex) => {
+            if (sectionIndex === index || (index === 2 && (sectionIndex === 2 || sectionIndex === 3))) {
+                section.style.display = 'flex';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+    });
+});
+
+function openSubButton(event, subBtnId, titleContent) {
+    // 使用tab button获取所有元素，并删除类active
+    var tabButtons = document.getElementsByClassName("sub-button");
+    for (var i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove("active");
     }
 
+    // 为当前选项卡的第一个子选项加上active类
+    document.getElementById(subBtnId).classList.add('active');
+
+    // 更换标题
+    document.getElementById("routeContentDiv").firstElementChild.innerHTML = titleContent;
+
+    // 更换出行模式
+    tripModeBtnId = subBtnId;
+}
+
+function openTab(event, subBtnId, titleContent) {
+    //获取tab content的所有元素并隐藏它们
+    // var tabContents = document.getElementsByClassName("tabcontent");
+    // for (var i = 0; i < tabContents.length; i++) {
+    //     tabContents[i].style.display = "none";
+    // }
+
     //使用tab button获取所有元素，并删除类active
-    var tabButtons = document.getElementsByClassName("tablinks");
+    var tabButtons = document.getElementsByClassName("sub-button");
     for (var i = 0; i < tabButtons.length; i++) {
         tabButtons[i].classList.remove("active");
     }
 
     //显示当前选项卡，并向打开该选项卡的按钮添加一个active类
-    document.getElementById(tabName).style.display = "block";
+    // document.getElementById(tabName).style.display = "block";
     event.currentTarget.classList.add("active");
+
+    // 更换标题
+    document.getElementById("routeContentDiv").firstElementChild.innerHTML = titleContent;
+
+    // 更换出行模式
+    tripModeBtnId = subBtnId;
 }
 
 const filterBtn1 = document.getElementById("filterBtn1");
@@ -230,22 +273,22 @@ confirmBtn1.addEventListener('click', () => {
 //search-button、筛选
 const sb_button = document.querySelector("#search-button,#filterBtn1");
 
-      sb_button.addEventListener("click", (e) => {
-        e.preventDefault;
-        sb_button.classList.add("animate");
-        setTimeout(() => {
-          sb_button.classList.remove("animate");
-        }, 600);
-      });
+sb_button.addEventListener("click", (e) => {
+    e.preventDefault;
+    sb_button.classList.add("animate");
+    setTimeout(() => {
+        sb_button.classList.remove("animate");
+    }, 600);
+});
 const sb_button2 = document.querySelector("#filterBtn1");
 
-      sb_button2.addEventListener("click", (e) => {
-        e.preventDefault;
-        sb_button2.classList.add("animate");
-        setTimeout(() => {
-          sb_button2.classList.remove("animate");
-        }, 600);
-      });
+sb_button2.addEventListener("click", (e) => {
+    e.preventDefault;
+    sb_button2.classList.add("animate");
+    setTimeout(() => {
+        sb_button2.classList.remove("animate");
+    }, 600);
+});
 
 
 // 拓展栏2
@@ -257,11 +300,12 @@ let counter = 1;
 
 addButton1.addEventListener("click", () => {
     const input = document.createElement("input");
-    input.id = `searchtext${counter++}`;
+    input.id = `pass-search-text${counter++}`;
     input.type = "text";
     input.placeholder = "请输入中间点";
     input.classList.add("searchtext");
     searchBox3.insertBefore(input, searchBox3.lastChild.previousSibling);
+    addButton1.value = counter - 1; // add-button1的value记录存在的中间输入框
 });
 
 deleteButton1.addEventListener("click", () => {
@@ -269,6 +313,7 @@ deleteButton1.addEventListener("click", () => {
     if (inputs.length > 2) {
         searchBox3.removeChild(inputs[inputs.length - 2]);
         counter--;
+        addButton1.value = counter - 1;
     }
 });
 

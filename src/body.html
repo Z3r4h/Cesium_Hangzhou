@@ -21,15 +21,11 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <!-- 高德文件 -->
     <!-- <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" /> -->
-    <script type="text/javascript">
-        window._AMapSecurityConfig = {
-            securityJsCode: '2abe2c00ec220cf92c4ca347e0266ccf',
-        }
-    </script>
-    <script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=2.0&key=5f91f7cd497a71f556a2729a53d3477c"></script>
-    <script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.15&key=5f91f7cd497a71f556a2729a53d3477c"></script>
+    <script type="text/javascript">window._AMapSecurityConfig = {securityJsCode: 'c6c13e9ad8d721d5085940d2a2c53fc3',}</script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=33c94645afced73ff8b05d0409817063"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063&plugin=AMap.Walking,AMap.Riding,AMap.Transfer"></script>
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
     <!-- axios -->
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.4/axios.js"></script>
 
@@ -92,8 +88,8 @@
             </div>
         </div>
         <div class="tab">
-            <div class="tzl_box">
-                <span class="tablinks" onclick="openTab(event, 'tab1')">最短时间</span>
+            <!--<div class="tzl_box">
+                <span class="tablinks active" onclick="openTab(event, 'tab1')">最短时间</span>
             </div>
             <div class="tzl_box">
                 <span class="tablinks" onclick="openTab(event, 'tab2')">最短路径</span>
@@ -109,10 +105,41 @@
             </div>
             <div class="tzl_box">
                 <span class="tablinks" onclick="openTab(event, 'tab6')">雨天出行</span>
+            </div>-->
+            <nav class="nav">
+                <input type="radio" name="nav-item-opt" id="nav-item-opt-1" checked>
+                <label id="walk" class="nav-item" for="nav-item-opt-1" onclick="openSubButton(event, 'walk-time', '步行 - 最短时间')">步行</label>
+        
+                <input type="radio" name="nav-item-opt" id="nav-item-opt-2">
+                <label id="ride" class="nav-item" for="nav-item-opt-2" onclick="openSubButton(event, 'ride-time', '骑行 - 最短时间')">骑行</label>
+        
+                <input type="radio" name="nav-item-opt" id="nav-item-opt-3">
+                <label id="transfer" class="nav-item" for="nav-item-opt-3" onclick="openSubButton(event, 'transfer-time', '公共交通 - 最短时间')">公交</label>
+        
+                <div class="tracker"></div>
+            </nav>
+        
+            <div class="buttons_box">
+                <div class="content active" id="content-1">
+                    <span id="walk-time" class="sub-button active" onclick="openTab(event, 'walk-time', '步行 - 最短时间')">最短时间</span>
+                    <span id="walk-comfort" class="sub-button" onclick="openTab(event, 'walk-comfort', '步行 - 最舒适')">最舒适</span>
+                </div>
+                <div class="content" id="content-2">
+                    <span id="ride-time" class="sub-button" onclick="openTab(event, 'ride-time', '骑行 - 最短时间')">最短时间</span>
+                    <span id="ride-comfort" class="sub-button" onclick="openTab(event, 'ride-comfort', '骑行 - 最舒适')">最舒适</span>
+                </div>
+                <div class="content" id="content-3">
+                    <span id="transfer-time" class="sub-button" onclick="openTab(event, 'transfer-time', '公共交通 - 最短时间')">最短时间</span>
+                    <span id="transfer-walk" class="sub-button" onclick="openTab(event, 'transfer-walk', '公共交通 - 最少步行')">最少步行</span>
+                </div>
+                <div class="content " id="content-4">
+                <span id="transfer-transit" class="sub-button" onclick="openTab(event, 'transfer-transit', '公共交通 - 最少换乘')">最少换乘</span>
+                <span id="transfer-comfort" class="sub-button" onclick="openTab(event, 'transfer-comfort', '公共交通 - 最舒适')">最舒适</span>
+                </div>
             </div>
         </div>
         <div id="search-box2">
-            <button class="sb_button" id="search-button" onclick="routePlan('search-text1', 'search-text2')">搜索</button>
+            <button class="sb_button" id="search-button" onclick="routePlan('search-text1', 'search-text2', 'walking')">搜索</button>
             <button class="sb_button" id="filterBtn1">筛选</button>
         </div>
         <div id="filterBoxContent1">
@@ -133,54 +160,72 @@
                 <button id="confirmBtn1">确定</button>
             </div>
         </div>
-        <div id="tab1" class="tabcontent" style="display:block">
-            <h4>最短时间</h4>
-            <p>这里是最短时间的内容。</p>
+        <div id="routeContentDiv" class="tabcontent" style="display:block">
+            <h4>步行 - 最短时间</h4>
+            <div id="routeContent" class="generateRoute"></div>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
+                <span id="carbonReduction" calss="carbonReduction" style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;"></span>
+            </span>
             </span>
         </div>
-        <div id="tab2" class="tabcontent">
-            <h4>最短路径</h4>
-            <p>这里是最短路径的内容。</p>
+        <!-- <div id="tab2" class="tabcontent">
+            <h4>步行最舒适</h4>
+            <p>这里是步行最舒适的内容。</p>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
             </span>
         </div>
         <div id="tab3" class="tabcontent">
-            <h4>最少步行距离</h4>
-            <p>这里是最少步行距离的内容。</p>
+            <h4>骑行最短时间</h4>
+            <p>这里是骑行最短时间的内容。</p>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
             </span>
         </div>
         <div id="tab4" class="tabcontent">
-            <h4>偏爱公交</h4>
-            <p>这里是偏爱公交的内容。</p>
+            <h4>骑行最舒适</h4>
+            <p>这里是骑行最舒适的内容。</p>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
             </span>
         </div>
         <div id="tab5" class="tabcontent">
-            <h4>偏好地铁</h4>
-            <p>这里是偏好地铁的内容。</p>
+            <h4>公交少换乘</h4>
+            <p>这里是公交少换乘的内容。</p>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
             </span>
         </div>
         <div id="tab6" class="tabcontent">
-            <h4>雨天出行路线</h4>
-            <p>这里是雨天出行路线的内容。</p>
+            <h4>公交少步行</h4>
+            <p>这里是公交少步行的内容。</p>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
             </span>
         </div>
+        <div id="tab7" class="tabcontent">
+            <h4>公交最短时间</h4>
+            <p>这里是公交最短时间的内容。</p>
+            <span>
+                <button>收藏</button>
+                <button>分享</button>
+            </span>
+        </div>
+        <div id="tab8" class="tabcontent">
+            <h4>公交最舒适</h4>
+            <p>这里是公交最舒适的内容。</p>
+            <span>
+                <button>收藏</button>
+                <button>分享</button>
+            </span>
+        </div> -->
     </div>
 
     <!-- 拓展栏2 -->
@@ -204,7 +249,7 @@
             <span class="tablinks2" onclick="openTab2(event, 'tab26')">雨天出行</span>
         </div>
         <div id="search-box4">
-            <button id="search-button">搜索</button>
+            <button id="search-button" onclick="routePlanMul()" value=0>搜索</button>
             <button id="filterBtn2">筛选</button>
         </div>
         <div id="filterBoxContent2">
@@ -227,10 +272,11 @@
         </div>
         <div id="tab21" class="tabcontent2" style="display:block">
             <h4>最短时间</h4>
-            <p>这里是最短时间的内容。</p>
+            <div id="routeContentMul" class="generateRoute"></div>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
+                <span id="carbonReduction-mul" calss="carbonReduction" style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;" value=0></span>
             </span>
         </div>
         <div id="tab22" class="tabcontent2">
@@ -271,7 +317,6 @@
             <span>
                 <button>收藏</button>
                 <button>分享</button>
-            </span>
         </div>
     </div>
 
