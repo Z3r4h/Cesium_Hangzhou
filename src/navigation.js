@@ -333,10 +333,15 @@ function drawRoute(route, map, num = 1, all = 1) {
     if (num > 1) {
         var passMarker = new AMap.Marker({
             position: path[0],
-            icon: './assets/pass.png',
+            // icon: './assets/pass.png',
             offset: new AMap.Pixel(-15, -40),
             map: map,
         });
+        passMarker.setContent("<div style='width: 35px; height: 45px; background-color: rgba(0,0,0,0);'>"+
+            "<img src='./assets/pass.png'  style='z-index:1'/>" + "<div style='width: 20px; height: 10px; display: inline-block; z-index:1;position:relative;'></div>"+ 
+            "<div style='width: 12px; height: 12px; display: inline-block; border-radius: 50%; background-color: #d78319; color:white;z-index: 100; top: 0px; font-size: 3px;text-align:center;position:absolute;'>"+(num-1)+"</div>"+
+        "</div>"
+        );
     }
 
     if (num == all) {
@@ -552,7 +557,7 @@ async function routePlanMul() {
     let size = routePointIn.length;
     let pointIn = [];
     let pointPosit = [];  // 按输入顺序存储输入点的经纬度
-    let pointDis = Array.from(Array(6), () => new Array(6)); // 二维数组，存放对应两点间的距离
+    let pointDis = Array.from(Array(10), () => new Array(10)); // 二维数组，存放对应两点间的距离
     let routePosit = [];  // 按顺序存储最终路线的经纬度
     for (let i = 0; i < size; i++) {
         pointIn[i] = document.getElementById(routePointIn[i]);
@@ -572,6 +577,7 @@ async function routePlanMul() {
     for (let i = 0; i < size; i++) {
         for (let j = i + 1; j < size; j++) {
             pointDis[i][j] = await getDistance(pointPosit[i], pointPosit[j]);
+            pointDis[j][i] = pointDis[i][j];
         }
     }
     searchClear();
@@ -600,7 +606,6 @@ async function routePlanMul() {
     for (let i = 0; i < size; i++) {
         routePosit[i] = pointPosit[routeList[i]];
     }
-
     // 路线规划
     let carbonReduction = 0;
     for (let i = 0; i < size - 1; i++) {
