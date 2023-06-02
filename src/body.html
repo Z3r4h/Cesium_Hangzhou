@@ -21,16 +21,20 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <!-- 高德文件 -->
     <!-- <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" /> -->
-    <script type="text/javascript">window._AMapSecurityConfig = {securityJsCode: 'c6c13e9ad8d721d5085940d2a2c53fc3',}</script>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=33c94645afced73ff8b05d0409817063"></script>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063"></script>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063&plugin=AMap.Walking,AMap.Riding,AMap.Transfer"></script>
+    <script
+        type="text/javascript">window._AMapSecurityConfig = { securityJsCode: 'c6c13e9ad8d721d5085940d2a2c53fc3', }</script>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=33c94645afced73ff8b05d0409817063"></script>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063"></script>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063&plugin=AMap.Walking,AMap.Riding,AMap.Transfer"></script>
     <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
     <!-- axios -->
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.4/axios.js"></script>
-
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
     <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
+
     <!-- 百度地图公交路线
     <script src="http://api.map.baidu.com/api?v=2.0&ak=y7I42kWI1lRqTPmv2l5SOBU8"></script>
     <script type="text/javascript" charset="utf-8" src="cordova-1.9.0.js"></script>
@@ -108,38 +112,50 @@
             </div>-->
             <nav class="nav">
                 <input type="radio" name="nav-item-opt" id="nav-item-opt-1" checked>
-                <label id="walk" class="nav-item" for="nav-item-opt-1" onclick="openSubButton(event, 'walk-time', '步行 - 最短时间')">步行</label>
-        
+                <label id="walk" class="nav-item" for="nav-item-opt-1"
+                    onclick="openSubButton(event, 'walk-time', '步行 - 最短时间')">步行</label>
+
                 <input type="radio" name="nav-item-opt" id="nav-item-opt-2">
-                <label id="ride" class="nav-item" for="nav-item-opt-2" onclick="openSubButton(event, 'ride-time', '骑行 - 最短时间')">骑行</label>
-        
+                <label id="ride" class="nav-item" for="nav-item-opt-2"
+                    onclick="openSubButton(event, 'ride-time', '骑行 - 最短时间')">骑行</label>
+
                 <input type="radio" name="nav-item-opt" id="nav-item-opt-3">
-                <label id="transfer" class="nav-item" for="nav-item-opt-3" onclick="openSubButton(event, 'transfer-time', '公共交通 - 最短时间')">公交</label>
-        
+                <label id="transfer" class="nav-item" for="nav-item-opt-3"
+                    onclick="openSubButton(event, 'transfer-time', '公共交通 - 最短时间')">公交</label>
+
                 <div class="tracker"></div>
             </nav>
-        
+
             <div class="buttons_box">
                 <div class="content active" id="content-1">
-                    <span id="walk-time" class="sub-button active" onclick="openTab(event, 'walk-time', '步行 - 最短时间')">最短时间</span>
-                    <span id="walk-comfort" class="sub-button" onclick="openTab(event, 'walk-comfort', '步行 - 最舒适')">最舒适</span>
+                    <span id="walk-time" class="sub-button active"
+                        onclick="openTab(event, 'walk-time', '步行 - 最短时间')">最短时间</span>
+                    <span id="walk-comfort" class="sub-button"
+                        onclick="openTab(event, 'walk-comfort', '步行 - 最舒适')">最舒适</span>
                 </div>
                 <div class="content" id="content-2">
-                    <span id="ride-time" class="sub-button" onclick="openTab(event, 'ride-time', '骑行 - 最短时间')">最短时间</span>
-                    <span id="ride-comfort" class="sub-button" onclick="openTab(event, 'ride-comfort', '骑行 - 最舒适')">最舒适</span>
+                    <span id="ride-time" class="sub-button"
+                        onclick="openTab(event, 'ride-time', '骑行 - 最短时间')">最短时间</span>
+                    <span id="ride-comfort" class="sub-button"
+                        onclick="openTab(event, 'ride-comfort', '骑行 - 最舒适')">最舒适</span>
                 </div>
                 <div class="content" id="content-3">
-                    <span id="transfer-time" class="sub-button" onclick="openTab(event, 'transfer-time', '公共交通 - 最短时间')">最短时间</span>
-                    <span id="transfer-walk" class="sub-button" onclick="openTab(event, 'transfer-walk', '公共交通 - 最少步行')">最少步行</span>
+                    <span id="transfer-time" class="sub-button"
+                        onclick="openTab(event, 'transfer-time', '公共交通 - 最短时间')">最短时间</span>
+                    <span id="transfer-walk" class="sub-button"
+                        onclick="openTab(event, 'transfer-walk', '公共交通 - 最少步行')">最少步行</span>
                 </div>
                 <div class="content " id="content-4">
-                <span id="transfer-transit" class="sub-button" onclick="openTab(event, 'transfer-transit', '公共交通 - 最少换乘')">最少换乘</span>
-                <span id="transfer-comfort" class="sub-button" onclick="openTab(event, 'transfer-comfort', '公共交通 - 最舒适')">最舒适</span>
+                    <span id="transfer-transit" class="sub-button"
+                        onclick="openTab(event, 'transfer-transit', '公共交通 - 最少换乘')">最少换乘</span>
+                    <span id="transfer-comfort" class="sub-button"
+                        onclick="openTab(event, 'transfer-comfort', '公共交通 - 最舒适')">最舒适</span>
                 </div>
             </div>
         </div>
         <div id="search-box2">
-            <button class="sb_button" id="search-button" onclick="routePlan('search-text1', 'search-text2', 'walking')">搜索</button>
+            <button class="sb_button" id="search-button"
+                onclick="routePlan('search-text1', 'search-text2', 'walking')">搜索</button>
             <button class="sb_button" id="filterBtn1">筛选</button>
         </div>
         <div id="filterBoxContent1">
@@ -166,7 +182,8 @@
             <span>
                 <button>收藏</button>
                 <button>分享</button>
-                <span id="carbonReduction" calss="carbonReduction" style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;"></span>
+                <span id="carbonReduction" calss="carbonReduction"
+                    style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;"></span>
             </span>
             </span>
         </div>
@@ -276,7 +293,8 @@
             <span>
                 <button>收藏</button>
                 <button>分享</button>
-                <span id="carbonReduction-mul" calss="carbonReduction" style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;" value=0></span>
+                <span id="carbonReduction-mul" calss="carbonReduction"
+                    style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;" value=0></span>
             </span>
         </div>
         <div id="tab22" class="tabcontent2">
@@ -321,6 +339,20 @@
     </div>
 
     <!-- 拓展栏3 -->
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+
+    <script type="text/javascript"
+        src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/dataTool.min.js"></script>
+
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+
+    <script type="text/javascript"
+        src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+    
     <div id="extendedBar3" class="extendedBar" style="display:none;">
         <h3>绿色地图</h3>
         <div class="extendedFunction">
@@ -342,7 +374,7 @@
         <div class="extendedFunction">
             <h4>地图可视化</h4>
             <div class="button"><span class="iconfont icon-tianqi"></span> &nbsp;天气状况</div>
-            <div class="button"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
+            <div class="button", id="toggleButton2"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
             <div class="button toolBtn" id="AQI_button" onclick="toolPanelOpen(event, 'AQI_button', 'AQI_select')">
                 <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量
             </div>

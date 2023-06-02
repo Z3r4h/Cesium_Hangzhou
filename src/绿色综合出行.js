@@ -385,41 +385,159 @@ function toolPanelOpen(event, toolButton, toolPanelId) {
     }
 }
 
-map.on('style.load', function () {
-    map.addSource('wms-source', {
-        'type': 'raster',
-        'tiles': [
-            'http://localhost:8080/geoserver/green/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&STYLES&LAYERS=green%3Abus_lines&exceptions=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A3857&WIDTH=768&HEIGHT=769&BBOX={bbox-epsg-3857}',
-        ],
-        'tileSize': 256
-    });
-    // var toggleButton = document.getElementById('toggleButton');
-    // var isLayerVisible = false;
-    var hangzhouluxian = 'green:bus_lines';
 
-    // // 监听按钮点击事件
-    // toggleButton.addEventListener('click', function () {
-    //     if (!isLayerVisible) {
-    //         // 添加WMS图层
-    map.addLayer(
-        {
-            'id': 'wms-layer',
-            'type': 'raster',
-            'source': 'wms-source',
-            'paint': {
-                'raster-opacity': 0.3
-            }
-        },
-        '' // 将WMS图层插入到指定图层之前
-    );
-});
-//         isLayerVisible = true;
-//     } else {
-//         // 移除WMS图层
-//         map.removeLayer(hangzhouluxian);
-//         isLayerVisible = false;
-//     }
-// });
+
+map.on('style.load', function () {
+
+    map.addSource('busline-source', {
+        type: 'geojson',
+        data: 'data/busline.geojson'
+    });
+    var toggleButton = document.getElementById('toggleButton');
+    var isLayerVisible = false;
+    var busline = 'busline-layer';
+
+    // 监听按钮点击事件
+    toggleButton.addEventListener('click', function () {
+        leafletMap.removeLayer(mapboxLayer);
+        if (!isLayerVisible) {
+            map.addLayer({
+                id: 'busline-layer',
+                type: 'line',
+                source: 'busline-source',
+                paint: {
+                    'line-color': 'rgb(20, 255, 127)',
+                    'line-width': 2
+                }
+            });
+            isLayerVisible = true;
+
+            // 创建一个弹出框
+            var popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            // 添加鼠标移动事件，显示弹出框
+            map.on('mousemove', 'busline-layer', function (e) {
+                // 获取当前鼠标所在位置的要素
+                var feature = e.features[0];
+
+                // 设置弹出框的内容和位置
+                popup.setLngLat(e.lngLat)
+                    .setHTML('<div class="popup-content">' + feature.properties.name_gd + '</div>')
+                    .addTo(map);
+            });
+
+            // 添加鼠标移出事件，隐藏弹出框
+            map.on('mouseleave', 'busline-layer', function () {
+                popup.remove();
+            });
+
+            // 添加点击事件，显示公交线路信息
+            map.on('click', 'busline-layer', function (e) {
+                // 获取被点击的要素
+                var feature = e.features[0];
+
+                // 显示公交线路信息
+                alert(feature.properties.name_gd);
+
+                // 在这里可以将公交线路信息显示到页面的其他位置，或者做其他处理
+            });
+
+            map.on('mouseenter', 'busline-layer', function () {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'busline-layer', function () {
+                map.getCanvas().style.cursor = '';
+            });
+        }
+        else {
+            // 移除图层
+            map.removeLayer(busline);
+            isLayerVisible = false;
+            leafletMap.addLayer(mapboxLayer);
+        }
+    });
+})
+
+
+
+map.on('style.load', function () {
+
+    map.addSource('hzline-source', {
+        type: 'geojson',
+        data: 'data/hzline.geojson'
+    });
+    var toggleButton2 = document.getElementById('toggleButton2');
+    var isLayerVisible2 = false;
+    var hzline = 'hzline-layer';
+
+    // 监听按钮点击事件
+    toggleButton2.addEventListener('click', function () {
+        leafletMap.removeLayer(mapboxLayer);
+        if (!isLayerVisible2) {
+            map.addLayer({
+                id: 'hzline-layer',
+                type: 'line',
+                source: 'hzline-source',
+                paint: {
+                    'line-color': 'rgb(176, 224, 230)',
+                    'line-width': 2
+                }
+            });
+            isLayerVisible2 = true;
+
+            // 创建一个弹出框
+            var popup2 = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            // 添加鼠标移动事件，显示弹出框
+            map.on('mousemove', 'hzline-layer', function (e) {
+                // 获取当前鼠标所在位置的要素
+                var feature2 = e.features[0];
+
+                // 设置弹出框的内容和位置
+                popup2.setLngLat(e.lngLat)
+                    .setHTML('<div class="popup-content">' + feature2.properties.type + '</div>')
+                    .addTo(map);
+            });
+
+            // 添加鼠标移出事件，隐藏弹出框
+            map.on('mouseleave', 'hzline-layer', function () {
+                popup2.remove();
+            });
+
+            // 添加点击事件，显示线路信息
+            map.on('click', 'hzline-layer', function (e) {
+                // 获取被点击的要素
+                var feature = e.features[0];
+
+                // 显示线路信息
+                alert(feature.properties.type);
+            });
+
+            map.on('mouseenter', 'hzline-layer', function () {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'hzline-layer', function () {
+                map.getCanvas().style.cursor = '';
+            });
+        }
+        else {
+            // 移除图层
+            map.removeLayer(hzline);
+            isLayerVisible2 = false;
+            leafletMap.addLayer(mapboxLayer);
+        }
+    });
+})
+
+
 
 // 拓展栏4
 function personalPanelOpen(event, personalBtn, personalPanelId) {
