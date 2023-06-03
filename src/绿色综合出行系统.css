@@ -645,7 +645,7 @@ body {
 #extendedBar1 .tabcontent {
     display: none;
     padding: 6px 12px;
-    /* border: 1px solid #9e9d9d; */
+    border: 1px solid #9e9d9d;
     border-top: none;
 }
 

@@ -21,14 +21,10 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <!-- 高德文件 -->
     <!-- <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" /> -->
-    <script
-        type="text/javascript">window._AMapSecurityConfig = { securityJsCode: 'c6c13e9ad8d721d5085940d2a2c53fc3', }</script>
-    <script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=2.0&key=33c94645afced73ff8b05d0409817063"></script>
-    <script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063"></script>
-    <script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063&plugin=AMap.Walking,AMap.Riding,AMap.Transfer,AMap.Geocoder"></script>
+    <script type="text/javascript">window._AMapSecurityConfig = {securityJsCode: 'c6c13e9ad8d721d5085940d2a2c53fc3',}</script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=33c94645afced73ff8b05d0409817063"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=33c94645afced73ff8b05d0409817063&plugin=AMap.Walking,AMap.Riding,AMap.Transfer,AMap.Geocoder"></script>
     <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
     <!-- axios -->
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.4/axios.js"></script>
@@ -60,8 +56,6 @@
             <a href="..\src\login-registerter.html" id="login">登录/注册</a>
         </div>
     </div>
-
-    <div id="msgHint"></div>
 
     <!-- 主体部分 -->
     <div id="main">
@@ -166,14 +160,13 @@
                 <button id="confirmBtn1">确定</button>
             </div>
         </div>
-        <div id="routeContentDiv" class="tabcontent" style="display:none">
+        <div id="routeContentDiv" class="tabcontent" style="display:block">
             <h4>步行 - 最短时间</h4>
             <div id="routeContent" class="generateRoute"></div>
             <span>
                 <button>收藏</button>
                 <button>分享</button>
-                <span id="carbonReduction" calss="carbonReduction"
-                    style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;"></span>
+                <span id="carbonReduction" calss="carbonReduction" style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;"></span>
             </span>
             </span>
         </div>
@@ -240,18 +233,18 @@
         <h3>多点出行</h3>
         <div id="search-box3">
             <input id="search-text3" type="text" placeholder="请输入起点">
-            <div class="buttons" style="display: inline-block;">
-                <button id="add-button1">+</button>
-                <button id="delete-button1"> - </button>
+            <div class="buttons">
+                <button id="add-button1">增加点</button>
+                <button id="delete-button1">删除点</button>
             </div>
         </div>
         <div id="tab02">
-            <!-- <span class="tablinks2 active" onclick="openTab2(event, 'tab21')">最短时间</span>
+            <span class="tablinks2 active" onclick="openTab2(event, 'tab21')">最短时间</span>
             <span class="tablinks2" onclick="openTab2(event, 'tab22')">最短路径</span>
             <span class="tablinks2" onclick="openTab2(event, 'tab23')">最少步行</span>
             <span class="tablinks2" onclick="openTab2(event, 'tab24')">偏爱公交</span>
             <span class="tablinks2" onclick="openTab2(event, 'tab25')">偏好地铁</span>
-            <span class="tablinks2" onclick="openTab2(event, 'tab26')">雨天出行</span> -->
+            <span class="tablinks2" onclick="openTab2(event, 'tab26')">雨天出行</span>
         </div>
         <div id="search-box4">
             <button  class="sb_button" id="search-button2" onclick="routePlanMul()" value=0>搜索</button>
@@ -276,31 +269,15 @@
             </div>
         </div>
         <div id="tab21" class="tabcontent2" style="display:block">
-            <div id="routeContentMul" class="generateRoute">
-                <div id="routeMulHeader">
-                    <!-- <h5 class="routeCount">第1程</h5>
-                    <span class="routeStaEnd">浙大都能从地上>校医院</span>
-                    <select name="tripModeSeelect" class="tripModeSeelect">
-                        <option value="步行-最短时间" selected="selected">步行-最短时间</option>
-                        <option value="步行-最舒适">步行-最舒适</option>
-                        <option value="骑行-最短时间">骑行-最短时间</option>
-                        <option value="骑行-最短时间">骑行-最短时间</option>
-                        <option value="公交-最短时间">公交-最短时间</option>
-                        <option value="公交-最少步行">公交-最少步行</option>
-                        <option value="公交-最少换乘">公交-最少换乘</option>
-                        <option value="公交-最舒适">公交-最舒适</option>
-                    </select> -->
-                </div>
-            </div>
+            <h4>最短时间</h4>
+            <div id="routeContentMul" class="generateRoute"></div>
             <span>
-                <button id="reGenerateBtn">重新规划</button>
                 <button>收藏</button>
                 <button>分享</button>
-                <span id="carbonReduction-mul" calss="carbonReduction"
-                    style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;" value=0></span>
+                <span id="carbonReduction-mul" calss="carbonReduction" style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;" value=0></span>
             </span>
         </div>
-        <!-- <div id="tab22" class="tabcontent2">
+        <div id="tab22" class="tabcontent2">
             <h4>最短路径</h4>
             <p>这里是最短路径的内容。</p>
             <span>
@@ -338,7 +315,7 @@
             <span>
                 <button>收藏</button>
                 <button>分享</button>
-        </div> -->
+        </div>
     </div>
 
     <!-- 拓展栏3 -->
