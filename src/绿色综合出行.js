@@ -105,22 +105,51 @@ var mapboxLayer = L.tileLayer(mapboxUrl, {
     tileSize: 512,
     zoomOffset: -1,
 });
-
+var geoTIFFLayer = null;
 var aqiLayer = null;
 var pm25Layer = null;
 var pm10Layer = null;
 // 找到切换按钮
-var MapButton = document.getElementById('button3');
-var NavigationButton = document.getElementById('button1');
+var greenbutton = document.getElementById('greenbutton');
+greenbutton.addEventListener("click", function () {
+    if (!leafletMap.hasLayer(mapboxLayer)) {
+        addleaflet();
+        geoTIFFLayer = L.imageOverlay('http://localhost:8080/geoserver/yandanyang/wms?service=WMS&version=1.1.0&request=GetMap&layers=yandanyang%3Acombined_data&bbox=782835.0%2C3323595.0%2C850545.0%2C3372675.0&width=768&height=556&srs=EPSG%3A32650&styles=&format=image%2Fpng',  [[30.010719932787183, 119.93219337258866], [30.43523957235633,120.6493862990089]]).addTo(leafletMap);
+    }
+    else {
+        closeleaflet();
+        leafletMap.removeLayer(geoTIFFLayer);
+        geoTIFFLayer = null;
+    }
+});
+var MapButton = document.getElementById('AQI_button');
+MapButton.addEventListener("click", function () {
+    if (!leafletMap.hasLayer(mapboxLayer)) {
+        addleaflet();
+    }
+    else {
+        closeleaflet();
+    }
+});
+
+var glbuttons = document.querySelectorAll('.glbutton');
+glbuttons.forEach((glbutton) => {
+    glbutton.addEventListener("click", function () {
+        if (leafletMap.hasLayer(mapboxLayer)) {
+            closeleaflet();
+        }
+    });
+});
+
 
 // 添加点击事件处理程序
-MapButton.addEventListener('click', function () {
+function addleaflet() {
     // 切换底图
     if (!leafletMap.hasLayer(mapboxLayer)) {
         leafletMap.addLayer(mapboxLayer);
     }
-});
-NavigationButton.addEventListener('click', function () {
+};
+function closeleaflet() {
     // 切换底图
     if (leafletMap.hasLayer(mapboxLayer)) {
         if (pm25Layer) {
@@ -137,7 +166,7 @@ NavigationButton.addEventListener('click', function () {
         }
         leafletMap.removeLayer(mapboxLayer);
     }
-});
+};
 
 
 function showAQIMap() {
@@ -430,7 +459,7 @@ sb_button3.addEventListener("click", (e) => {
         sb_button3.classList.remove("animate");
     }, 600);
 });
-const sb_button4= document.querySelector("#filterBtn2");
+const sb_button4 = document.querySelector("#filterBtn2");
 
 sb_button4.addEventListener("click", (e) => {
     e.preventDefault;
@@ -562,7 +591,6 @@ map.on('style.load', function () {
             map.removeLayer(subline);
             map.removeLayer(subpoint);
             isLayerVisible3 = false;
-            leafletMap.addLayer(mapboxLayer);
         }
     });
 })
@@ -694,7 +722,6 @@ map.on('style.load', function () {
             map.removeLayer(buspoint);
             map.removeLayer(highlightedBusline);
             isLayerVisible = false;
-            leafletMap.addLayer(mapboxLayer);
         }
     });
     var buslineInput = document.getElementById('busline-input');
@@ -809,7 +836,6 @@ map.on('style.load', function () {
             // 移除图层
             map.removeLayer(hzline);
             isLayerVisible2 = false;
-            leafletMap.addLayer(mapboxLayer);
         }
     });
 })

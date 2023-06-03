@@ -88,24 +88,6 @@
             </div>
         </div>
         <div class="tab">
-            <!--<div class="tzl_box">
-                <span class="tablinks active" onclick="openTab(event, 'tab1')">最短时间</span>
-            </div>
-            <div class="tzl_box">
-                <span class="tablinks" onclick="openTab(event, 'tab2')">最短路径</span>
-            </div>
-            <div class="tzl_box">
-                <span class="tablinks" onclick="openTab(event, 'tab3')">最少步行</span>
-            </div>
-            <div class="tzl_box">
-                <span class="tablinks" onclick="openTab(event, 'tab4')">偏爱公交</span>
-            </div>
-            <div class="tzl_box">
-                <span class="tablinks" onclick="openTab(event, 'tab5')">偏爱地铁</span>
-            </div>
-            <div class="tzl_box">
-                <span class="tablinks" onclick="openTab(event, 'tab6')">雨天出行</span>
-            </div>-->
             <nav class="nav">
                 <input type="radio" name="nav-item-opt" id="nav-item-opt-1" checked>
                 <label id="walk" class="nav-item" for="nav-item-opt-1"
@@ -183,62 +165,6 @@
             </span>
             </span>
         </div>
-        <!-- <div id="tab2" class="tabcontent">
-            <h4>步行最舒适</h4>
-            <p>这里是步行最舒适的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab3" class="tabcontent">
-            <h4>骑行最短时间</h4>
-            <p>这里是骑行最短时间的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab4" class="tabcontent">
-            <h4>骑行最舒适</h4>
-            <p>这里是骑行最舒适的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab5" class="tabcontent">
-            <h4>公交少换乘</h4>
-            <p>这里是公交少换乘的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab6" class="tabcontent">
-            <h4>公交少步行</h4>
-            <p>这里是公交少步行的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab7" class="tabcontent">
-            <h4>公交最短时间</h4>
-            <p>这里是公交最短时间的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab8" class="tabcontent">
-            <h4>公交最舒适</h4>
-            <p>这里是公交最舒适的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div> -->
     </div>
 
     <!-- 拓展栏2 -->
@@ -403,8 +329,8 @@
         <h3>绿色地图</h3>
         <div class="extendedFunction">
             <h4>杭州公共交通线路</h4>
-            <div class="button", id="toggleButton3"><span class="iconfont icon-dibudaohanglan-"></span> &nbsp;地铁线路图</div>
-            <div class="button", id="toggleButton"><span class="iconfont icon-gongjiao"></span> &nbsp;公交线路图</div>
+            <div class="button glbutton", id="toggleButton3"><span class="iconfont icon-dibudaohanglan-"></span> &nbsp;地铁线路图</div>
+            <div class="button glbutton", id="toggleButton"><span class="iconfont icon-gongjiao"></span> &nbsp;公交线路图</div>
             <div id="mypanel" data-role="panel" data-display="overlay" data-position-fixed="true">
 
             </div>
@@ -419,8 +345,8 @@
         </div>
         <div class="extendedFunction">
             <h4>地图可视化</h4>
-            <div class="button"><span class="iconfont icon-tianqi"></span> &nbsp;天气状况</div>
-            <div class="button", id="toggleButton2"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
+            <div class="button" id="greenbutton"><span class="iconfont icon-tianqi"></span> &nbsp;绿色指数</div>
+            <div class="button glbutton", id="toggleButton2"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
             <div class="button toolBtn" id="AQI_button" onclick="toolPanelOpen(event, 'AQI_button', 'AQI_select')">
                 <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量
             </div>
