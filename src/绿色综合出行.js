@@ -271,7 +271,7 @@ confirmBtn1.addEventListener('click', () => {
     filterBoxContent1.style.display = 'none';
 });
 //search-button、筛选
-const sb_button = document.querySelector("#search-button,#filterBtn1");
+const sb_button = document.querySelector("#search-button");
 
 sb_button.addEventListener("click", (e) => {
     e.preventDefault;
@@ -317,7 +317,7 @@ deleteButton1.addEventListener("click", () => {
     }
 });
 
-function openTab2(event, tabName) {
+/*function openTab2(event, tabName) {
     //获取tab content的所有元素并隐藏它们
     var tabContents2 = document.getElementsByClassName("tabcontent2");
     for (var i = 0; i < tabContents2.length; i++) {
@@ -333,6 +333,63 @@ function openTab2(event, tabName) {
     //显示当前选项卡，并向打开该选项卡的按钮添加一个active类
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.classList.add("active");
+}*/
+
+//nav切换
+const nav2Items = document.querySelectorAll('.nav2-item');
+const content2Sections = document.querySelectorAll('.content2');
+
+nav2Items.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        content2Sections.forEach((section, sectionIndex) => {
+            if (sectionIndex === index || (index === 2 && (sectionIndex === 2 || sectionIndex === 3))) {
+                section.style.display = 'flex';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+    });
+});
+
+function openSubButton(event, subBtnId, titleContent) {
+    // 使用tab button获取所有元素，并删除类active
+    var tabButtons = document.getElementsByClassName("sub-button");
+    for (var i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove("active");
+    }
+
+    // 为当前选项卡的第一个子选项加上active类
+    document.getElementById(subBtnId).classList.add('active');
+
+    // 更换标题
+    document.getElementById("routeContentDiv").firstElementChild.innerHTML = titleContent;
+
+    // 更换出行模式
+    tripModeBtnId = subBtnId;
+}
+
+function openTab(event, subBtnId, titleContent) {
+    //获取tab content的所有元素并隐藏它们
+    // var tabContents = document.getElementsByClassName("tabcontent");
+    // for (var i = 0; i < tabContents.length; i++) {
+    //     tabContents[i].style.display = "none";
+    // }
+
+    //使用tab button获取所有元素，并删除类active
+    var tabButtons = document.getElementsByClassName("sub-button");
+    for (var i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove("active");
+    }
+
+    //显示当前选项卡，并向打开该选项卡的按钮添加一个active类
+    // document.getElementById(tabName).style.display = "block";
+    event.currentTarget.classList.add("active");
+
+    // 更换标题
+    document.getElementById("routeContentDiv").firstElementChild.innerHTML = titleContent;
+
+    // 更换出行模式
+    tripModeBtnId = subBtnId;
 }
 
 const filterBtn2 = document.getElementById("filterBtn2");
@@ -363,7 +420,25 @@ confirmBtn2.addEventListener('click', () => {
     filterBoxContent2.style.display = 'none';
 });
 
+//search-button、筛选
+const sb_button3 = document.querySelector("#search-button2");
 
+sb_button3.addEventListener("click", (e) => {
+    e.preventDefault;
+    sb_button3.classList.add("animate");
+    setTimeout(() => {
+        sb_button3.classList.remove("animate");
+    }, 600);
+});
+const sb_button4= document.querySelector("#filterBtn2");
+
+sb_button4.addEventListener("click", (e) => {
+    e.preventDefault;
+    sb_button4.classList.add("animate");
+    setTimeout(() => {
+        sb_button4.classList.remove("animate");
+    }, 600);
+});
 
 // 拓展栏3
 // 工具箱 
@@ -406,7 +481,7 @@ map.on('style.load', function () {
                 type: 'line',
                 source: 'busline-source',
                 paint: {
-                    'line-color': 'rgb(20, 255, 127)',
+                    'line-color': '#137427',
                     'line-width': 2
                 }
             });

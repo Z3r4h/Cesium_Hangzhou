@@ -377,6 +377,7 @@ body {
 
 .nav {
     position: relative;
+    top: 10px;
     left: -12px;
     background: rgb(202, 226, 199);
     border-radius: 24px;
@@ -448,7 +449,7 @@ body {
     display: none;
     position: relative;
     left: -10px;
-    top: 5px;
+    top: 20px;
 }
 
 .content.active {
@@ -480,6 +481,7 @@ body {
     background-color:var(--main-color);
     color: rgb(13, 47, 4);
 }
+
 #extendedBar1 h3 {
     text-align: center;
     color: #0073ff;
@@ -527,7 +529,7 @@ body {
 .sb_button {
     position: relative;
     left: 5px;
-    top: 10px;
+    top: 15px;
     margin: 15px;
     padding: 10px 22px;
     border-radius: 6px;
@@ -643,7 +645,7 @@ body {
 #extendedBar1 .tabcontent {
     display: none;
     padding: 6px 12px;
-    border: 1px solid #9e9d9d;
+    border: 2px dotted #83d794;
     border-top: none;
 }
 
@@ -709,6 +711,28 @@ body {
     color: #fff;
 }
 
+.sc_fx_btn{
+    width: 60px;
+    height: 30px;
+    background-color: #b0f1be;
+    font-weight: 600;
+    align-items: center;
+    outline: none;
+    margin: 2px;
+    border-radius: 8px;
+    color: #09360e;
+    letter-spacing: 2px;
+    border-width: 2px;
+    border-style:double;
+    border-color: #83e48e;
+    cursor: pointer;
+}
+.sc_fx_btn:hover{
+    background-color: #073d0d;
+    color: #f6f6f6;
+    border-color: rgb(152, 216, 170);
+    transition: background-color 0.5s ease;
+}
 
 
 /* 拓展栏2：多点出行 */
@@ -766,7 +790,7 @@ body {
     font-size: 16px;
 }
 
-#extendedBar2 #search-button {
+/*#extendedBar2 #search-button {
     background-color: #0072C6;
     color: #fff;
     border-radius: 5px;
@@ -775,9 +799,9 @@ body {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-}
+}*/
 
-#extendedBar2 #tab02 {
+/*#extendedBar2 #tab02 {
     width: 254px;
     overflow: hidden;
     border: 1px solid #bcbbbb;
@@ -806,6 +830,121 @@ body {
     background-color: #b4cedf;
     border: 100px;
     border-color: #2a7fff;
+}*/
+
+#extendedBar2 #tab02 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.nav2 {
+    position: relative;
+    top: 10px;
+    left: -12px;
+    background: rgb(202, 226, 199);
+    border-radius: 24px;
+    font-size: 0px;
+    font-weight: 600;
+    padding: var(--nav-item-border-width);
+    z-index: 0;
+}
+
+.nav2-item {
+    width: var(--nav-item-width);
+    height: var(--nav-item-height);
+    font-size: 14px;
+    color: var(--main-color);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: color .3s ease-in-out;
+}
+
+.nav2>input[type="radio"] {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.nav2>input[type="radio"]:checked+label {
+    color: white;
+}
+
+.tracker {
+    width: var(--nav-item-width);
+    height: var(--nav-item-height);
+    background: var(--main-color);
+    z-index: -1;
+    position: absolute;
+    left: var(--nav-item-border-width);
+    top: var(--nav-item-border-width);
+    border-radius: 24px;
+    transition: transform .3s ease-in-out;
+}
+
+#nav2-item-opt-2:checked~.tracker {
+    transform: translateX(calc(var(--nav-item-width)));
+}
+
+#nav2-item-opt-3:checked~.tracker {
+    transform: translateX(calc(var(--nav-item-width)*2));
+}
+
+.tracker {
+    width: var(--nav-item-width);
+    height: var(--nav-item-height);
+    background: var(--main-color);
+    z-index: -1;
+    position: absolute;
+    left: var(--nav-item-border-width);
+    top: var(--nav-item-border-width);
+    border-radius: 24px;
+    transition: transform .3s ease-in-out;
+}
+
+#buttons_box{
+    width: 198px;
+}
+
+.content2 {
+    display: none;
+    position: relative;
+    left: -10px;
+    top: 20px;
+}
+
+.content2.active {
+    display: flex;
+}
+.sub-button {
+    display: flex;
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100px;
+    height: 25px;
+    margin: 2px;
+    color: var(--main-color);
+    background-color: var(--bg-color);
+    border: var(--nav-item-border-width) solid var(--main-color);
+    border-radius: 24px;
+    transition: background-color .3s ease-in-out, color .3s ease-in-out;
+}
+
+.sub-button:hover {
+    background-color: var(--main-color);
+    color: white;
+}
+
+.sub-button.active {
+    background-color:var(--main-color);
+    color: rgb(13, 47, 4);
 }
 
 #extendedBar2 .tabcontent2 {
