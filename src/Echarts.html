@@ -67,6 +67,9 @@
     <div class="chart-container">
       <div id="barChartContainer"></div>
     </div>
+    <div class="chart-container">
+      <div id="barChartContainer"></div>
+    </div>
   </div>
 
 
@@ -104,7 +107,7 @@
         // 图例
         legend:{data:["睡眠时长"]},
         // x轴线
-        xAxis:{data:["汽车每公里碳排放量","减少碳排放量","1"]},
+        xAxis:{data:["汽车碳排放量","电动汽车碳排放量","绿色出行碳排放量","减少碳排放量"]},
         // y轴线
         yAxis:{},
         // 设置数据
@@ -115,7 +118,7 @@
             // 类型为柱状图
             type:"bar",
             // 数据data
-            data:[0.27,1,1],
+            data:[0.27,1,1,1],
             // color:["#ac4cff"]
             itemStyle:{
               color:linear,
@@ -145,11 +148,11 @@
             // 位移
             // 数据
             data:[
-              {name:"步行/骑行行进距离",value:90},
+              {name:"步行行进距离",value:90},
               {name:"公交行进距离",value:85,itemStyle:{
                 color:"#ffaa00"
               }},
-              {name:"其他行进距离",value:90,
+              {name:"骑行行进距离",value:90,
                itemStyle:{
                  normal:{color:"#93da6c"},
                  emphasis:{color:"#bcff57"}
