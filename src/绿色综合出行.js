@@ -6,11 +6,6 @@ var buttons = document.getElementsByClassName("button");
 var extendedBars = document.getElementsByClassName("extendedBar");
 var activeIndex = 0;
 
-function init() {
-    buttons[activeIndex].classList.add("active");
-    buttons[activeIndex].src = "assets/出行导航_blue.png";
-    extendedBars[activeIndex].style.display = "block";
-}
 
 //拓展栏1
 function changeButton(index) {
@@ -77,7 +72,6 @@ function extendedBaropen(activeIndex) {
             break;
     }
 }
-init();
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94LXhzIiwiYSI6ImNsaTVvcXByMDFmZTMzZm8zOGtsbXUwN2IifQ.qQmT-APr8yb1gPDAxR2P0A';
 var map = new mapboxgl.Map({
@@ -215,6 +209,41 @@ function showPM10Map() {
         pm10Layer = L.tileLayer('https://tiles.waqi.info/tiles/usepa-pm10/{z}/{x}/{y}.png?token=15ab69d90cd615d9f3223b88c89426e8aca534ed').addTo(leafletMap);
     }
 }
+
+var mainmap = document.getElementById('mainmap');
+var mapNavigation = document.getElementById('mapNavigation');
+
+function openAmap(){
+    if(mainmap.style.display == "block"){
+        mainmap.style.display = "none";
+    }
+    if(mapNavigation.style.display == "none"){
+        mapNavigation.style.display = "block";
+    }
+}
+
+function openglmap(){
+    if(mapNavigation.style.display == "block"){
+    mapNavigation.style.display = "none";
+    }
+    if(mainmap.style.display == "none"){
+        mainmap.style.display = "block";
+    }
+}
+
+const Btn1 = document.getElementById("button1");
+const Btn2 = document.getElementById("button2");
+const Btn3 = document.getElementById("button3");
+
+Btn1.addEventListener('click',() =>{
+        openAmap();
+});
+Btn2.addEventListener('click',() =>{
+         openAmap();
+});
+Btn3.addEventListener('click',() =>{
+    openglmap();
+});
 // 拓展栏1
 
 //nav切换
@@ -274,14 +303,9 @@ function openTab(event, subBtnId, titleContent) {
     tripModeBtnId = subBtnId;
 }
 
-const filterBtn1 = document.getElementById("filterBtn1");
 const filterBoxContent1 = document.getElementById("filterBoxContent1");
 const cancelBtn1 = document.getElementById("cancelBtn1");
 const confirmBtn1 = document.getElementById("confirmBtn1");
-
-filterBtn1.addEventListener('click', () => {
-    filterBoxContent1.style.display = 'block';
-});
 
 cancelBtn1.addEventListener('click', () => {
     filterBoxContent1.style.display = 'none';
@@ -429,10 +453,6 @@ const filterBtn2 = document.getElementById("filterBtn2");
 const filterBoxContent2 = document.getElementById("filterBoxContent2");
 const cancelBtn2 = document.getElementById("cancelBtn2");
 const confirmBtn2 = document.getElementById("confirmBtn2");
-
-filterBtn2.addEventListener('click', () => {
-    filterBoxContent2.style.display = 'block';
-});
 
 cancelBtn2.addEventListener('click', () => {
     filterBoxContent2.style.display = 'none';
