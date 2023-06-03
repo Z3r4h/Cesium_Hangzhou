@@ -1,14 +1,18 @@
 // navigation.js
 // 定位、搜索提示、导航功能
-// 使用mapbox API 和 高德API
-// sk.eyJ1IjoibWFwYm94LXhzIiwiYSI6ImNsaTYwY21jdTFsZ20zdmxwaG1zOTNya2sifQ.n74HN7FMkiR3LQ3FqrvbNQ
+// 使用高德API
+// div.mapNavigation
 
 // 判断变量
-var isSearching = 0; // 点击了搜索？
+var isSearching = 0; // 点击了搜索按钮？
+var isSearchingMul = 0; // 多点出行搜索按钮
 var startPosition, endPosition; // 两点出行，开始、结束坐标
 // var tripModeBtnId; // 在绿色综合出行.js声明
 var nowPosition;    // 您所在的位置
 var searchPosition;  // 右上角搜索框搜索结果所在位置
+let routeContentDiv = document.getElementById('routeContentDiv');
+var msgHintDiv = document.getElementById('msgHint');
+let overLayer = [];
 
 // 导入高德底图至单独的容器
 var gdmap = new AMap.Map('mapNavigation', {
@@ -23,20 +27,38 @@ let searchMarker = new AMap.Marker({
     zIndex: 200,
 });
 
+// 消息提示框
+// message是需要提示的消息
+// isSuccuss是布尔值，true代表操作成功的提示
+var timer;
+function msgHint(message, isSuccess) {
+    clearTimeout(timer); // 清除之前还未执行完的消息
+    if (isSuccess) {
+        msgHintDiv.style.backgroundColor = '#3dac8fda';
+    } else {
+        msgHintDiv.style.backgroundColor = '#f76b44de';
+    }
+    msgHintDiv.innerHTML = message;
+    msgHintDiv.style.display = 'block';
+    timer = setTimeout(() => {
+        msgHintDiv.style.display = 'none';
+    }, 1500)
+}
+
 document.getElementById('search-box').addEventListener('keydown', async () => {
     if (event.keyCode === 13) { // 输入回车
         let tempInput = document.getElementById('search-box');
         let tempUrl = "https://restapi.amap.com/v3/assistant/inputtips?output=json&city=杭州&keywords=" + tempInput.value + "&key=f1dbdde4f534703472073cece6811628";
         // let startUrl = "https://restapi.amap.com/v3/place/text?keywords=" + startInput.value + "&city=杭州&offset=20&page=1&key=f1dbdde4f534703472073cece6811628&extensions=all";
         searchPosition = await getPosition(tempUrl, tempInput);
-        if(searchPosition == 0){
-            alert("地点查找失败！");
+        if (searchPosition == 0) {
+            msgHint("地点查找失败!", false)
             return 0;
         }
         gdmap.setZoomAndCenter(17, searchPosition);
-        // 注意，其他地图也应调整到相应位置！！！！！！
-        // 注意，其他地图也应调整到相应位置！！！！！！
-        // 注意，其他地图也应调整到相应位置！！！！！！
+        // 注意，其他地图也应调整到相应位置!!!!!!
+        // 注意，其他地图也应调整到相应位置!!!!!!
+        // 注意，其他地图也应调整到相应位置!!!!!!
 
         // 添加标记
         searchMarker.setPosition(searchPosition);
@@ -81,15 +103,14 @@ function onComplete(data) {
 }
 //解析定位错误信息
 function onError(data) {
-    alert('定位失败!');
+    msgHint("定位失败!", false);
 }
 
 // 逆地理编码，经纬度->位置
-function getAddressName(url){
+function getAddressName(url) {
     const promise = new Promise((resolve, reject) => {
         axios.get(url)
             .then(res => {
-                console.log(res);
                 if (res.data.status == 1) {
                     resolve(res.data.regeocode.pois[0].name);
                 }
@@ -106,17 +127,17 @@ function getAddressName(url){
 }
 
 // 为searchMarker添加点击事件，点击则创建路线
-searchMarker.on('click', async function(){
-    let url = "https://restapi.amap.com/v3/geocode/regeo?output=json&location="+nowPosition[0]+","+nowPosition[1]+"&key=f1dbdde4f534703472073cece6811628&radius=1000&extensions=all"
+searchMarker.on('click', async function () {
+    let url = "https://restapi.amap.com/v3/geocode/regeo?output=json&location=" + nowPosition[0] + "," + nowPosition[1] + "&key=f1dbdde4f534703472073cece6811628&radius=1000&extensions=all"
     let tempName = await getAddressName(url);
-    if(tempName==0) {
-        alert('识别您所在的位置失败！'); 
+    if (tempName == 0) {
+        msgHint("识别您所在的位置失败!", false);
         return 0;
     }
     document.getElementById('search-text1').value = tempName;
     document.getElementById('search-text2').value = document.getElementById('search-box').value;
     searchClear();
-    if(nowPosition&&searchPosition){
+    if (nowPosition && searchPosition) {
         isSearching = 1;
         gdmap.clearMap();
         startPosition = nowPosition;
@@ -124,6 +145,7 @@ searchMarker.on('click', async function(){
         getRoute(startPosition, endPosition, getStratery());
         gdmap.remove(searchMarker);
     }
+    routeContentDiv.style.display = "block";
 })
 
 // 搜索框输入提示 - 高德API - 配额每日100
@@ -190,7 +212,12 @@ var walking = new AMap.Walking(walkOption);
 var riding = new AMap.Riding(rideOption);
 var transfer = new AMap.Transfer(transferOption);
 
-var walkingMul = new AMap.Walking({ panel: "routeContentMul" })
+// var walkingMul = new AMap.Walking({panel: "routeContentMul"});
+// var ridingMul = new AMap.Riding({ panel: "routeContentMul" });
+// var transferMul = new AMap.Transfer({ panel: "routeContentMul", city: '杭州' });
+var walkingMul = new AMap.Walking();
+var ridingMul = new AMap.Riding();
+var transferMul = new AMap.Transfer({city: '杭州' });
 
 function searchClear() {
     walking.clear();
@@ -231,20 +258,19 @@ function getPosition(url, inputBox) {
 
 // 路线规划 - 各按钮
 function getRoteForModeBtn(startPosition, endPosition, strategy) {
-    if (this.strategy)
-        searchClear(); // 清楚之前的搜索结果
+    searchClear(); // 清除之前的搜索结果
     gdmap.clearMap(); // 清除之前的路线
     getRoute(startPosition, endPosition, strategy);
 }
 
 document.getElementById('walk').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId.split('-')[0]) getRoteForModeBtn(startPosition, endPosition, 'walking-LeastTime'); }, true);
 document.getElementById('ride').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId.split('-')[0]) getRoteForModeBtn(startPosition, endPosition, 'riding-LeastTime'); }, true);
-document.getElementById('transfer').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId.split('-')[0]) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastWalk'); }, true);
+document.getElementById('transfer').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId.split('-')[0]) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTime'); }, true);
 
 document.getElementById('walk-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'walking-LeastTime'); }, true);
 document.getElementById('ride-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'riding-LeastTime'); }, true);
-document.getElementById('transfer-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastWalk'); }, true);
-document.getElementById('transfer-walk').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTime'); }, true);
+document.getElementById('transfer-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTime'); }, true);
+document.getElementById('transfer-walk').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastWalk'); }, true);
 document.getElementById('transfer-transit').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTransfer'); }, true);
 document.getElementById('transfer-comfort').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-MostComfort'); }, true);
 
@@ -258,12 +284,12 @@ async function routePlan(startId, endId, strategy = 'walking-LeastTime') {
     gdmap.clearMap(); // 清除之前的路线
 
     // city设置为杭州
-    // 使用第二种方式检索，返回值请参考高德api开发文档
+    // 如果使用第二种方式检索，返回值请参考高德api开发文档
     let startUrl = "https://restapi.amap.com/v3/assistant/inputtips?output=json&city=杭州&keywords=" + startInput.value + "&key=f1dbdde4f534703472073cece6811628";
     // let startUrl = "https://restapi.amap.com/v3/place/text?keywords=" + startInput.value + "&city=杭州&offset=20&page=1&key=f1dbdde4f534703472073cece6811628&extensions=all";
     startPosition = await getPosition(startUrl, startInput);
     if (startPosition == 0) { // getPosition()返回值为0
-        alert("输入的开始地点无法识别！");
+        msgHint("输入的开始地点无法识别!", false);
         isSearching = 0;
         return 0;
     }
@@ -273,7 +299,7 @@ async function routePlan(startId, endId, strategy = 'walking-LeastTime') {
     // let endUrl = "https://restapi.amap.com/v3/place/text?keywords=" + endInput.value + "&city=杭州&offset=20&page=1&key=f1dbdde4f534703472073cece6811628&extensions=all";
     endPosition = await getPosition(endUrl, endInput);
     if (endPosition == 0) {
-        alert("输入的结束地点无法识别！");
+        msgHint("输入的结束地点无法识别!", false);
         isSearching = 0;
         return 0;
     }
@@ -303,6 +329,7 @@ function getStratery() {
 function getRoute(startPosition, endPosition, strategy) {
     // 步行导航
     if (strategy === 'walking-LeastTime') {
+        routeContentDiv.style.display = "none";
         walking.search(startPosition, endPosition, function (status, result) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
@@ -310,15 +337,17 @@ function getRoute(startPosition, endPosition, strategy) {
                     let carbonReduction = carbonCalc('walk', result.routes[0].distance / 1000); // 减碳量
                     document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                     drawRoute(result.routes[0], gdmap);
-                    log.success('绘制步行路线完成');
+                    console.log('绘制步行路线完成');
+                    routeContentDiv.style.display = "block";
                 }
             } else {
-                alert('步行路线数据查询失败' + result);
+                msgHint("步行路线数据查询失败!", false);
             }
         });
     }
     // 骑行
     else if (strategy === 'riding-LeastTime') {
+        routeContentDiv.style.display = "none";
         riding.search(startPosition, endPosition, function (status, result) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
@@ -326,15 +355,17 @@ function getRoute(startPosition, endPosition, strategy) {
                     let carbonReduction = carbonCalc('ride', result.routes[0].distance / 1000); // 减碳量
                     document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                     drawRoute(result.routes[0], gdmap);
-                    log.success('绘制骑行路线完成')
+                    console.log('绘制骑行路线完成');
+                    routeContentDiv.style.display = "block";
                 } else {
-                    alert('骑行路线数据查询失败' + result)
+                    msgHint("骑行路线数据查询失败!", false);
                 }
             }
         });
     }
     // 公交
     else {
+        routeContentDiv.style.display = "none";
         if (strategy === 'transfer-LeastTime') transfer.setPolicy(AMap.TransferPolicy.LEAST_TIME); // 最少时间
         else if (strategy === 'transfer-LeastTransfer') transfer.setPolicy(AMap.TransferPolicy.LEAST_TRANSFER); // 最少换乘
         else if (strategy === 'transfer-LeastWalk') transfer.setPolicy(AMap.TransferPolicy.LEAST_WALK); // 最少步行
@@ -350,9 +381,10 @@ function getRoute(startPosition, endPosition, strategy) {
                 carbonReduction = carbonCalcMul(tripMode, tripDis);
                 document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                 drawRouteTransfer(result.plans[0], gdmap);
-                log.success('绘制公共交通路线完成')
+                console.log('绘制公共交通路线完成');
+                routeContentDiv.style.display = "block";
             } else {
-                alert('公共交通路线数据查询失败' + result)
+                msgHint("公共交通路线数据查询失败!", false);
             }
         });
     }
@@ -365,6 +397,7 @@ function getRoute(startPosition, endPosition, strategy) {
 // all表示总路线，默认为1
 function drawRoute(route, map, num = 1, all = 1) {
     var path;
+    if(num===1) overLayer.length = 0;
     if (route.steps) path = parseRouteToPathWalk(route);
     else path = parseRouteToPathRide(route)
     if (num == 1) {
@@ -374,6 +407,7 @@ function drawRoute(route, map, num = 1, all = 1) {
             offset: new AMap.Pixel(-15, -30),
             map: map,
         });
+        overLayer.push(startMarker);
     }
 
     if (num > 1) {
@@ -383,11 +417,12 @@ function drawRoute(route, map, num = 1, all = 1) {
             offset: new AMap.Pixel(-15, -40),
             map: map,
         });
-        passMarker.setContent("<div style='width: 35px; height: 45px; background-color: rgba(0,0,0,0);'>"+
-            "<img src='./assets/pass.png'  style='z-index:1'/>" + "<div style='width: 20px; height: 10px; display: inline-block; z-index:1;position:relative;'></div>"+ 
-            "<div style='width: 12px; height: 12px; display: inline-block; border-radius: 50%; background-color: #d78319; color:white;z-index: 100; top: 0px; font-size: 3px;text-align:center;position:absolute;'>"+(num-1)+"</div>"+
-        "</div>"
+        passMarker.setContent("<div style='width: 35px; height: 45px; background-color: rgba(0,0,0,0);'>" +
+            "<img src='./assets/pass.png'  style='z-index:1'/>" + "<div style='width: 20px; height: 10px; display: inline-block; z-index:1;position:relative;'></div>" +
+            "<div style='width: 12px; height: 12px; display: inline-block; border-radius: 50%; background-color: #d78319; color:white;z-index: 100; top: 0px; font-size: 3px;text-align:center;position:absolute;'>" + (num - 1) + "</div>" +
+            "</div>"
         );
+        overLayer.push(passMarker);
     }
 
     if (num == all) {
@@ -397,6 +432,7 @@ function drawRoute(route, map, num = 1, all = 1) {
             offset: new AMap.Pixel(-15, -30),
             map: map,
         });
+        overLayer.push(endMarker);
     }
 
     var routeLine = new AMap.Polyline({
@@ -411,7 +447,7 @@ function drawRoute(route, map, num = 1, all = 1) {
     routeLine.setMap(map);
 
     // 调整视野达到最佳显示区域
-    if (startMarker) map.setFitView([startMarker, startMarker, routeLine]);
+    if(all===num) map.setFitView(overLayer);
 }
 
 // 解析WalkRoute对象，构造成AMap.Polyline的path参数需要的格式
@@ -444,27 +480,48 @@ function parseRouteToPathRide(route) {
 }
 
 // 路线绘制 - 公共交通
-function drawRouteTransfer(route, map) {
-    var startMarker = new AMap.Marker({
-        position: route.segments[0].transit.origin,
-        icon: './assets/start.png',
-        offset: new AMap.Pixel(-15, -30),
-        map: map
-    })
+function drawRouteTransfer(route, map, num = 1, all = 1) {
+    if(num===1) overLayer.length = 0;
+    if (num == 1) {
+        var startMarker = new AMap.Marker({
+            position: route.segments[0].transit.origin,
+            icon: './assets/start.png',
+            offset: new AMap.Pixel(-15, -30),
+            map: map,
+        });
+        overLayer.push(startMarker);
+    }
 
-    var endMarker = new AMap.Marker({
-        position: route.segments[route.segments.length - 1].transit.destination,
-        icon: './assets/end.png',
-        offset: new AMap.Pixel(-15, -30),
-        map: map
-    })
+    if (num > 1) {
+        var passMarker = new AMap.Marker({
+            position: route.segments[0].transit.origin,
+            // icon: './assets/pass.png',
+            offset: new AMap.Pixel(-15, -40),
+            map: map,
+        });
+        passMarker.setContent("<div style='width: 35px; height: 45px; background-color: rgba(0,0,0,0);'>" +
+            "<img src='./assets/pass.png'  style='z-index:1'/>" + "<div style='width: 20px; height: 10px; display: inline-block; z-index:1;position:relative;'></div>" +
+            "<div style='width: 12px; height: 12px; display: inline-block; border-radius: 50%; background-color: #d78319; color:white;z-index: 100; top: 0px; font-size: 3px;text-align:center;position:absolute;'>" + (num - 1) + "</div>" +
+            "</div>"
+        );
+        overLayer.push(passMarker);
+    }
+
+    if (num == all) {
+        var endMarker = new AMap.Marker({
+            position: route.segments[route.segments.length - 1].transit.destination,
+            icon: './assets/end.png',
+            offset: new AMap.Pixel(-15, -30),
+            map: map,
+        });
+        overLayer.push(endMarker);
+    }
 
     var routeLines = []
 
     for (var i = 0, l = route.segments.length; i < l; i++) {
         var segment = route.segments[i]
         var line = null
-
         // 绘制步行路线
         if (segment.transit_mode === 'WALK') {
             line = new AMap.Polyline({
@@ -513,7 +570,7 @@ function drawRouteTransfer(route, map) {
     }
 
     // 调整视野达到最佳显示区域
-    map.setFitView([startMarker, endMarker].concat(routeLines))
+    if(all === all) map.setFitView(overLayer);
 }
 
 // 获取两个点之间的距离(步行距离), 传入起终点经纬度
@@ -567,7 +624,7 @@ function arrange(arr) {
     return res;
 }
 
-// walkingMul.search方便异步调用
+// walkingMul/Riding/Transfer.search 方便异步调用
 // num和all参数解释见函数drawRoute()
 function getWalking(startPosition, endPosition, num, all) {
     let p = new Promise((resolve, reject) => {
@@ -581,7 +638,51 @@ function getWalking(startPosition, endPosition, num, all) {
                     resolve(-1);
                 }
             } else {
-                alert('步行路线数据查询失败' + result);
+                msgHint("第 " + num + " 条" + "路线(步行)数据查询失败!", false);
+            }
+        })
+    });
+    return p;
+}
+function getRiding(startPosition, endPosition, num, all) {
+    let p = new Promise((resolve, reject) => {
+        ridingMul.search(startPosition, endPosition, function (status, result) {
+            // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+            if (status === 'complete') {
+                if (result.routes && result.routes.length) {
+                    drawRoute(result.routes[0], gdmap, num, all);
+                    resolve(carbonCalc('ride', result.routes[0].distance / 1000)); // 减碳量
+                } else {
+                    resolve(-1);
+                }
+            } else {
+                msgHint("第 " + num + " 条" + "路线(骑行)数据查询失败!", false);
+            }
+        })
+    });
+    return p;
+}
+function getTransfer(startPosition, endPosition, num, all) {
+    let p = new Promise((resolve, reject) => {
+        transferMul.search(startPosition, endPosition, function (status, result) {
+            // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+            console.log(result);
+            if (status === 'complete') {
+                if (result.plans && result.plans.length) {
+                    let tripMode = ["walk", "bus", "car", "subway"];
+                    let tripDis = [result.plans[0].walking_distance / 1000,
+                    result.plans[0].transit_distance / 1000,
+                    result.plans[0].taxi_distance / 1000,
+                    result.plans[0].railway_distance / 1000];
+                    drawRouteTransfer(result.plans[0], gdmap, num, all);
+                    let carbonReduction = carbonCalcMul(tripMode, tripDis);
+                    console.log(result.plans[0], gdmap, num, all);
+                    resolve(carbonReduction); // 减碳量
+                } else {
+                    resolve(-1);
+                }
+            } else {
+                msgHint("第 " + num + " 条" + "路线(公共交通)数据查询失败!", false);
             }
         })
     });
@@ -590,6 +691,10 @@ function getWalking(startPosition, endPosition, num, all) {
 
 
 // 多点出行
+let tripModesMul = []; // 每条路线的出行方式
+let routePosit = [];   // 按顺序存储最终路线的经纬度
+let pointName = [];    // 存放地点名
+let sizeMul;  // 多点出行地点数量
 // routePoint是需要经过的点的输入框对应的id数组，默认第一个和最后一个是起点和终点
 async function routePlanMul() {
     // 获取输入框
@@ -601,10 +706,17 @@ async function routePlanMul() {
     routePointIn.push('search-text4');
 
     let size = routePointIn.length;
+    sizeMul = size;
     let pointIn = [];
     let pointPosit = [];  // 按输入顺序存储输入点的经纬度
+
     let pointDis = Array.from(Array(10), () => new Array(10)); // 二维数组，存放对应两点间的距离
-    let routePosit = [];  // 按顺序存储最终路线的经纬度
+
+    tripModesMul.length = 0; // 先清除之前的内容
+    for (let i = 0; i < size-1; i++) {
+        tripModesMul.push('walk-time'); // 开始默认都是步行-最短时间
+    }
+
     for (let i = 0; i < size; i++) {
         pointIn[i] = document.getElementById(routePointIn[i]);
     }
@@ -614,7 +726,7 @@ async function routePlanMul() {
         let url = "https://restapi.amap.com/v3/assistant/inputtips?output=json&city=杭州&keywords=" + pointIn[i].value + "&key=f1dbdde4f534703472073cece6811628";
         pointPosit[i] = await getPosition(url, pointIn[i]);
         if (pointPosit[i] == 0) {
-            alert("输入的第" + (i + 1) + "个位置无法识别");
+            msgHint("输入的第" + (i + 1) + "个位置无法识别", false);
             return 0;
         }
     }
@@ -626,7 +738,7 @@ async function routePlanMul() {
             pointDis[j][i] = pointDis[i][j];
         }
     }
-    searchClear();
+    // searchClear();
     gdmap.clearMap();
 
     // 获取全排列
@@ -652,16 +764,116 @@ async function routePlanMul() {
     for (let i = 0; i < size; i++) {
         routePosit[i] = pointPosit[routeList[i]];
     }
+    // 排列地点名
+    for (let i = 0; i < size; i++) {
+        pointName.push(document.getElementById(routePointIn[routeList[i]]).value);
+    }
+
     // 路线规划
+    drawRouteMul(routePosit, tripModesMul, pointName, size);
+}
+
+// 多点出行路线规划
+// routePosit指路线列表数组
+// tripModesMul指出行方式数组
+// pointName指地点名数组
+// size是总地点数    
+const contentPanel = document.getElementById('routeContentMul');
+async function drawRouteMul(routePosit, tripModes, pointName, size) {
+    contentPanel.innerHTML = ''; // 清楚之前添加的子节点
     let carbonReduction = 0;
     for (let i = 0; i < size - 1; i++) {
-        let backValue = await getWalking(routePosit[i], routePosit[i + 1], (i + 1), (size - 1));
+        let backValue;
+        // 添加节点
+        let routeCount = document.createElement('h5');
+        routeCount.classList.add("routeCount");
+        routeCount.innerHTML = '第' + (i + 1) + '程'
+        let routeSta = document.createElement('span');
+        routeSta.classList.add("routeStaEnd");
+        routeSta.innerHTML = pointName[i] + '&nbsp&nbsp&nbsp';
+        let routeLink = document.createElement('span');
+        routeLink.innerHTML = ' > ';
+        let routeEnd = document.createElement('span');
+        routeEnd.classList.add("routeStaEnd");
+        routeEnd.innerHTML = pointName[i + 1] + '&nbsp&nbsp&nbsp<br/>';
+        let selectList = document.createElement('select');
+        selectList.id = "selectList" + i;
+        selectList.options.add(new Option("步行-最短时间", 'walk-time'));
+        selectList.options.add(new Option("步行-最舒适", 'walk-comfort'));
+        selectList.options.add(new Option("骑行-最短时间", 'ride-time'));
+        selectList.options.add(new Option("骑行-最舒适", 'ride-comfort'));
+        selectList.options.add(new Option("公交-最短时间", 'transfer-time'));
+        selectList.options.add(new Option("公交-最少步行", 'transfer-walk'));
+        selectList.options.add(new Option("公交-最少换乘", 'transfer-transit'));
+        selectList.options.add(new Option("公交-最舒适", 'transfer-comfort'));
+        selectList.classList.add("tripModeSeelect");
+        contentPanel.appendChild(routeCount);
+        contentPanel.appendChild(routeSta);
+        contentPanel.appendChild(routeLink);
+        contentPanel.appendChild(routeEnd);
+        contentPanel.appendChild(selectList);
+        if (tripModes[i] === 'walk-time') backValue = await getWalking(routePosit[i], routePosit[i + 1], (i + 1), (size - 1));
+        else if (tripModes[i] === 'ride-time') backValue = await getRiding(routePosit[i], routePosit[i + 1], (i + 1), (size - 1));
+        else {
+            if (tripModes[i] === 'transfer-time') transferMul.setPolicy(AMap.TransferPolicy.LEAST_TIME); // 最少时间
+            else if (tripModes[i] === 'transfer-transit') transferMul.setPolicy(AMap.TransferPolicy.LEAST_TRANSFER); // 最少换乘
+            else if (tripModes[i] === 'transfer-walk') transferMul.setPolicy(AMap.TransferPolicy.LEAST_WALK); // 最少步行
+            else if (tripModes[i] === 'transfer-comfort') transferMul.setPolicy(AMap.TransferPolicy.MOST_COMFORT); // 最舒适
+            else {
+                console.log('tripModes非法!');
+                return 0;
+            }
+            backValue = await getTransfer(routePosit[i], routePosit[i + 1], (i + 1), (size - 1));
+        }
         if (backValue == -1) {
-            alert('规划路线失败！');
+            msgHint("规划路线失败!", false);
+            contentPanel.innerHTML = '';
             return 0;
         } else {
+            // 计算碳减排
             carbonReduction += backValue;
         }
     }
+    isSearchingMul = 1;
     document.getElementById("carbonReduction-mul").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
 }
+
+// 重新生成路线
+document.getElementById('reGenerateBtn').addEventListener('click', async function () {
+    if (isSearchingMul) {
+        for(let i=0; i<sizeMul-1; i++){
+            let selectId = "selectList"+i;
+            tripModesMul[i] = document.getElementById(selectId).value;
+        }
+
+        searchClear();
+        gdmap.clearMap();
+        let carbonReduction = 0;
+        for (let i = 0; i < sizeMul - 1; i++) {
+            let backValue;
+            if (tripModesMul[i] === 'walk-time') backValue = await getWalking(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1));
+            else if (tripModesMul[i] === 'ride-time') backValue = await getRiding(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1));
+            else {
+                if (tripModesMul[i] === 'transfer-time') transferMul.setPolicy(AMap.TransferPolicy.LEAST_TIME); // 最少时间
+                else if (tripModesMul[i] === 'transfer-transit') transferMul.setPolicy(AMap.TransferPolicy.LEAST_TRANSFER); // 最少换乘
+                else if (tripModesMul[i] === 'transfer-walk') transferMul.setPolicy(AMap.TransferPolicy.LEAST_WALK); // 最少步行
+                else if (tripModesMul[i] === 'transfer-comfort') transferMul.setPolicy(AMap.TransferPolicy.MOST_COMFORT); // 最舒适
+                else {
+                    console.log('tripModes非法!');
+                    return 0;
+                }
+                console.log(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1));
+                backValue = await getTransfer(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1));
+            }
+            if (backValue == -1) {
+                msgHint("规划路线失败!", false);
+                contentPanel.innerHTML = '';
+                return 0;
+            } else {
+                // 计算碳减排
+                carbonReduction += backValue;
+            }
+        }
+        document.getElementById("carbonReduction-mul").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+    }
+});
