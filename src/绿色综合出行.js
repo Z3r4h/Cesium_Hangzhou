@@ -774,7 +774,7 @@ map.on('style.load', function () {
 
     map.addSource('hzline-source', {
         type: 'geojson',
-        data: 'data/hzline.geojson'
+        data: 'data/hzline_updated.geojson'
     });
     var toggleButton2 = document.getElementById('toggleButton2');
     var isLayerVisible2 = false;
@@ -789,8 +789,8 @@ map.on('style.load', function () {
                 type: 'line',
                 source: 'hzline-source',
                 paint: {
-                    'line-color': 'rgb(0,191,255)',
-                    'line-width': 2
+                    'line-color': ['get', '颜色'], // 使用'颜色'列作为线的颜色
+                    'line-width': 1
                 }
             });
             isLayerVisible2 = true;
