@@ -645,7 +645,7 @@ body {
 #extendedBar1 .tabcontent {
     display: none;
     padding: 6px 12px;
-    border: 2px dotted #83d794;
+    /* border: 1px solid #9e9d9d; */
     border-top: none;
 }
 
@@ -950,7 +950,7 @@ body {
 #extendedBar2 .tabcontent2 {
     display: none;
     padding: 6px 12px;
-    border: 1px solid #9e9d9d;
+    /* border: 1px solid #9e9d9d; */
     border-top: none;
 }
 
@@ -1212,9 +1212,9 @@ body {
     overflow: hidden;
 }
 
-.generateRoute{
+#routeContent, #routeContentMul{
     color:rgb(0, 0, 0);
-    max-height: 300px;
+    max-height: 350px;
     overflow-y: scroll;
     margin-bottom: 10px;
 }
@@ -1262,4 +1262,55 @@ body {
 
 .generateRoute .busstop+span{
     font-size: 12px;
+}
+
+/* 信息提示 */
+#msgHint{
+    display: none;
+    position: fixed;
+    top: 110px;
+    left: 48vw;
+    z-index: 2000;
+    height: 20px;
+    border-radius: 40px;
+    background-color: #3dac8fda;
+    text-align: center;
+    line-height: 20px;
+    padding: 10px;
+    color: white;
+}
+
+/* 多点出行输入框 */
+#search-box3 input{
+    width: 180px !important;
+}
+
+/* 多点出行路线头 */
+.routeCount{
+    display: inline-block;
+    margin: 4px;
+}
+
+.routeStaEnd{
+    position: relative;
+    display: inline-block;
+    top: 3px;
+    max-width:70px;
+    height: 18px;
+    line-height: 19px;
+    border-radius: 20px;
+    padding-bottom: -20px;
+    background-color: #6aebebe1;
+    font-size: 12px;
+    text-indent: 4px;;
+    margin: 0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.tripModeSeelect{
+    position: relative;
+    display: block;
+    width: 105px;
 }
