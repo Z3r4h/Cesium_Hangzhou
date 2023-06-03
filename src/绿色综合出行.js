@@ -366,7 +366,7 @@ function openTab2(event, tabName) {
     //显示当前选项卡，并向打开该选项卡的按钮添加一个active类
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.classList.add("active");
-}*/
+}
 
 //nav切换
 const nav2Items = document.querySelectorAll('.nav2-item');
@@ -453,18 +453,6 @@ confirmBtn2.addEventListener('click', () => {
     filterBoxContent2.style.display = 'none';
 });
 
-//search-button、筛选
-const sb_button3 = document.querySelector("#search-button2");
-
-sb_button3.addEventListener("click", (e) => {
-    e.preventDefault;
-    sb_button3.classList.add("animate");
-    setTimeout(() => {
-        sb_button3.classList.remove("animate");
-    }, 600);
-});
-const sb_button4 = document.querySelector("#filterBtn2");
-
 
 // 拓展栏3
 // 工具箱 
@@ -486,17 +474,22 @@ function toolPanelOpen(event, toolButton, toolPanelId) {
     }
 }
 
+
+// 加载地铁路线
 map.on('style.load', function () {
-    map.addSource('wms-source', {
-        'type': 'raster',
-        'tiles': [
-            'http://localhost:8080/geoserver/green/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&STYLES&LAYERS=green%3Abus_lines&exceptions=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A3857&WIDTH=768&HEIGHT=769&BBOX={bbox-epsg-3857}',
-        ],
-        'tileSize': 256
+
+    map.addSource('subline-source', {
+        type: 'geojson',
+        data: 'data/subline.geojson'
     });
-    // var toggleButton = document.getElementById('toggleButton');
-    // var isLayerVisible = false;
-    var hangzhouluxian = 'green:bus_lines';
+    map.addSource('subpoint-source', {
+        type: 'geojson',
+        data: 'data/subpoint.geojson'
+    });
+    var toggleButton3 = document.getElementById('toggleButton3');
+    var isLayerVisible3 = false;
+    var subline = 'subline-layer';
+    var subpoint = 'subpoint-layer';
 
     // 监听按钮点击事件
     toggleButton3.addEventListener('click', function () {
@@ -831,7 +824,6 @@ map.on('style.load', function () {
         }
     });
 })
-
 
 
 // 拓展栏4

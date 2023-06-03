@@ -197,7 +197,6 @@
         </div>
         <div id="search-box4">
             <button id="search-button" onclick="routePlanMul()" value=0>搜索</button>
-            <button id="filterBtn2">筛选</button>
         </div>
         <div id="filterBoxContent2">
             <h5>天气可视化</h5>
@@ -282,43 +281,56 @@
                 <button>分享</button>
         </div> -->
     </div>
+ <!-- 拓展栏3 -->
+ <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+ <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
 
-    <!-- 拓展栏3 -->
-    <div id="extendedBar3" class="extendedBar" style="display:none;">
-        <h3>绿色地图</h3>
-        <div class="extendedFunction">
-            <h4>杭州公共交通线路</h4>
-            <div class="button glbutton", id="toggleButton3"><span class="iconfont icon-dibudaohanglan-"></span> &nbsp;地铁线路图</div>
-            <div class="button glbutton", id="toggleButton"><span class="iconfont icon-gongjiao"></span> &nbsp;公交线路图</div>
-            <div id="mypanel" data-role="panel" data-display="overlay" data-position-fixed="true">
+ <script type="text/javascript"
+     src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/dataTool.min.js"></script>
 
-            </div>
-            <div id="mypanel01" data-role="panel" data-display="overlay" data-position-fixed="true">
+ <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
 
-            </div>
+ <script type="text/javascript"
+     src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
 
-            <div id="search-container">
-                <input type="text" id="keyword" placeholder="输入公交线路号">
-                <button id="query">查询</button>
-            </div>
-        </div>
-        <div class="extendedFunction">
-            <h4>地图可视化</h4>
-            <div class="button" id="greenbutton"><span class="iconfont icon-tianqi"></span> &nbsp;绿色指数</div>
-            <div class="button glbutton", id="toggleButton2"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
-            <div class="button toolBtn" id="AQI_button" onclick="toolPanelOpen(event, 'AQI_button', 'AQI_select')">
-                <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量
-            </div>
-            <div id="AQI_select" class="toolPanel">
-                <h5>空气质量指数选择</h5>
-                <div class="button" onclick="showAQIMap()"><span class="iconfont icon-ceju1"></span> &nbsp;AQI</div>
-                <div class="button" onclick="showPM25Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM2.5
-                </div>
-                <div class="button" onclick="showPM10Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM10
-                </div>
-            </div>
-        </div>
-    </div>
+ <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
+ <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+ 
+ <div id="extendedBar3" class="extendedBar" style="display:none;">
+     <h3>绿色地图</h3>
+     <div class="extendedFunction">
+         <h4>杭州公共交通线路</h4>
+         <div class="button glbutton", id="toggleButton3"><span class="iconfont icon-dibudaohanglan-"></span> &nbsp;地铁线路图</div>
+         <div class="button glbutton", id="toggleButton"><span class="iconfont icon-gongjiao"></span> &nbsp;公交线路图</div>
+         <div id="mypanel" data-role="panel" data-display="overlay" data-position-fixed="true">
+
+         </div>
+         <div id="mypanel01" data-role="panel" data-display="overlay" data-position-fixed="true">
+
+         </div>
+
+         <div id="search-container">
+             <input type="text" id="busline-input" placeholder="输入公交线路号">
+             <button id="highlight-button">查询</button>
+         </div>
+     </div>
+     <div class="extendedFunction">
+         <h4>地图可视化</h4>
+         <div class="button" id="greenbutton"><span class="iconfont icon-tianqi"></span> &nbsp;绿色指数</div>
+         <div class="button glbutton", id="toggleButton2"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
+         <div class="button toolBtn" id="AQI_button" onclick="toolPanelOpen(event, 'AQI_button', 'AQI_select')">
+             <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量
+         </div>
+         <div id="AQI_select" class="toolPanel">
+             <h5>空气质量指数选择</h5>
+             <div class="button" onclick="showAQIMap()"><span class="iconfont icon-ceju1"></span> &nbsp;AQI</div>
+             <div class="button" onclick="showPM25Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM2.5
+             </div>
+             <div class="button" onclick="showPM10Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM10
+             </div>
+         </div>
+     </div>
+ </div>
 
     <!-- 拓展栏4 -->
     <div id="extendedBar4" class="extendedBar" style="display:none;">
