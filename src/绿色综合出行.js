@@ -299,13 +299,15 @@ const deleteButton1 = document.getElementById("delete-button1");
 let counter = 1;
 
 addButton1.addEventListener("click", () => {
-    const input = document.createElement("input");
-    input.id = `pass-search-text${counter++}`;
-    input.type = "text";
-    input.placeholder = "请输入中间点";
-    input.classList.add("searchtext");
-    searchBox3.insertBefore(input, searchBox3.lastChild.previousSibling);
-    addButton1.value = counter - 1; // add-button1的value记录存在的中间输入框
+    if(counter<=5){ // 最多5个中间点
+        const input = document.createElement("input");
+        input.id = `pass-search-text${counter++}`;
+        input.type = "text";
+        input.placeholder = "请输入中间点";
+        input.classList.add("searchtext");
+        searchBox3.insertBefore(input, searchBox3.lastChild.previousSibling);
+        addButton1.value = counter - 1; // add-button1的value记录存在的中间输入框
+    }
 });
 
 deleteButton1.addEventListener("click", () => {
