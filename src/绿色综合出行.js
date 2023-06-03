@@ -93,7 +93,7 @@ map.addControl(new MapboxLanguage({ defaultLanguage: 'zh' }));
 
 
 // 创建Leaflet地图对象
-var leafletMap = L.map('mainmap').setView([30.274085, 120.155070], 11);
+var leafletMap = L.map('mainmap').setView([30.224085, 120.155070], 11);
 
 // 定义Mapbox底图URL
 var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemVyNGgiLCJhIjoiY2xoeGI0dG03MHMydDNxbnRmNHBubmozayJ9.ln24sT_GoKRsF15MQyVNuQ';
@@ -137,6 +137,8 @@ glbuttons.forEach((glbutton) => {
     glbutton.addEventListener("click", function () {
         if (leafletMap.hasLayer(mapboxLayer)) {
             closeleaflet();
+            leafletMap.removeLayer(geoTIFFLayer);
+            geoTIFFLayer = null;
         }
     });
 });
