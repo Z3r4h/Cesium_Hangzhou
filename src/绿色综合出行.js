@@ -842,4 +842,5 @@ function personalPanelOpen(event, personalBtn, personalPanelId) {
         buttonClick.style.backgroundColor = "#ffffff";
         personalPanelSelected.style.display = "block";
     }
+
 }
