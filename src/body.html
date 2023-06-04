@@ -229,8 +229,11 @@
             </div>
 
             <div id="search-container">
-                <input type="text" id="busline-input" placeholder="输入公交线路号">
-                <button id="highlight-button">查询</button>
+                <div class="inputBox2">
+                    <input type="text" id="busline-input" required="required">
+                    <span>输入公交线路号</span>
+                    <button id="highlight-button">查询</button>
+                </div>
             </div>
         </div>
         <div class="extendedFunction">
@@ -262,8 +265,6 @@
             onclick="personalPanelOpen(event, 'personalBtn1', 'history')">出行历史</span>
         <span id="personalBtn2" class="personalBtn"
             onclick="personalPanelOpen(event, 'personalBtn2', 'favorites')">我的收藏</span>
-        <span id="personalBtn3" class="processMore personalBtn"
-            onclick="personalPanelOpen(event, 'personalBtn3', 'CReduction')">减碳贡献</span>
         <div id="history" class="personalPanel"></div>
         <div id="favorites" class="personalPanel">
             <h4>路线收藏</h4>
