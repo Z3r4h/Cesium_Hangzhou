@@ -1240,6 +1240,13 @@ body {
     white-space:nowrap;
 }
 
+#routeContent,#routeContent2,#routeContentMul{
+    color: rgb(0, 0, 0);
+    max-height: 350px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+}
+
 .tripModeSeelect{
     position: relative;
     display: block;
