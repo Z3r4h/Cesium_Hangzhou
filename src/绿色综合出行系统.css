@@ -1344,3 +1344,20 @@ body {
     font-weight: 900;
 }
 
+/* 减碳量提示 */
+#carbonReduction, #carbonReduction-mul{
+    display: none;
+    position: relative;
+    background-color: #75ebebba;
+    color:#0076d7;
+    width: 97px;
+    height: 15px;
+    text-indent: 1px;
+    line-height: 15px;
+    left: 0px;
+    padding: 5px;
+    border-style: double;
+    border-radius: 10px;
+    box-shadow: 0px 2px 2px 2px #44d6e4;
+    margin-top: 5px;
+}

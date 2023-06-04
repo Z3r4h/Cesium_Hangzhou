@@ -13,6 +13,9 @@ var searchPosition;  // 右上角搜索框搜索结果所在位置
 let routeContentDiv = document.getElementById('routeContentDiv');
 var msgHintDiv = document.getElementById('msgHint');
 let overLayer = [];
+// 减碳量显示div
+let carbonRedDiv = document.getElementById("carbonReduction");
+let carbonRedMulDiv = document.getElementById("carbonReduction-mul");
 
 // 当前路线距离
 var disNow;
@@ -63,8 +66,6 @@ document.getElementById('search-box').addEventListener('keydown', async () => {
             return 0;
         }
         gdmap.setZoomAndCenter(17, searchPosition);
-        // 注意，其他地图也应调整到相应位置!!!!!!
-        // 注意，其他地图也应调整到相应位置!!!!!!
         // 注意，其他地图也应调整到相应位置!!!!!!
 
         // 添加标记
@@ -387,7 +388,8 @@ async function getRoute(startPosition, endPosition, strategy) {
                     disNow = result.routes[0].distance;
                     let carbonReduction = carbonCalc('walk', disNow / 1000); // 减碳量
                     carbRedNow = carbonReduction;
-                    document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                    carbonRedDiv.innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                    carbonRedDiv.style.display = 'block';
                     drawRoute(result.routes[0], gdmap);
                     console.log('绘制步行路线完成');
                     routeContentDiv.style.display = "block";
@@ -443,7 +445,8 @@ async function getRoute(startPosition, endPosition, strategy) {
                     // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
                     if (status === 'complete') {
                         if (result.routes && result.routes.length) {
-                            document.getElementById("carbonReduction").innerHTML = '减碳' + generalCarb.toFixed(2) + '千克';
+                            carbonRedDiv.innerHTML = '减碳' + generalCarb.toFixed(2) + '千克';
+                            carbonRedDiv.style.display = 'block';
                             drawRoute(result.routes[0], gdmap);
                             console.log('绘制步行路线完成');
                             routeContentDiv.style.display = "block";
@@ -453,7 +456,8 @@ async function getRoute(startPosition, endPosition, strategy) {
                     }
                 });
             } else {
-                document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                carbonRedDiv.innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                carbonRedDiv.style.display = 'block';
                 routeContentDiv.style.display = "block";
             }
         }
@@ -468,7 +472,8 @@ async function getRoute(startPosition, endPosition, strategy) {
                     disNow = result.routes[0].distance;
                     let carbonReduction = carbonCalc('ride', disNow / 1000); // 减碳量
                     carbRedNow = carbonReduction;
-                    document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                    carbonRedDiv.innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                    carbonRedDiv.style.display = 'block';
                     drawRoute(result.routes[0], gdmap);
                     console.log('绘制骑行路线完成');
                     routeContentDiv.style.display = "block";
@@ -524,7 +529,8 @@ async function getRoute(startPosition, endPosition, strategy) {
                     // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
                     if (status === 'complete') {
                         if (result.routes && result.routes.length) {
-                            document.getElementById("carbonReduction").innerHTML = '减碳' + generalCarb.toFixed(2) + '千克';
+                            carbonRedDiv.innerHTML = '减碳' + generalCarb.toFixed(2) + '千克';
+                            carbonRedDiv.style.display = 'block';
                             drawRoute(result.routes[0], gdmap);
                             console.log('绘制步行路线完成');
                             routeContentDiv.style.display = "block";
@@ -534,7 +540,8 @@ async function getRoute(startPosition, endPosition, strategy) {
                     }
                 });
             } else {
-                document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                carbonRedDiv.innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                carbonRedDiv.style.display = 'block';
                 routeContentDiv.style.display = "block";
             }
         }
@@ -560,7 +567,8 @@ async function getRoute(startPosition, endPosition, strategy) {
                 }
                 carbonReduction = carbonCalcMul(tripMode, tripDis);
                 carbRedNow = carbonReduction;
-                document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                carbonRedDiv.innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+                carbonRedDiv.style.display = 'block';
                 drawRouteTransfer(result.plans[0], gdmap);
                 console.log('绘制公共交通路线完成');
                 routeContentDiv.style.display = "block";
@@ -1116,7 +1124,8 @@ async function drawRouteMul(routePosit, tripModes, pointName, size) {
         }
     }
     isSearchingMul = 1;
-    document.getElementById("carbonReduction-mul").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+    carbonRedMulDiv.innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+    carbonRedMulDiv.style.display = 'block';
 }
 
 // 重新生成路线
@@ -1156,6 +1165,7 @@ document.getElementById('reGenerateBtn').addEventListener('click', async functio
                 carbonReduction += backValue;
             }
         }
-        document.getElementById("carbonReduction-mul").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+        carbonRedMulDiv.innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
+        carbonRedMulDiv.style.display = 'block';
     }
 });
