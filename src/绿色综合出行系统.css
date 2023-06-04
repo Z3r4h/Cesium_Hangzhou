@@ -666,67 +666,9 @@ body {
     border-top: none;
 }
 
-#extendedBar1 #filterBoxContent1 {
-    position: fixed;
-    left: 25%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 250px;
-    height: 500px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    box-shadow: 2px 2px 2px #ccc;
-    border-radius: 5px;
-    display: none;
-}
 
-#extendedBar1 #filterBoxContent1 h5 {
-    text-align: center;
-    color: #0073ff;
-    margin: 8px;
-    font-size: 15px;
-}
 
-#extendedBar1 #filterBoxContent1 input {
-    margin-bottom: 10px;
-    width: 30px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
 
-#extendedBar1 #filterBoxContent1 #text1 {
-    width: 240px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-#extendedBar1 #filterBoxContent1 span {
-    display: block;
-    margin-bottom: 10px;
-}
-
-#extendedBar1 #filterBoxContent1 button {
-    float: right;
-    margin-left: 10px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #4CAF50;
-    color: #fff;
-}
-
-#extendedBar1 #filterBoxContent1 button.cancel {
-    float: right;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #ccc;
-    color: #fff;
-}
 
 
 
@@ -834,67 +776,7 @@ body {
     border-top: none;
 }
 
-#extendedBar2 #filterBoxContent2 {
-    position: fixed;
-    left: 25%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 250px;
-    height: 500px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    box-shadow: 2px 2px 2px #ccc;
-    border-radius: 5px;
-    display: none;
-}
 
-#extendedBar2 #filterBoxContent2 h5 {
-    text-align: center;
-    color: #0073ff;
-    margin: 8px;
-    font-size: 15px;
-}
-
-#extendedBar2 #filterBoxContent2 input {
-    margin-bottom: 10px;
-    width: 30px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-#extendedBar2 #filterBoxContent2 #text2 {
-    width: 240px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-#extendedBar2 #filterBoxContent2 span {
-    display: block;
-    margin-bottom: 10px;
-}
-
-#extendedBar2 #filterBoxContent2 button {
-    float: right;
-    margin-left: 10px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #4CAF50;
-    color: #fff;
-}
-
-#extendedBar2 #filterBoxContent2 button.cancel {
-    float: right;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #ccc;
-    color: #fff;
-}
 
 
 
@@ -1036,6 +918,8 @@ body {
 
 #history {
     display: block;
+    height:300px;
+    overflow-y: scroll;
 }
 
 #favorites {
@@ -1061,11 +945,6 @@ body {
     margin: 0;
 }
 
-#route {
-    border-style: solid;
-    border-width: 0 0 1px 0;
-    border-color: #c7c7c7be;
-}
 
 /* 个人中心-个人收藏 小面板 标题 */
 #favorites h4 {
@@ -1083,7 +962,7 @@ body {
 
 #routeContent, #routeContentMul{
     color:rgb(0, 0, 0);
-    max-height: 350px;
+    max-height: 300px;
     overflow-y: scroll;
     margin-bottom: 10px;
 }
@@ -1183,3 +1062,20 @@ body {
     display: block;
     width: 105px;
 }
+
+/* 个人中心 */
+.docDiv{
+    position: relative;
+    width: 210px;
+    height: 60px;
+    left: 13px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.document{
+    margin: 0;
+    color: black;
+    font-weight: 900;
+}
+

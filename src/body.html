@@ -67,7 +67,7 @@
     <!-- 主体部分 -->
     <div id="main">
         <div id="sidebar">
-            <img class="button" id="button1" onclick="changeButton(1)" src="assets/出行导航_blue.png" alt="出行导航"
+            <img class="button" id="button1" onclick="changeButton(1)" src="assets/出行导航_white.png" alt="出行导航"
                 title="出行导航">
             <img class="button" id="button2" onclick="changeButton(2)" src="assets/城市设施_white.png" alt="城市设施"
                 title="城市设施">
@@ -76,8 +76,8 @@
             <img class="button" id="button4" onclick="changeButton(4)" src="assets/个人中心_white.png" alt="个人中心"
                 title="个人中心">
         </div>
-        <div id="mainmap" class="map" style="display: none;"></div>
-        <div id="mapNavigation" class="map" style="display: block; background-color: rgba(144, 225, 255, 0.623);"></div>
+        <div id="mainmap" class="map" style="display: block;"></div>
+        <div id="mapNavigation" class="map" style="display: none; background-color: rgba(144, 225, 255, 0.623);"></div>
     </div>
 
 
@@ -142,32 +142,13 @@
         <div id="search-box2">
             <button class="sb_button" id="search-button"
                 onclick="routePlan('search-text1', 'search-text2', 'walking')">搜索</button>
-            <button class="sb_button" id="filterBtn1">筛选</button>
-        </div>
-        <div id="filterBoxContent1">
-            <h5>天气可视化</h5>
-            <label><input type="radio" name="weather" value="sunny">晴天</label>
-            <label><input type="radio" name="weather" value="cloudy">多云</label>
-            <label><input type="radio" name="weather" value="rainy">雨天</label>
-            <h5>不经过某个地方？</h5>
-            <input id="text1" type="text" name="avoid" placeholder="请输入地名">
-            <h5>兴趣优先级：</h5>
-            <span class="interest"><span class="num">1.</span><span class="value">最短时间</span></span>
-            <span class="interest"><span class="num">2.</span><span class="value">最短路径</span></span>
-            <span class="interest"><span class="num">3.</span><span class="value">最少步行</span></span>
-            <span class="interest"><span class="num">4.</span><span class="value">偏爱公交</span></span>
-            <span class="interest"><span class="num">5.</span><span class="value">偏爱地铁</span></span>
-            <div class="buttons">
-                <button id="cancelBtn1">取消</button>
-                <button id="confirmBtn1">确定</button>
-            </div>
         </div>
         <div id="routeContentDiv" class="tabcontent" style="display:none">
             <h4>步行 - 最短时间</h4>
             <div id="routeContent" class="generateRoute"></div>
             <span>
-                <button>收藏</button>
-                <button>分享</button>
+                <button id = 'shoucang1'>收藏</button>
+                <button id = 'chuxing1'>出行</button>
                 <span id="carbonReduction" calss="carbonReduction"
                     style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;"></span>
             </span>
@@ -187,150 +168,77 @@
             <div id="extra-inputs"></div>
             <input id="search-text4" type="text" placeholder="请输入终点">
         </div>
-        <div id="tab02">
-            <!-- <span class="tablinks2 active" onclick="openTab2(event, 'tab21')">最短时间</span>
-            <span class="tablinks2" onclick="openTab2(event, 'tab22')">最短路径</span>
-            <span class="tablinks2" onclick="openTab2(event, 'tab23')">最少步行</span>
-            <span class="tablinks2" onclick="openTab2(event, 'tab24')">偏爱公交</span>
-            <span class="tablinks2" onclick="openTab2(event, 'tab25')">偏好地铁</span>
-            <span class="tablinks2" onclick="openTab2(event, 'tab26')">雨天出行</span> -->
-        </div>
         <div id="search-box4">
             <button id="search-button" onclick="routePlanMul()" value=0>搜索</button>
-        </div>
-        <div id="filterBoxContent2">
-            <h5>天气可视化</h5>
-            <label><input type="radio" name="weather" value="sunny">晴天</label>
-            <label><input type="radio" name="weather" value="cloudy">多云</label>
-            <label><input type="radio" name="weather" value="rainy">雨天</label>
-            <h5>不经过某个地方？</h5>
-            <input id="text2" type="text" name="avoid" placeholder="请输入地名">
-            <h5>兴趣优先级：</h5>
-            <span class="interest"><span class="num">1.</span><span class="value">最短时间</span></span>
-            <span class="interest"><span class="num">2.</span><span class="value">最短路径</span></span>
-            <span class="interest"><span class="num">3.</span><span class="value">最少步行</span></span>
-            <span class="interest"><span class="num">4.</span><span class="value">偏爱公交</span></span>
-            <span class="interest"><span class="num">5.</span><span class="value">偏爱地铁</span></span>
-            <div class="buttons">
-                <button id="cancelBtn2">取消</button>
-                <button id="confirmBtn2">确定</button>
-            </div>
         </div>
         <div id="tab21" class="tabcontent2" style="display:block">
             <div id="routeContentMul" class="generateRoute">
                 <div id="routeMulHeader">
-                    <!-- <h5 class="routeCount">第1程</h5>
-                    <span class="routeStaEnd">浙大都能从地上>校医院</span>
-                    <select name="tripModeSeelect" class="tripModeSeelect">
-                        <option value="步行-最短时间" selected="selected">步行-最短时间</option>
-                        <option value="步行-最舒适">步行-最舒适</option>
-                        <option value="骑行-最短时间">骑行-最短时间</option>
-                        <option value="骑行-最短时间">骑行-最短时间</option>
-                        <option value="公交-最短时间">公交-最短时间</option>
-                        <option value="公交-最少步行">公交-最少步行</option>
-                        <option value="公交-最少换乘">公交-最少换乘</option>
-                        <option value="公交-最舒适">公交-最舒适</option>
-                    </select> -->
                 </div>
             </div>
             <span>
                 <button id="reGenerateBtn">重新规划</button>
                 <button>收藏</button>
-                <button>分享</button>
+                <button>出行</button>
                 <span id="carbonReduction-mul" calss="carbonReduction"
                     style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;" value=0></span>
             </span>
         </div>
-        <!-- <div id="tab22" class="tabcontent2">
-            <h4>最短路径</h4>
-            <p>这里是最短路径的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab23" class="tabcontent2">
-            <h4>最少步行距离</h4>
-            <p>这里是最少步行距离的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab24" class="tabcontent2">
-            <h4>偏爱公交</h4>
-            <p>这里是偏爱公交的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab25" class="tabcontent2">
-            <h4>偏好地铁</h4>
-            <p>这里是偏好地铁的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-            </span>
-        </div>
-        <div id="tab26" class="tabcontent2">
-            <h4>雨天出行路线</h4>
-            <p>这里是雨天出行路线的内容。</p>
-            <span>
-                <button>收藏</button>
-                <button>分享</button>
-        </div> -->
+
     </div>
- <!-- 拓展栏3 -->
- <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
- <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <!-- 拓展栏3 -->
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
 
- <script type="text/javascript"
-     src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/dataTool.min.js"></script>
+    <script type="text/javascript"
+        src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/dataTool.min.js"></script>
 
- <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
 
- <script type="text/javascript"
-     src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+    <script type="text/javascript"
+        src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
 
- <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
- <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
- 
- <div id="extendedBar3" class="extendedBar" style="display:none;">
-     <h3>绿色地图</h3>
-     <div class="extendedFunction">
-         <h4>杭州公共交通线路</h4>
-         <div class="button glbutton", id="toggleButton3"><span class="iconfont icon-dibudaohanglan-"></span> &nbsp;地铁线路图</div>
-         <div class="button glbutton", id="toggleButton"><span class="iconfont icon-gongjiao"></span> &nbsp;公交线路图</div>
-         <div id="mypanel" data-role="panel" data-display="overlay" data-position-fixed="true">
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
 
-         </div>
-         <div id="mypanel01" data-role="panel" data-display="overlay" data-position-fixed="true">
+    <div id="extendedBar3" class="extendedBar" style="display:none;">
+        <h3>绿色地图</h3>
+        <div class="extendedFunction">
+            <h4>杭州公共交通线路</h4>
+            <div class="button glbutton" , id="toggleButton3"><span class="iconfont icon-dibudaohanglan-"></span>
+                &nbsp;地铁线路图</div>
+            <div class="button glbutton" , id="toggleButton"><span class="iconfont icon-gongjiao"></span> &nbsp;公交线路图
+            </div>
+            <div id="mypanel" data-role="panel" data-display="overlay" data-position-fixed="true">
 
-         </div>
+            </div>
+            <div id="mypanel01" data-role="panel" data-display="overlay" data-position-fixed="true">
 
-         <div id="search-container">
-             <input type="text" id="busline-input" placeholder="输入公交线路号">
-             <button id="highlight-button">查询</button>
-         </div>
-     </div>
-     <div class="extendedFunction">
-         <h4>地图可视化</h4>
-         <div class="button" id="greenbutton"><span class="iconfont icon-tianqi"></span> &nbsp;绿色指数</div>
-         <div class="button glbutton", id="toggleButton2"><span class="iconfont icon-road-conditions_line"></span> &nbsp;道路拥堵情况</div>
-         <div class="button toolBtn" id="AQI_button" onclick="toolPanelOpen(event, 'AQI_button', 'AQI_select')">
-             <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量
-         </div>
-         <div id="AQI_select" class="toolPanel">
-             <h5>空气质量指数选择</h5>
-             <div class="button" onclick="showAQIMap()"><span class="iconfont icon-ceju1"></span> &nbsp;AQI</div>
-             <div class="button" onclick="showPM25Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM2.5
-             </div>
-             <div class="button" onclick="showPM10Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM10
-             </div>
-         </div>
-     </div>
- </div>
+            </div>
+
+            <div id="search-container">
+                <input type="text" id="busline-input" placeholder="输入公交线路号">
+                <button id="highlight-button">查询</button>
+            </div>
+        </div>
+        <div class="extendedFunction">
+            <h4>地图可视化</h4>
+            <div class="button" id="greenbutton"><span class="iconfont icon-tianqi"></span> &nbsp;绿色指数</div>
+            <div class="button glbutton" , id="toggleButton2"><span class="iconfont icon-road-conditions_line"></span>
+                &nbsp;道路拥堵情况</div>
+            <div class="button toolBtn" id="AQI_button" onclick="toolPanelOpen(event, 'AQI_button', 'AQI_select')">
+                <span class="iconfont icon-a-iconkongqizhiliang"></span> &nbsp;空气质量
+            </div>
+            <div id="AQI_select" class="toolPanel">
+                <h5>空气质量指数选择</h5>
+                <div class="button" onclick="showAQIMap()"><span class="iconfont icon-ceju1"></span> &nbsp;AQI</div>
+                <div class="button" onclick="showPM25Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM2.5
+                </div>
+                <div class="button" onclick="showPM10Map()"><span class="iconfont icon-kongjianceju"></span> &nbsp;PM10
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 拓展栏4 -->
     <div id="extendedBar4" class="extendedBar" style="display:none;">
@@ -344,13 +252,10 @@
             onclick="personalPanelOpen(event, 'personalBtn2', 'favorites')">我的收藏</span>
         <span id="personalBtn3" class="processMore personalBtn"
             onclick="personalPanelOpen(event, 'personalBtn3', 'CReduction')">减碳贡献</span>
-        <div id="history" class="personalPanel">还没有出行历史!</div>
+        <div id="history" class="personalPanel"></div>
         <div id="favorites" class="personalPanel">
             <h4>路线收藏</h4>
-            <div id="route" class="myFavorite">还没有路线收藏！</div>
-            <h4>地点收藏</h4>
-            <div id="location" class="myFavorite">还没有地点收藏！</div>
-            <div></div>
+            <div id="route" class="myFavorite"></div>
         </div>
         <div id="CReduction" class="personalPanel">
             <h4>低碳行进距离</h4>

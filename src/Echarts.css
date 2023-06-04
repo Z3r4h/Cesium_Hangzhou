@@ -1,0 +1,62 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#cesiumContainer {
+  height: 100%;
+}
+
+#layerPicker {
+  position: absolute;
+  width: 340px;
+  height: 125px;
+  left: 20px;
+  bottom: 20px;
+  background: #f3f5fa;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.layerBox {
+  float: left;
+  width: 100px;
+}
+
+#bingMap,
+#gaodeMap {
+  margin-right: 20px;
+}
+
+.layerImg {
+  width: 96px;
+  height: 96px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.layerImg:hover {
+  cursor: pointer;
+  border: 2px solid #4096ff !important;
+  box-shadow: 0 0 7px 4px rgb(5 145 255 / 20%) !important;
+}
+
+.layerImg img {
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s;
+}
+
+.layerImg img:hover {
+  transform: scale(1.12) !important;
+}
+
+.layerName {
+  margin-top: 6px;
+  text-align: center;
+  color: #000000E0;
+}
