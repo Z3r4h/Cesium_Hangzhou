@@ -13,6 +13,10 @@ var searchPosition;  // 右上角搜索框搜索结果所在位置
 let routeContentDiv = document.getElementById('routeContentDiv');
 var msgHintDiv = document.getElementById('msgHint');
 let overLayer = [];
+// 当前路线距离
+var disNow;
+// 当前路线减碳量
+var carbRedNow;
 
 // 导入高德底图至单独的容器
 var gdmap = new AMap.Map('mapNavigation', {
@@ -21,8 +25,6 @@ var gdmap = new AMap.Map('mapNavigation', {
     center: [120.155070, 30.274085], //初始化地图中心点
     // viewMode: '3D',
 });
-
-var hiddenMap = new AMap.Map('mapNavigationNone', {});
 
 // 右上角搜索框添加回车事件,移动到对应位置
 let searchMarker = new AMap.Marker({
@@ -211,11 +213,7 @@ var transferOption = {
 
 
 var walking = new AMap.Walking(walkOption);
-var walking1 = new AMap.Walking({ panel: "routeContent", autoFitView: true });
-var walking2 = new AMap.Walking({ panel: "routeContent2", autoFitView: true })
 var riding = new AMap.Riding(rideOption);
-var riding1 = new AMap.Riding({ panel: "routeContent", autoFitView: true });
-var riding2 = new AMap.Riding({ panel: "routeContent2", autoFitView: true });
 var transfer = new AMap.Transfer(transferOption);
 
 // var walkingMul = new AMap.Walking({panel: "routeContentMul"});
@@ -223,19 +221,12 @@ var transfer = new AMap.Transfer(transferOption);
 // var transferMul = new AMap.Transfer({ panel: "routeContentMul", city: '杭州' });
 var walkingMul = new AMap.Walking();
 var ridingMul = new AMap.Riding();
-var transferMul = new AMap.Transfer({ city: '杭州' });
+var transferMul = new AMap.Transfer({city: '杭州' });
 
 function searchClear() {
     walking.clear();
-    walking1.clear();
-    walking2.clear();
     riding.clear();
-    riding1.clear();
-    riding2.clear();
     transfer.clear();
-    walkingMul.clear();
-    ridingMul.clear();
-    transferMul.clear();
 }
 
 // url搜索，返回位置数据
@@ -250,41 +241,11 @@ function getPosition(url, inputBox) {
                         position = res.data.tips[i].location;
                         i++;
                     }
-                    if (position == null) {
+                    if (position == '') {
                         resolve(0);
                     }
                     position = position.split(',').map(Number); // 字符串划分转数组 -> 数组内字符串转数字，此时为“[经度，维度]”形式
                     inputBox.value = res.data.tips[0].name;
-                    resolve(position);
-                }
-                else {
-                    resolve(0);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-    );
-    return promise;
-}
-
-// url搜索， 返回风景名胜
-function getAttraction(url) {
-    const promise = new Promise((resolve, reject) => {
-        let position;
-        axios.get(url)
-            .then(res => {
-                if (res.data.count != 0) {
-                    let i = 0;
-                    while (position == null && i < parseInt(res.data.count)) {
-                        position = res.data.pois[i].location;
-                        i++;
-                    }
-                    if (position == null) {
-                        resolve(0);
-                    }
-                    position = position.split(',').map(Number); // 字符串划分转数组 -> 数组内字符串转数字，此时为“[经度，维度]”形式
                     resolve(position);
                 }
                 else {
@@ -311,9 +272,7 @@ document.getElementById('ride').addEventListener('click', (e) => { if (isSearchi
 document.getElementById('transfer').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId.split('-')[0]) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTime'); }, true);
 
 document.getElementById('walk-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'walking-LeastTime'); }, true);
-document.getElementById('walk-comfort').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'walking-MostComfort'); }, true);
 document.getElementById('ride-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'riding-LeastTime'); }, true);
-document.getElementById('ride-comfort').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'riding-MostComfort'); }, true);
 document.getElementById('transfer-time').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTime'); }, true);
 document.getElementById('transfer-walk').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastWalk'); }, true);
 document.getElementById('transfer-transit').addEventListener('click', (e) => { if (isSearching && e.target.id != tripModeBtnId) getRoteForModeBtn(startPosition, endPosition, 'transfer-LeastTransfer'); }, true);
@@ -325,7 +284,7 @@ async function routePlan(startId, endId, strategy = 'walking-LeastTime') {
     isSearching = 1;
     let startInput = document.getElementById(startId);
     let endInput = document.getElementById(endId);
-    searchClear(); // 清除之前的搜索结果
+    searchClear(); // 清楚之前的搜索结果
     gdmap.clearMap(); // 清除之前的路线
 
     // city设置为杭州
@@ -371,7 +330,7 @@ function getStratery() {
 }
 
 // 传入url, 获得路线
-async function getRoute(startPosition, endPosition, strategy) {
+function getRoute(startPosition, endPosition, strategy) {
     // 步行导航
     if (strategy === 'walking-LeastTime') {
         routeContentDiv.style.display = "none";
@@ -379,7 +338,9 @@ async function getRoute(startPosition, endPosition, strategy) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
                 if (result.routes && result.routes.length) {
-                    let carbonReduction = carbonCalc('walk', result.routes[0].distance / 1000); // 减碳量
+                    disNow = result.routes[0].distance;
+                    let carbonReduction = carbonCalc('walk', disNow / 1000); // 减碳量
+                    carbRedNow = carbonReduction;
                     document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                     drawRoute(result.routes[0], gdmap);
                     console.log('绘制步行路线完成');
@@ -390,67 +351,6 @@ async function getRoute(startPosition, endPosition, strategy) {
             }
         });
     }
-    else if (strategy === 'walking-MostComfort') {
-        routeContentDiv.style.display = "none";
-        // 计算中间点
-        let middlePosition = [(startPosition[0] + endPosition[0]) / 2, (startPosition[1] + endPosition[1]) / 2];
-        // 计算起终点距离
-        let sta2endDis = AMap.GeometryUtil.distance(startPosition, endPosition);
-        // 半径
-        let radius = sta2endDis / 2;
-        // 调用高德 周边搜索API 搜索中点半径范围内是否有公园等设施
-        let url = "https://restapi.amap.com/v3/place/around?key=f1dbdde4f534703472073cece6811628&location=" + middlePosition[0] + "," + middlePosition[1] + "&radius=" + radius + "&types=110000"
-        let passPosition = await getAttraction(url);
-
-        // 普通路线
-        let generalCarb = await getWalking(startPosition, endPosition, 1, 1, false, walking);
-        let generalDist = generalCarb / (0.192 - 0.0005); // 注意，如果carbonReduction是用g做单位，还需要除以1000
-
-        // passPosition为0即说明范围内未找到风景名胜位置，直接使用普通路线
-        // passPosition不为0即说明在范围内找到风景名胜点位置，进入绘制舒适路线
-        let comfortRouteDist = 9999999; // 记录舒适路线距离
-        if (passPosition != 0) {
-            // 舒适路线 - 路线规划
-            searchClear();
-            gdmap.clearMap();
-            let carbonReduction = await getWalking(startPosition, passPosition, 1, 2, true, walking1);
-            if (carbonReduction == -1) {
-                msgHint('规划路线失败', false);
-                return 0;
-            }
-            let tempCarb = await getWalking(passPosition, endPosition, 2, 2, true, walking2)
-            if (tempCarb == -1) {
-                msgHint('规划路线失败', false);
-                return 0;
-            }
-            carbonReduction += tempCarb;
-
-            // 舒适路线距离
-            comfortRouteDist = carbonReduction / (0.192 - 0.0005); // 注意，如果carbonReduction是用g做单位，还需要除以1000
-
-            // 比较舒适路线距离与普通路线距离, 如果舒适路线距离过长则重新使用普通路线
-            if (comfortRouteDist >= generalDist * 2) {
-                searchClear();
-                gdmap.clearMap();
-                walking.search(startPosition, endPosition, function (status, result) {
-                    // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
-                    if (status === 'complete') {
-                        if (result.routes && result.routes.length) {
-                            document.getElementById("carbonReduction").innerHTML = '减碳' + generalCarb.toFixed(2) + '千克';
-                            drawRoute(result.routes[0], gdmap);
-                            console.log('绘制步行路线完成');
-                            routeContentDiv.style.display = "block";
-                        }
-                    } else {
-                        msgHint("步行路线数据查询失败!", false);
-                    }
-                });
-            } else {
-                document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
-                routeContentDiv.style.display = "block";
-            }
-        }
-    }
     // 骑行
     else if (strategy === 'riding-LeastTime') {
         routeContentDiv.style.display = "none";
@@ -458,7 +358,9 @@ async function getRoute(startPosition, endPosition, strategy) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
                 if (result.routes && result.routes.length) {
-                    let carbonReduction = carbonCalc('ride', result.routes[0].distance / 1000); // 减碳量
+                    disNow = result.routes[0].distance;
+                    let carbonReduction = carbonCalc('ride', disNow / 1000); // 减碳量
+                    carbRedNow = carbonReduction;
                     document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                     drawRoute(result.routes[0], gdmap);
                     console.log('绘制骑行路线完成');
@@ -468,67 +370,6 @@ async function getRoute(startPosition, endPosition, strategy) {
                 }
             }
         });
-    }
-    else if (strategy === 'riding-MostComfort') {
-        routeContentDiv.style.display = "none";
-        // 计算中间点
-        let middlePosition = [(startPosition[0] + endPosition[0]) / 2, (startPosition[1] + endPosition[1]) / 2];
-        // 计算起终点距离
-        let sta2endDis = AMap.GeometryUtil.distance(startPosition, endPosition);
-        // 半径
-        let radius = sta2endDis / 2;
-        // 调用高德 周边搜索API 搜索中点半径范围内是否有公园等设施
-        let url = "https://restapi.amap.com/v3/place/around?key=f1dbdde4f534703472073cece6811628&location=" + middlePosition[0] + "," + middlePosition[1] + "&radius=" + radius + "&types=110000"
-        let passPosition = await getAttraction(url);
-
-        // 普通路线
-        let generalCarb = await getRiding(startPosition, endPosition, 1, 1, false, riding);
-        let generalDist = generalCarb / (0.192 - 0.0015); // 注意，如果carbonReduction是用g做单位，还需要除以1000
-
-        // passPosition为0即说明范围内未找到风景名胜位置，直接使用普通路线
-        // passPosition不为0即说明在范围内找到风景名胜点位置，进入绘制舒适路线
-        let comfortRouteDist = 9999999; // 记录舒适路线距离
-        if (passPosition != 0) {
-            // 舒适路线 - 路线规划
-            searchClear();
-            gdmap.clearMap();
-            let carbonReduction = await getRiding(startPosition, passPosition, 1, 2, true, riding1);
-            if (carbonReduction == -1) {
-                msgHint('规划路线失败', false);
-                return 0;
-            }
-            let tempCarb = await getRiding(passPosition, endPosition, 2, 2, true, riding2)
-            if (tempCarb == -1) {
-                msgHint('规划路线失败', false);
-                return 0;
-            }
-            carbonReduction += tempCarb;
-
-            // 舒适路线距离
-            comfortRouteDist = carbonReduction / (0.192 - 0.0005); // 注意，如果carbonReduction是用g做单位，还需要除以1000
-
-            // 比较舒适路线距离与普通路线距离, 如果舒适路线距离过长则重新使用普通路线
-            if (comfortRouteDist >= generalDist * 2) {
-                searchClear();
-                gdmap.clearMap();
-                riding.search(startPosition, endPosition, function (status, result) {
-                    // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
-                    if (status === 'complete') {
-                        if (result.routes && result.routes.length) {
-                            document.getElementById("carbonReduction").innerHTML = '减碳' + generalCarb.toFixed(2) + '千克';
-                            drawRoute(result.routes[0], gdmap);
-                            console.log('绘制步行路线完成');
-                            routeContentDiv.style.display = "block";
-                        }
-                    } else {
-                        msgHint("步行路线数据查询失败!", false);
-                    }
-                });
-            } else {
-                document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
-                routeContentDiv.style.display = "block";
-            }
-        }
     }
     // 公交
     else {
@@ -545,7 +386,12 @@ async function getRoute(startPosition, endPosition, strategy) {
                 result.plans[0].transit_distance / 1000,
                 result.plans[0].taxi_distance / 1000,
                 result.plans[0].railway_distance / 1000];
+                disNow = 0;
+                for(let i=0; i<4; i++){
+                    disNow+=result.plans[i];
+                }
                 carbonReduction = carbonCalcMul(tripMode, tripDis);
+                carbRedNow = carbonReduction;
                 document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                 drawRouteTransfer(result.plans[0], gdmap);
                 console.log('绘制公共交通路线完成');
@@ -562,10 +408,9 @@ async function getRoute(startPosition, endPosition, strategy) {
 // map表示需要绘制在其上的地图
 // num表示第几条路线，默认为1
 // all表示总路线，默认为1
-// isComfort表示是否最舒适路线绘制，默认为false
-function drawRoute(route, map, num = 1, all = 1, isComfort = false) {
+function drawRoute(route, map, num = 1, all = 1) {
     var path;
-    if (num === 1) overLayer.length = 0;
+    if(num===1) overLayer.length = 0;
     if (route.steps) path = parseRouteToPathWalk(route);
     else path = parseRouteToPathRide(route)
     if (num == 1) {
@@ -578,7 +423,7 @@ function drawRoute(route, map, num = 1, all = 1, isComfort = false) {
         overLayer.push(startMarker);
     }
 
-    if (num > 1 && !isComfort) {
+    if (num > 1) {
         var passMarker = new AMap.Marker({
             position: path[0],
             // icon: './assets/pass.png',
@@ -615,7 +460,7 @@ function drawRoute(route, map, num = 1, all = 1, isComfort = false) {
     routeLine.setMap(map);
 
     // 调整视野达到最佳显示区域
-    if (all === num) map.setFitView(overLayer);
+    if(all===num) map.setFitView(overLayer);
 }
 
 // 解析WalkRoute对象，构造成AMap.Polyline的path参数需要的格式
@@ -649,7 +494,7 @@ function parseRouteToPathRide(route) {
 
 // 路线绘制 - 公共交通
 function drawRouteTransfer(route, map, num = 1, all = 1) {
-    if (num === 1) overLayer.length = 0;
+    if(num===1) overLayer.length = 0;
     if (num == 1) {
         var startMarker = new AMap.Marker({
             position: route.segments[0].transit.origin,
@@ -738,7 +583,7 @@ function drawRouteTransfer(route, map, num = 1, all = 1) {
     }
 
     // 调整视野达到最佳显示区域
-    if (all === all) map.setFitView(overLayer);
+    if(all === all) map.setFitView(overLayer);
 }
 
 // 获取两个点之间的距离(步行距离), 传入起终点经纬度
@@ -794,82 +639,31 @@ function arrange(arr) {
 
 // walkingMul/Riding/Transfer.search 方便异步调用
 // num和all参数解释见函数drawRoute()
-// isComfort判断是否为最舒适路线绘制
-// walkingMul为绘制地图
-function getWalking(startPosition, endPosition, num = 1, all = 1, isComfort = false, walking = walkingMul, map = gdmap) {
+function getWalking(startPosition, endPosition, num, all) {
     let p = new Promise((resolve, reject) => {
-        walking.search(startPosition, endPosition, function (status, result) {
+        walkingMul.search(startPosition, endPosition, function (status, result) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
                 if (result.routes && result.routes.length) {
-                    drawRoute(result.routes[0], map, num, all, isComfort);
+                    drawRoute(result.routes[0], gdmap, num, all);
                     resolve(carbonCalc('walk', result.routes[0].distance / 1000)); // 减碳量
                 } else {
                     resolve(-1);
                 }
             } else {
-                if (isComfort || all == 1) msgHint("路线绘制失败", false);
-                else msgHint("第 " + num + " 条" + "路线(步行)数据查询失败!", false);
+                msgHint("第 " + num + " 条" + "路线(步行)数据查询失败!", false);
             }
         })
     });
     return p;
 }
-async function getWalkingComfort(startPosition, endPosition, num = 1, all = 1, isComfort = true, walking = walkingMul, map = hiddenMap) {
-    let p = new Promise(async (resolve, reject) => {
-        let middlePosition = [(startPosition[0] + endPosition[0]) / 2, (startPosition[1] + endPosition[1]) / 2];
-        // 计算起终点距离
-        let sta2endDis = AMap.GeometryUtil.distance(startPosition, endPosition);
-        // 半径
-        let radius = sta2endDis / 2;
-        // 调用高德 周边搜索API 搜索中点半径范围内是否有公园等设施
-        let url = "https://restapi.amap.com/v3/place/around?key=f1dbdde4f534703472073cece6811628&location=" + middlePosition[0] + "," + middlePosition[1] + "&radius=" + radius + "&types=110000"
-        let passPosition = await getAttraction(url);
-
-        // 普通路线
-        let generalCarb = await getWalking(startPosition, endPosition, num, all, false, riding, map);
-        let generalDist = generalCarb / (0.192 - 0.0015); // 注意，如果carbonReduction是用g做单位，还需要除以1000
-        
-        // passPosition为0即说明范围内未找到风景名胜位置，直接使用普通路线
-        // passPosition不为0即说明在范围内找到风景名胜点位置，进入绘制舒适路线
-        let comfortRouteDist = 9999999; // 记录舒适路线距离
-        if (passPosition != 0) {
-            // 舒适路线 - 路线规划
-            let carbonReduction = await getWalking(startPosition, passPosition, num, all, false, walkingMul, hiddenMap);
-            if (carbonReduction == -1) {
-                msgHint('规划路线失败', false);
-                return 0;
-            }
-            let tempCarb = await getWalking(passPosition, endPosition, num+1, all+1, isComfort, walkingMul, hiddenMap)
-            if (tempCarb == -1) {
-                msgHint('规划路线失败', false);
-                return 0;
-            }
-            carbonReduction += tempCarb;
-
-            // 舒适路线距离
-            comfortRouteDist = carbonReduction / (0.192 - 0.0005); // 注意，如果carbonReduction是用g做单位，还需要除以1000
-        }
-
-        // 比较舒适路线距离与普通路线距离, 如果舒适路线距离过长则重新使用普通路线
-        if (comfortRouteDist >= generalDist * 2) {
-            resolve(await getWalking(startPosition, endPosition, num, all, false, walkingMul, gdmap));
-        } else {
-            let temp1 = await getWalking(startPosition, passPosition, num, all+1, false, walkingMul, gdmap);
-            let temp2 = await getWalking(passPosition, endPosition, num+1, all+1, true, walkingMul, gdmap);
-            resolve(temp1+temp2);
-        }
-    });
-    return p;
-}
-
-function getRiding(startPosition, endPosition, num, all, isComfort = false, riding = ridingMul, map = gdmap) {
+function getRiding(startPosition, endPosition, num, all) {
     let p = new Promise((resolve, reject) => {
-        riding.search(startPosition, endPosition, function (status, result) {
+        ridingMul.search(startPosition, endPosition, function (status, result) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
                 if (result.routes && result.routes.length) {
-                    drawRoute(result.routes[0], map, num, all, isComfort);
+                    drawRoute(result.routes[0], gdmap, num, all);
                     resolve(carbonCalc('ride', result.routes[0].distance / 1000)); // 减碳量
                 } else {
                     resolve(-1);
@@ -881,58 +675,11 @@ function getRiding(startPosition, endPosition, num, all, isComfort = false, ridi
     });
     return p;
 }
-async function getRidingComfort(startPosition, endPosition, num = 1, all = 1, isComfort = true, riding = ridingMul, map = hiddenMap) {
-    let p = new Promise(async (resolve, reject) => {
-        let middlePosition = [(startPosition[0] + endPosition[0]) / 2, (startPosition[1] + endPosition[1]) / 2];
-        // 计算起终点距离
-        let sta2endDis = AMap.GeometryUtil.distance(startPosition, endPosition);
-        // 半径
-        let radius = sta2endDis / 2;
-        // 调用高德 周边搜索API 搜索中点半径范围内是否有公园等设施
-        let url = "https://restapi.amap.com/v3/place/around?key=f1dbdde4f534703472073cece6811628&location=" + middlePosition[0] + "," + middlePosition[1] + "&radius=" + radius + "&types=110000"
-        let passPosition = await getAttraction(url);
-
-        // 普通路线
-        let generalCarb = await getRiding(startPosition, endPosition, num, all, false, riding, map);
-        let generalDist = generalCarb / (0.192 - 0.0015); // 注意，如果carbonReduction是用g做单位，还需要除以1000
-        
-        // passPosition为0即说明范围内未找到风景名胜位置，直接使用普通路线
-        // passPosition不为0即说明在范围内找到风景名胜点位置，进入绘制舒适路线
-        let comfortRouteDist = 9999999; // 记录舒适路线距离
-        if (passPosition != 0) {
-            // 舒适路线 - 路线规划
-            let carbonReduction = await getRiding(startPosition, passPosition, num, all, false, ridingMul, hiddenMap);
-            if (carbonReduction == -1) {
-                msgHint('规划路线失败', false);
-                return 0;
-            }
-            let tempCarb = await getRiding(passPosition, endPosition, num+1, all+1, isComfort, ridingMul, hiddenMap)
-            if (tempCarb == -1) {
-                msgHint('规划路线失败', false);
-                return 0;
-            }
-            carbonReduction += tempCarb;
-
-            // 舒适路线距离
-            comfortRouteDist = carbonReduction / (0.192 - 0.0005); // 注意，如果carbonReduction是用g做单位，还需要除以1000
-        }
-
-        // 比较舒适路线距离与普通路线距离, 如果舒适路线距离过长则重新使用普通路线
-        if (comfortRouteDist >= generalDist * 2) {
-            resolve(await getRiding(startPosition, endPosition, num, all, false, ridingMul, gdmap));
-        } else {
-            let temp1 = await getRiding(startPosition, passPosition, num, all+1, false, ridingMul, gdmap);
-            let temp2 = await getRiding(passPosition, endPosition, num+1, all+1, isComfort, ridingMul, gdmap);
-            resolve(temp1+temp2);
-        }
-    });
-    return p;
-}
-
 function getTransfer(startPosition, endPosition, num, all) {
     let p = new Promise((resolve, reject) => {
         transferMul.search(startPosition, endPosition, function (status, result) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+            console.log(result);
             if (status === 'complete') {
                 if (result.plans && result.plans.length) {
                     let tripMode = ["walk", "bus", "car", "subway"];
@@ -942,6 +689,7 @@ function getTransfer(startPosition, endPosition, num, all) {
                     result.plans[0].railway_distance / 1000];
                     drawRouteTransfer(result.plans[0], gdmap, num, all);
                     let carbonReduction = carbonCalcMul(tripMode, tripDis);
+                    console.log(result.plans[0], gdmap, num, all);
                     resolve(carbonReduction); // 减碳量
                 } else {
                     resolve(-1);
@@ -978,7 +726,7 @@ async function routePlanMul() {
     let pointDis = Array.from(Array(10), () => new Array(10)); // 二维数组，存放对应两点间的距离
 
     tripModesMul.length = 0; // 先清除之前的内容
-    for (let i = 0; i < size - 1; i++) {
+    for (let i = 0; i < size-1; i++) {
         tripModesMul.push('walk-time'); // 开始默认都是步行-最短时间
     }
 
@@ -1045,7 +793,7 @@ async function routePlanMul() {
 // size是总地点数    
 const contentPanel = document.getElementById('routeContentMul');
 async function drawRouteMul(routePosit, tripModes, pointName, size) {
-    contentPanel.innerHTML = ''; // 清除之前添加的子节点
+    contentPanel.innerHTML = ''; // 清楚之前添加的子节点
     let carbonReduction = 0;
     for (let i = 0; i < size - 1; i++) {
         let backValue;
@@ -1078,9 +826,7 @@ async function drawRouteMul(routePosit, tripModes, pointName, size) {
         contentPanel.appendChild(routeEnd);
         contentPanel.appendChild(selectList);
         if (tripModes[i] === 'walk-time') backValue = await getWalking(routePosit[i], routePosit[i + 1], (i + 1), (size - 1));
-        else if (tripModes[i] === 'walk-comfort') backValue = await getWalkingComfort(routePosit[i], routePosit[i + 1], (i + 1), (size - 1), true);
         else if (tripModes[i] === 'ride-time') backValue = await getRiding(routePosit[i], routePosit[i + 1], (i + 1), (size - 1));
-        else if (tripModes[i] === 'ride-comfort') backValue = await getRidingComfort(routePosit[i], routePosit[i + 1], (i + 1), (size - 1), true);
         else {
             if (tripModes[i] === 'transfer-time') transferMul.setPolicy(AMap.TransferPolicy.LEAST_TIME); // 最少时间
             else if (tripModes[i] === 'transfer-transit') transferMul.setPolicy(AMap.TransferPolicy.LEAST_TRANSFER); // 最少换乘
@@ -1108,8 +854,8 @@ async function drawRouteMul(routePosit, tripModes, pointName, size) {
 // 重新生成路线
 document.getElementById('reGenerateBtn').addEventListener('click', async function () {
     if (isSearchingMul) {
-        for (let i = 0; i < sizeMul - 1; i++) {
-            let selectId = "selectList" + i;
+        for(let i=0; i<sizeMul-1; i++){
+            let selectId = "selectList"+i;
             tripModesMul[i] = document.getElementById(selectId).value;
         }
 
@@ -1119,9 +865,7 @@ document.getElementById('reGenerateBtn').addEventListener('click', async functio
         for (let i = 0; i < sizeMul - 1; i++) {
             let backValue;
             if (tripModesMul[i] === 'walk-time') backValue = await getWalking(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1));
-            else if (tripModesMul[i] === 'walk-comfort') backValue = await getWalkingComfort(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1), true);
             else if (tripModesMul[i] === 'ride-time') backValue = await getRiding(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1));
-            else if (tripModesMul[i] === 'ride-comfort') backValue = await getRidingComfort(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1), true);
             else {
                 if (tripModesMul[i] === 'transfer-time') transferMul.setPolicy(AMap.TransferPolicy.LEAST_TIME); // 最少时间
                 else if (tripModesMul[i] === 'transfer-transit') transferMul.setPolicy(AMap.TransferPolicy.LEAST_TRANSFER); // 最少换乘
@@ -1131,6 +875,7 @@ document.getElementById('reGenerateBtn').addEventListener('click', async functio
                     console.log('tripModes非法!');
                     return 0;
                 }
+                console.log(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1));
                 backValue = await getTransfer(routePosit[i], routePosit[i + 1], (i + 1), (sizeMul - 1));
             }
             if (backValue == -1) {

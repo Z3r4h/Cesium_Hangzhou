@@ -6,11 +6,6 @@ var buttons = document.getElementsByClassName("button");
 var extendedBars = document.getElementsByClassName("extendedBar");
 var activeIndex = 0;
 
-function init() {
-    buttons[activeIndex].classList.add("active");
-    buttons[activeIndex].src = "assets/出行导航_blue.png";
-    extendedBars[activeIndex].style.display = "block";
-}
 
 //拓展栏1
 function changeButton(index) {
@@ -77,7 +72,6 @@ function extendedBaropen(activeIndex) {
             break;
     }
 }
-init();
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94LXhzIiwiYSI6ImNsaTVvcXByMDFmZTMzZm8zOGtsbXUwN2IifQ.qQmT-APr8yb1gPDAxR2P0A';
 var map = new mapboxgl.Map({
@@ -114,7 +108,7 @@ var greenbutton = document.getElementById('greenbutton');
 greenbutton.addEventListener("click", function () {
     if (!leafletMap.hasLayer(mapboxLayer)) {
         addleaflet();
-        geoTIFFLayer = L.imageOverlay('http://localhost:8080/geoserver/yandanyang/wms?service=WMS&version=1.1.0&request=GetMap&layers=yandanyang%3Acombined_data&bbox=782835.0%2C3323595.0%2C850545.0%2C3372675.0&width=768&height=556&srs=EPSG%3A32650&styles=&format=image%2Fpng',  [[30.010719932787183, 119.93219337258866], [30.43523957235633,120.6493862990089]]).addTo(leafletMap);
+        geoTIFFLayer = L.imageOverlay('http://localhost:8080/geoserver/yandanyang/wms?service=WMS&version=1.1.0&request=GetMap&layers=yandanyang%3Acombined_data&bbox=782835.0%2C3323595.0%2C850545.0%2C3372675.0&width=768&height=556&srs=EPSG%3A32650&styles=&format=image%2Fpng', [[30.010719932787183, 119.93219337258866], [30.43523957235633, 120.6493862990089]]).addTo(leafletMap);
     }
     else {
         closeleaflet();
@@ -216,13 +210,42 @@ function showPM10Map() {
     }
 }
 
-function openAmap(){
+var mainmap = document.getElementById('mainmap');
+var mapNavigation = document.getElementById('mapNavigation');
 
+function openAmap(){
+    if(mainmap.style.display == "block"){
+        mainmap.style.display = "none";
+    }
+    if(mapNavigation.style.display == "none"){
+        mapNavigation.style.display = "block";
+    }
 }
 
 function openglmap(){
-
+    if(mapNavigation.style.display == "block"){
+    mapNavigation.style.display = "none";
+    }
+    if(mainmap.style.display == "none"){
+        mainmap.style.display = "block";
+    }
 }
+
+const Btn1 = document.getElementById("button1");
+const Btn2 = document.getElementById("button2");
+const Btn3 = document.getElementById("button3");
+
+Btn1.addEventListener('click',() =>{
+        openAmap();
+});
+Btn2.addEventListener('click',() =>{
+         openAmap();
+});
+Btn3.addEventListener('click',() =>{
+    openglmap();
+});
+
+
 // 拓展栏1
 
 //nav切换
@@ -282,53 +305,14 @@ function openTab(event, subBtnId, titleContent) {
     tripModeBtnId = subBtnId;
 }
 
-const filterBtn1 = document.getElementById("filterBtn1");
-const filterBoxContent1 = document.getElementById("filterBoxContent1");
-const cancelBtn1 = document.getElementById("cancelBtn1");
-const confirmBtn1 = document.getElementById("confirmBtn1");
-
-filterBtn1.addEventListener('click', () => {
-    filterBoxContent1.style.display = 'block';
-});
-
-cancelBtn1.addEventListener('click', () => {
-    filterBoxContent1.style.display = 'none';
-});
-
-confirmBtn1.addEventListener('click', () => {
-    const weather = document.querySelector('input[name="weather"]:checked');
-    const avoid = document.querySelector('input[name="avoid"]');
-    const interests = document.querySelectorAll('.interest');
-
-    console.log('天气：', weather ? weather.value : '');
-    console.log('避让地点：', avoid ? avoid.value : '');
-    interests.forEach((interest) => {
-        if (interest.querySelector('input[type="radio"]').checked) {
-            console.log('兴趣优先级：', interest.querySelector('.value').textContent);
-        }
-    });
-    filterBoxContent1.style.display = 'none';
-});
-//search-button、筛选
-const sb_button = document.querySelector("#search-button,#filterBtn1");
-
-sb_button.addEventListener("click", (e) => {
-    e.preventDefault;
-    sb_button.classList.add("animate");
-    setTimeout(() => {
+const sb_button = document.querySelector("#search-button");
+        sb_button.addEventListener("click", (e) => {
+        e.preventDefault;
+        sb_button.classList.add("animate");
+        setTimeout(() => {
         sb_button.classList.remove("animate");
-    }, 600);
+        }, 600);
 });
-const sb_button2 = document.querySelector("#filterBtn1");
-
-sb_button2.addEventListener("click", (e) => {
-    e.preventDefault;
-    sb_button2.classList.add("animate");
-    setTimeout(() => {
-        sb_button2.classList.remove("animate");
-    }, 600);
-});
-
 
 // 拓展栏2
 const searchBox3 = document.getElementById("search-box3");
@@ -338,11 +322,14 @@ const deleteButton1 = document.getElementById("delete-button1");
 let counter = 1;
 
 addButton1.addEventListener("click", () => {
-    if(counter<=5){ // 最多5个中间点
+    if (counter <= 5) { // 最多5个中间点
         const input = document.createElement("input");
         input.id = `pass-search-text${counter++}`;
         input.type = "text";
         input.placeholder = "请输入中间点";
+        input.style.fontSize = "14px"; // 设置placeholder文本字号为14像素
+        input.style.border = "none";
+        input.style.outline = "2px solid rgba(35, 146, 34, 0.5)";
         input.classList.add("searchtext");
         searchBox3.insertBefore(input, searchBox3.lastChild.previousSibling);
         addButton1.value = counter - 1; // add-button1的value记录存在的中间输入框
@@ -433,30 +420,14 @@ function openTab(event, subBtnId, titleContent) {
     tripModeBtnId = subBtnId;
 }
 
-const filterBoxContent2 = document.getElementById("filterBoxContent2");
-const cancelBtn2 = document.getElementById("cancelBtn2");
-const confirmBtn2 = document.getElementById("confirmBtn2");
-
-cancelBtn2.addEventListener('click', () => {
-    filterBoxContent2.style.display = 'none';
+const sb_button2 = document.querySelector("#search-button2");
+        sb_button2.addEventListener("click", (e) => {
+        e.preventDefault;
+        sb_button2.classList.add("animate");
+        setTimeout(() => {
+        sb_button2.classList.remove("animate");
+        }, 600);
 });
-
-confirmBtn2.addEventListener('click', () => {
-    const weather = document.querySelector('input[name="weather"]:checked');
-    const avoid = document.querySelector('input[name="avoid"]');
-    const interests = document.querySelectorAll('.interest');
-
-    console.log('天气：', weather ? weather.value : '');
-    console.log('避让地点：', avoid ? avoid.value : '');
-    interests.forEach((interest) => {
-        if (interest.querySelector('input[type="radio"]').checked) {
-            console.log('兴趣优先级：', interest.querySelector('.value').textContent);
-        }
-    });
-    filterBoxContent2.style.display = 'none';
-});
-
-
 // 拓展栏3
 // 工具箱 
 function toolPanelOpen(event, toolButton, toolPanelId) {
@@ -845,4 +816,67 @@ function personalPanelOpen(event, personalBtn, personalPanelId) {
         buttonClick.style.backgroundColor = "#ffffff";
         personalPanelSelected.style.display = "block";
     }
+
 }
+
+var chuxing1 = document.getElementById('chuxing1');
+var historyPanel = document.getElementById('history');
+var historyCount = 0;
+var searchSta = document.getElementById('search-text1');
+var searchEnd = document.getElementById('search-text2');
+let docLink = document.createElement('b');
+docLink.innerHTML = ' > '
+chuxing1.addEventListener('click', function () {
+    let historyDocDiv = document.createElement('div');
+    let historyDoc = document.createElement('div');
+    let historyDocSta = document.createElement('b');
+    let historyDocEnd = document.createElement('b');
+    let historyMode = document.createElement('b');
+    let historyDist = document.createElement('b');
+    let historyCarb = document.createElement('b');
+    // id
+    historyDocDiv.id = "historyDocDiv"+historyCount;
+    historyDoc.id = "historyDoc" + historyCount;
+    historyDocSta.id = "historyDocSta" + historyCount;
+    historyDocEnd.id = "historyDocEnd" + historyDocEnd;
+    historyMode.id = "historyMode" + historyCount;
+    historyDist.id = "historyDist" + historyCount;
+    historyCarb.id = "historyCarb" + historyCount;
+    // class
+    historyDocDiv.classList.add("docDiv");
+    historyDoc.classList.add("document");
+    historyDocSta.classList.add("docSta");
+    historyDocEnd.classList.add("docEnd");
+    historyMode.classList.add("docMode");
+    historyDist.classList.add("docList");
+    historyCarb.classList.add("docCarb");
+    historyDocSta.innerHTML = searchSta.value;
+    historyDocEnd.innerHTML = searchEnd.value;
+    let strategy = getStratery();
+    if(strategy=='walking-LeastTime') strategy='步行-最短时间';
+    else if(strategy=='walking-MostComfort') strategy='步行-最舒适';
+    else if(strategy=='riding-LeastTime') strategy='骑行-最短时间';
+    else if(strategy=='riding-MostComfort') strategy='骑行-最舒适';
+    else if(strategy=='transfer-LeastTime') strategy='公交-最短时间';
+    else if(strategy=='transfer-LeastWalk') strategy='公交-最少步行';
+    else if(strategy=='transfer-LeastTransit') strategy='公交-最少换乘';
+    else if(strategy=='transfer-MostComfort') strategy='公交-最舒适';
+    historyMode.innerHTML = strategy;
+    historyDist.innerHTML = disNow;
+    historyCarb.innerHTML = carbRedNow.toFixed(2);
+    historyDocDiv.appendChild(historyDoc);
+    historyDoc.appendChild(historyDocSta);
+    historyDoc.appendChild(docLink);
+    historyDoc.appendChild(historyDocEnd);
+    historyDocDiv.appendChild(historyDoc);
+    historyDocDiv.appendChild(historyMode);
+    historyDocDiv.appendChild(historyDist);
+    historyDocDiv.appendChild(historyCarb);
+    historyPanel.appendChild(historyDocDiv);
+    historyCount++;
+});
+
+var shoucang1 = document.getElementById('shoucang1');
+shoucang1.addEventListener('click', function () {
+    
+});
