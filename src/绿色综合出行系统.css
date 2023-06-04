@@ -1078,7 +1078,25 @@ color: aliceblue;
     display: none;
 }
 
-
+#highlight-button2{
+    position: absolute;
+    left: 180px;
+    top: 3px;
+    width: 60px;
+    height: 30px;
+    background-color: #137427;
+    font-weight: 600;
+    color: white;
+    border-radius: 5px;
+    border: 0px;
+    transition: all 0.2s ease;
+}
+#highlight-button:active{
+    transform: scale(0.8);
+}
+#highlight-button2:active{
+    transform: scale(0.8);
+}
 
 /* 拓展栏4：个人中心 */
 /* 个人中心面板 */

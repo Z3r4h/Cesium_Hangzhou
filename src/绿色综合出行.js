@@ -464,6 +464,7 @@ map.on('style.load', function () {
     var isLayerVisible3 = false;
     var subline = 'subline-layer';
     var subpoint = 'subpoint-layer';
+    var highlightedSubline = 'highlighted-subline-layer'; // 新的高亮线路图层ID
 
     // 监听按钮点击事件
     toggleButton3.addEventListener('click', function () {
@@ -525,7 +526,28 @@ map.on('style.load', function () {
                 var feature3 = e3.features[0];
                 // 显示线路信息
                 alert(feature3.properties.name);
+                // 创建一个新的高亮线路图层
+                map.addLayer({
+                    id: highlightedSubline,
+                    type: 'line',
+                    source: 'subline-source',
+                    paint: {
+                        'line-color': 'rgb(0, 255, 0)', // 设置高亮颜色
+                        'line-width': 5
+                    },
+                    filter: ['==', 'name', feature3.properties.name] // 设置过滤器，仅显示选中的线路
+                });
+
+                // 调整地图视图以包含高亮的线路
+                var bounds = new mapboxgl.LngLatBounds();
+                feature3.geometry.coordinates.forEach(function (coord) {
+                    bounds.extend(coord);
+                });
+                map.fitBounds(bounds, {
+                    padding: 20
+                });
             });
+
             map.on('click', 'subpoint-layer', function (e3) {
                 var feature4 = e3.features[0];
                 alert(feature4.properties.name);
@@ -549,11 +571,50 @@ map.on('style.load', function () {
             // 移除图层
             map.removeLayer(subline);
             map.removeLayer(subpoint);
+            map.removeLayer(highlightedSubline);
             isLayerVisible3 = false;
         }
     });
-})
+    var sublineInput = document.getElementById('subline-input');
+    var highlightButton2 = document.getElementById('highlight-button2');
 
+    highlightButton2.addEventListener('click', function () {
+        var sublineName = sublineInput.value;
+        // 移除之前创建的高亮线路图层（如果有）
+        if (map.getLayer(highlightedSubline)) {
+            map.removeLayer(highlightedSubline);
+        }
+        // 创建一个新的高亮线路图层
+        map.addLayer({
+            id: highlightedSubline,
+            type: 'line',
+            source: 'subline-source',
+            paint: {
+                'line-color': 'rgb(0, 255, 0)', // 设置高亮颜色
+                'line-width': 5
+            },
+            filter: ['==', 'name', sublineName] // 设置过滤器，仅显示选中的线路
+        });
+
+        // 获取符合条件的线路要素
+        var features = map.querySourceFeatures('subline-source', {
+            filter: ['==', 'name', sublineName]
+        });
+
+        if (features.length > 0) {
+            // 获取第一个符合条件的要素的边界框
+            var bounds = new mapboxgl.LngLatBounds();
+            features[0].geometry.coordinates.forEach(function (coord) {
+                bounds.extend(coord);
+            });
+
+            // 调整地图视图以包含高亮的线路
+            map.fitBounds(bounds, {
+                padding: 20
+            });
+        }
+    });
+})
 // 加载公交路线
 map.on('style.load', function () {
 
