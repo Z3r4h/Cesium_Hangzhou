@@ -1322,6 +1322,11 @@ body {
     text-overflow:ellipsis;
     white-space:nowrap;
 }
+.routeStaEnd:hover{
+    overflow: visible;
+    text-overflow: inherit;	
+    display: block;   /* 加上此行，解决全显示时，...还存在的问题 */
+}
 .tripModeSeelect{
     position: relative;
     display: block;
@@ -1341,7 +1346,32 @@ body {
 .document{
     margin: 0;
     color: black;
-    font-weight: 900;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.docSta, .docEnd{
+    display: inline-block;
+    max-width: 80px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size: 14px;
+}
+
+.docLink{
+    display: inline-block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size: 12px;
+}
+
+.docMode, .docDist, .docCarb{
+    position: relative;
+    bottom: 20px;
+    margin-left: 12px;
+    font-size: 12px;
 }
 
 /* 减碳量提示 */
