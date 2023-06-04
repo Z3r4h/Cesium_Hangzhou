@@ -554,13 +554,13 @@ map.on('style.load', function () {
     });
 })
 
-
 // 加载公交路线
 map.on('style.load', function () {
 
     map.addSource('busline-source', {
         type: 'geojson',
-        data: 'data/busline.geojson'
+        data: 'data/busline.geojson',
+        lineMetrics: true
     });
     map.addSource('buspoint-source', {
         type: 'geojson',
@@ -571,6 +571,7 @@ map.on('style.load', function () {
     var busline = 'busline-layer';
     var buspoint = 'buspoint-layer';
     var highlightedBusline = 'highlighted-busline-layer'; // 新的高亮线路图层ID
+    var animatedBusline = 'animated-busline-layer'; // 光亮流动线路图层ID
 
     // 监听按钮点击事件
     toggleButton.addEventListener('click', function () {
@@ -586,14 +587,38 @@ map.on('style.load', function () {
                 }
             });
             map.addLayer({
+                id: 'animated-busline-layer',
+                type: 'line',
+                source: 'busline-source',
+                paint: {
+                    'line-color': 'rgb(255, 0, 0)', // 设置高亮颜色
+                    'line-width': 3,
+                    'line-gradient': [
+                        'interpolate',
+                        ['linear'],
+                        ['line-progress'],
+                        0, 'rgba(255, 0, 0, 0)',
+                        0.1, 'rgba(255, 0, 0, 0.7)',
+                        0.3, 'rgba(255, 246, 143, 0.7)',
+                        0.5, 'rgba(0, 245, 255, 0.7)',
+                        0.7, 'rgba(0, 255, 255, 0.7)',
+                        0.9, 'rgba(0, 0, 255, 0.7)',
+                        1, 'rgba(255, 0, 255, 0.7)'
+                    ]
+                },
+            });
+            map.addLayer({
                 id: 'buspoint-layer',
                 type: 'circle',
                 source: 'buspoint-source',
                 paint: {
-                    'circle-color': 'rgb(222,184,135)',
-                    'circle-radius': 3
+                    'circle-color': 'rgba(222,184,135,0.7)',
+                    'circle-radius': 2
                 }
             });
+
+            // 创建光亮流动动画
+            animateBusline();
             isLayerVisible = true;
 
             // 创建一个弹出框
@@ -647,6 +672,7 @@ map.on('style.load', function () {
                     },
                     filter: ['==', 'name_gd', feature.properties.name_gd] // 设置过滤器，仅显示选中的线路
                 });
+
                 // 调整地图视图以包含高亮的线路
                 var bounds = new mapboxgl.LngLatBounds();
                 feature.geometry.coordinates.forEach(function (coord) {
@@ -655,6 +681,7 @@ map.on('style.load', function () {
                 map.fitBounds(bounds, {
                     padding: 20
                 });
+
             });
             map.on('click', 'buspoint-layer', function (e) {
                 var feature5 = e.features[0];
@@ -680,6 +707,7 @@ map.on('style.load', function () {
             map.removeLayer(busline);
             map.removeLayer(buspoint);
             map.removeLayer(highlightedBusline);
+            map.removeLayer(animatedBusline);
             isLayerVisible = false;
         }
     });
@@ -722,9 +750,50 @@ map.on('style.load', function () {
             });
         }
     });
+
+    function animateBusline() {
+        var startOffset = 0;
+        var endOffset = 1;
+        var duration = 10000; // 动画持续时间（毫秒）
+        var startTime = performance.now();
+
+        function animate() {
+            var elapsedTime = performance.now() - startTime;
+            var t = elapsedTime / duration; // 计算动画的进度百分比
+
+            if (t > 1) {
+                // 动画完成后移除光亮流动线路图层
+                map.removeLayer(animatedBusline);
+            } else {
+                // 更新光亮流动线路图层的偏移量
+                var offset = startOffset + (endOffset - startOffset) * t;
+                map.setPaintProperty(animatedBusline, 'line-gradient', [
+                    'interpolate',
+                    ['linear'],
+                    ['line-progress'],
+                    0,
+                    'rgba(0, 255, 0, 0)', // 初始位置为透明
+                    offset - 0.002,
+                    'rgba(255, 0, 255, 0.8)', // 中间位置
+                    offset - 0.001,
+                    'rgba(255, 255, 0, 0.8)', // 中间位置
+                    offset,
+                    'rgba(218, 112, 214, 0.8)', // 中间位置
+                    offset + 0.001,
+                    'rgba(0, 255, 255, 0.8)', // 中间位置
+                    offset + 0.002,
+                    'rgba(124, 252, 0, 0.8)', // 中间位置
+                    1,
+                    'rgba(0, 255, 0, 1)' // 结束位置为透明
+                ]);
+                requestAnimationFrame(animate);
+            }
+        }
+
+        // 开始动画
+        animate();
+    }
 })
-
-
 
 // 加载杭州道路
 map.on('style.load', function () {
