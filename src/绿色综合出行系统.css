@@ -951,7 +951,9 @@ body {
 }
 
 #favorites {
-    display: none;
+    display: block;
+    height:300px;
+    overflow-y: scroll;
 }
 
 #CReduction {

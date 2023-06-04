@@ -819,7 +819,7 @@ chuxing1.addEventListener('click', function () {
     historyDocDiv.id = "historyDocDiv"+historyCount;
     historyDoc.id = "historyDoc" + historyCount;
     historyDocSta.id = "historyDocSta" + historyCount;
-    historyDocEnd.id = "historyDocEnd" + historyDocEnd;
+    historyDocEnd.id = "historyDocEnd" + historyCount;
     historyMode.id = "historyMode" + historyCount;
     historyDist.id = "historyDist" + historyCount;
     historyCarb.id = "historyCarb" + historyCount;
@@ -849,7 +849,6 @@ chuxing1.addEventListener('click', function () {
     historyDoc.appendChild(historyDocSta);
     historyDoc.appendChild(docLink);
     historyDoc.appendChild(historyDocEnd);
-    historyDocDiv.appendChild(historyDoc);
     historyDocDiv.appendChild(historyMode);
     historyDocDiv.appendChild(historyDist);
     historyDocDiv.appendChild(historyCarb);
@@ -857,7 +856,55 @@ chuxing1.addEventListener('click', function () {
     historyCount++;
 });
 
+var favoritePanel = document.getElementById('favorites');
+var favoriteCount = 0;
+
 var shoucang1 = document.getElementById('shoucang1');
 shoucang1.addEventListener('click', function () {
-    
+    let favoriteDocDiv = document.createElement('div');
+    let favoriteDoc = document.createElement('div');
+    let favoriteDocSta = document.createElement('b');
+    let favoriteDocEnd = document.createElement('b');
+    let favoriteMode = document.createElement('b');
+    let favoriteDist = document.createElement('b');
+    let favoriteCarb = document.createElement('b');
+    // id
+    favoriteDocDiv.id = "favoriteDocDiv"+favoriteCount;
+    favoriteDoc.id = "favoriteDoc" + favoriteCount;
+    favoriteDocSta.id = "favoriteDocSta" + favoriteCount;
+    favoriteDocEnd.id = "favoriteDocEnd" + favoriteCount;
+    favoriteMode.id = "favoriteMode" + favoriteCount;
+    favoriteDist.id = "favoriteDist" + favoriteCount;
+    favoriteCarb.id = "favoriteCarb" + favoriteCount;
+    // class
+    favoriteDocDiv.classList.add("docDiv");
+    favoriteDoc.classList.add("document");
+    favoriteDocSta.classList.add("docSta");
+    favoriteDocEnd.classList.add("docEnd");
+    favoriteMode.classList.add("docMode");
+    favoriteDist.classList.add("docList");
+    favoriteCarb.classList.add("docCarb");
+    favoriteDocSta.innerHTML = searchSta.value;
+    favoriteDocEnd.innerHTML = searchEnd.value;
+    let strategy = getStratery();
+    if(strategy=='walking-LeastTime') strategy='步行-最短时间';
+    else if(strategy=='walking-MostComfort') strategy='步行-最舒适';
+    else if(strategy=='riding-LeastTime') strategy='骑行-最短时间';
+    else if(strategy=='riding-MostComfort') strategy='骑行-最舒适';
+    else if(strategy=='transfer-LeastTime') strategy='公交-最短时间';
+    else if(strategy=='transfer-LeastWalk') strategy='公交-最少步行';
+    else if(strategy=='transfer-LeastTransit') strategy='公交-最少换乘';
+    else if(strategy=='transfer-MostComfort') strategy='公交-最舒适';
+    favoriteMode.innerHTML = strategy;
+    favoriteDist.innerHTML = disNow;
+    favoriteCarb.innerHTML = carbRedNow.toFixed(2);
+    favoriteDocDiv.appendChild(favoriteDoc);
+    favoriteDoc.appendChild(favoriteDocSta);
+    favoriteDoc.appendChild(docLink);
+    favoriteDoc.appendChild(favoriteDocEnd);
+    favoriteDocDiv.appendChild(favoriteMode);
+    favoriteDocDiv.appendChild(favoriteDist);
+    favoriteDocDiv.appendChild(favoriteCarb);
+    favoritePanel.appendChild(favoriteDocDiv);
+    favoriteCount++;
 });
