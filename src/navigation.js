@@ -156,36 +156,36 @@ searchMarker.on('click', async function () {
 })
 
 // 搜索框输入提示 - 高德API - 配额每日100
-// AMap.plugin('AMap.Autocomplete', function () {
-//     // 实例化Autocomplete
-//     var autoOptions = {
-//         city: '杭州',       //city 限定城市，默认全国
-//         citylimit: false,   // 是否强制限制在设置的城市内搜索,默认值为：false
-//         input: 'search-box', // 可选参数，用来指定一个input输入框，设定之后，在input输入文字将自动生成下拉选择列表。
-//     }
-//     var autoOptions1 = {
-//         //city 限定城市，默认全国
-//         city: '杭州',
-//         input: 'search-text1',
-//     }
-//     var autoOptions2 = {
-//         //city 限定城市，默认全国
-//         city: '杭州',
-//         input: 'search-text2',
-//     }
-//     var autoComplete = new AMap.Autocomplete(autoOptions);
-//     var autoComplete1 = new AMap.Autocomplete(autoOptions1);
-//     var autoComplete2 = new AMap.Autocomplete(autoOptions2);
-//     autoComplete.search(keyword, function (status, result) {
-//         // 搜索成功时，result即是对应的匹配数据
-//     })
-//     autoComplete1.search(keyword, function (status, result) {
-//         // 搜索成功时，result即是对应的匹配数据
-//     })
-//     autoComplete2.search(keyword, function (status, result) {
-//         // 搜索成功时，result即是对应的匹配数据
-//     })
-// })
+AMap.plugin('AMap.Autocomplete', function () {
+    // 实例化Autocomplete
+    var autoOptions = {
+        city: '杭州',       //city 限定城市，默认全国
+        citylimit: false,   // 是否强制限制在设置的城市内搜索,默认值为：false
+        input: 'search-box', // 可选参数，用来指定一个input输入框，设定之后，在input输入文字将自动生成下拉选择列表。
+    }
+    var autoOptions1 = {
+        //city 限定城市，默认全国
+        city: '杭州',
+        input: 'search-text1',
+    }
+    var autoOptions2 = {
+        //city 限定城市，默认全国
+        city: '杭州',
+        input: 'search-text2',
+    }
+    var autoComplete = new AMap.Autocomplete(autoOptions);
+    var autoComplete1 = new AMap.Autocomplete(autoOptions1);
+    var autoComplete2 = new AMap.Autocomplete(autoOptions2);
+    autoComplete.search(keyword, function (status, result) {
+        // 搜索成功时，result即是对应的匹配数据
+    })
+    autoComplete1.search(keyword, function (status, result) {
+        // 搜索成功时，result即是对应的匹配数据
+    })
+    autoComplete2.search(keyword, function (status, result) {
+        // 搜索成功时，result即是对应的匹配数据
+    })
+})
 
 // 导航
 var walkOption = {
