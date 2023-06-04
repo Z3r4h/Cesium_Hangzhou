@@ -1004,14 +1004,30 @@ color: aliceblue;
 #extendedBar4 {
     font-size: 0;
 }
-#extendedBar4 span {
+#personalBtn1{
     display: inline-block;
     color: #0090d2;
     font-weight: 600;
     border-style: solid;
     border-color: #0090d2;
-    border-width: 0 1px 0 0;
-    width: 80px;
+    border-width: 0 2px 0 0;
+    width: 120px;
+    height: 25px;
+    line-height: 25px;
+    /* 目的是垂直居中 */
+    text-align: center;
+    font-size: 14px;
+    margin: -10px 0 0 0;
+}
+
+#personalBtn2{
+    display: inline-block;
+    color: #0090d2;
+    font-weight: 600;
+    border-style: solid;
+    border-color: #0090d2;
+    border-width: 0;
+    width: 120px;
     height: 25px;
     line-height: 25px;
     /* 目的是垂直居中 */
@@ -1024,10 +1040,6 @@ color: aliceblue;
     background-color: #ffffff;
 }
 
-/* 删除最后一条竖线 */
-#extendedBar4 .processMore {
-    border-width: 0;
-}
 
 /* 个人中心栏按钮 悬停 */
 #extendedBar4 span:hover {
