@@ -955,7 +955,14 @@ var historyCount = 0;
 var searchSta = document.getElementById('search-text1');
 var searchEnd = document.getElementById('search-text2');
 let docLink = document.createElement('b');
+let docLinkM = document.createElement('b');
+let docLinkKg = document.createElement('b');
+docLink.classList.add('docLink');
+docLinkM.classList.add('docLink');
+docLinkKg.classList.add('docLink');
 docLink.innerHTML = ' > '
+docLinkM.innerHTML = ' m '
+docLinkKg.innerHTML = ' kg '
 chuxing1.addEventListener('click', function () {
     let historyDocDiv = document.createElement('div');
     let historyDoc = document.createElement('div');
@@ -978,7 +985,7 @@ chuxing1.addEventListener('click', function () {
     historyDocSta.classList.add("docSta");
     historyDocEnd.classList.add("docEnd");
     historyMode.classList.add("docMode");
-    historyDist.classList.add("docList");
+    historyDist.classList.add("docDist");
     historyCarb.classList.add("docCarb");
     historyDocSta.innerHTML = searchSta.value;
     historyDocEnd.innerHTML = searchEnd.value;
@@ -1000,7 +1007,9 @@ chuxing1.addEventListener('click', function () {
     historyDoc.appendChild(historyDocEnd);
     historyDocDiv.appendChild(historyMode);
     historyDocDiv.appendChild(historyDist);
+    historyDocDiv.appendChild(docLinkM);
     historyDocDiv.appendChild(historyCarb);
+    historyDocDiv.appendChild(docLinkKg);
     historyPanel.appendChild(historyDocDiv);
     historyCount++;
 });
@@ -1031,7 +1040,7 @@ shoucang1.addEventListener('click', function () {
     favoriteDocSta.classList.add("docSta");
     favoriteDocEnd.classList.add("docEnd");
     favoriteMode.classList.add("docMode");
-    favoriteDist.classList.add("docList");
+    favoriteDist.classList.add("docDist");
     favoriteCarb.classList.add("docCarb");
     favoriteDocSta.innerHTML = searchSta.value;
     favoriteDocEnd.innerHTML = searchEnd.value;
@@ -1053,7 +1062,9 @@ shoucang1.addEventListener('click', function () {
     favoriteDoc.appendChild(favoriteDocEnd);
     favoriteDocDiv.appendChild(favoriteMode);
     favoriteDocDiv.appendChild(favoriteDist);
+    favoriteDocDiv.appendChild(docLinkM);
     favoriteDocDiv.appendChild(favoriteCarb);
+    favoriteDocDiv.appendChild(docLinkKg);
     favoritePanel.appendChild(favoriteDocDiv);
     favoriteCount++;
 });
