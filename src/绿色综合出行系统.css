@@ -242,7 +242,7 @@ body {
     /* 扩展栏宽度，根据需要调整 */
     height: calc(100vh - 70px);
     padding: 15px;
-    background-color: #ffffff;
+    background-color: #fdfdfd;
     border: 1px solid #ccc;
     z-index: 1000;
 }
@@ -681,7 +681,7 @@ body {
     width: 60px;
     height: 30px;
     border-radius: 5px;
-    color: rgb(47, 134, 39);
+    color:rgb(17, 83, 11);
     font-size: 15px;
     font-weight: 600;
     background-color: rgb(87, 216, 90);
@@ -911,7 +911,7 @@ color: aliceblue;
     position: relative;
     width: 80px;
     height: 30px;
-    color: rgb(15, 58, 2);
+    color: rgb(48, 150, 18);
     font-size: 16px;
     font-weight: 600;
     border-color: #1f9c1c;
@@ -956,14 +956,95 @@ color: aliceblue;
     font-weight: 500;
 }
 
-/* 拓展功能面板中的按钮 悬停 */
-.extendedFunction .button:hover {
-    background-color: #e4e4e4;
+.inputBox2 {
+    position: relative;
+    width: 150px;
+    left: 20px;
+    top: 20px;
 }
 
-/* 拓展功能面板中的按钮 点击 */
+.inputBox2 input {
+    width: 100%;
+    height:10px;
+    padding: 11px;
+    border: 2px solid rgba(35, 146, 34, 0.5);
+    background: none;
+    border-radius: 5px;
+    outline: none;
+    color: rgb(22, 93, 55);
+    font-size: 15px;
+    /* 过渡 */
+    transition: 0.5s;
+}
+
+.inputBox2 span {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    padding: 15px;
+    pointer-events: none;
+    font-weight: 545;
+    font-size: 14px;
+    color: rgb(41, 141, 30);
+    /* 大写字母 */
+    /* 过渡 */
+    transition: 0.5s;
+}
+
+.inputBox2 input:valid~span,
+.inputBox2 input:focus~span {
+    color: #50c9c3;
+    /* 变换位置 */
+    transform: translateX(15px) translateY(1px);
+    font-size: 0.65em;
+    padding: 0 5px;
+    background: #ffffff;
+    letter-spacing: 0.1em;
+}
+
+.inputBox2:nth-child(3) input:valid~span,
+.inputBox2:nth-child(3) input:focus~span {
+    background: #f8ffff;
+    color: white;
+}
+
+.inputBox2 input:valid,
+.inputBox2 input:focus {
+    border: 2px solid #50c9c3;
+}
+/*到这结束*/
+
+#highlight-button{
+    position: absolute;
+    left: 180px;
+    top: 3px;
+    width: 60px;
+    height: 30px;
+    background-color: #137427;
+    font-weight: 600;
+    color: white;
+    border-radius: 5px;
+    border: 0px;
+    transition: all 0.2s ease;
+}
+
+#highlight-button:active {
+    transform: scale(0.8);
+  }
+
+.extendedFunction .button{
+    background-color: #daf2ca;
+    transition: all 0.2s ease;
+}
+
+.extendedFunction .button:hover{
+    background-color: #196b00;
+    color: white;
+}
+
 .extendedFunction .button:active {
-    background-color: #c5c5c5;
+    transform: scale(0.8);
+    color: #dfdfdf;
 }
 
 /* 工具面板 */
