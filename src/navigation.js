@@ -14,6 +14,11 @@ let routeContentDiv = document.getElementById('routeContentDiv');
 var msgHintDiv = document.getElementById('msgHint');
 let overLayer = [];
 
+// 当前路线距离
+var disNow;
+// 当前路线减碳量
+var carbRedNow;
+
 // 导入高德底图至单独的容器
 var gdmap = new AMap.Map('mapNavigation', {
     resizeEnable: true, //是否监控地图容器尺寸变化
@@ -379,7 +384,9 @@ async function getRoute(startPosition, endPosition, strategy) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
                 if (result.routes && result.routes.length) {
-                    let carbonReduction = carbonCalc('walk', result.routes[0].distance / 1000); // 减碳量
+                    disNow = result.routes[0].distance;
+                    let carbonReduction = carbonCalc('walk', disNow / 1000); // 减碳量
+                    carbRedNow = carbonReduction;
                     document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                     drawRoute(result.routes[0], gdmap);
                     console.log('绘制步行路线完成');
@@ -458,7 +465,9 @@ async function getRoute(startPosition, endPosition, strategy) {
             // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
             if (status === 'complete') {
                 if (result.routes && result.routes.length) {
-                    let carbonReduction = carbonCalc('ride', result.routes[0].distance / 1000); // 减碳量
+                    disNow = result.routes[0].distance;
+                    let carbonReduction = carbonCalc('ride', disNow / 1000); // 减碳量
+                    carbRedNow = carbonReduction;
                     document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                     drawRoute(result.routes[0], gdmap);
                     console.log('绘制骑行路线完成');
@@ -545,7 +554,12 @@ async function getRoute(startPosition, endPosition, strategy) {
                 result.plans[0].transit_distance / 1000,
                 result.plans[0].taxi_distance / 1000,
                 result.plans[0].railway_distance / 1000];
+                disNow = 0;
+                for(let i=0; i<4; i++){
+                    disNow+=result.plans[i];
+                }
                 carbonReduction = carbonCalcMul(tripMode, tripDis);
+                carbRedNow = carbonReduction;
                 document.getElementById("carbonReduction").innerHTML = '减碳' + carbonReduction.toFixed(2) + '千克';
                 drawRouteTransfer(result.plans[0], gdmap);
                 console.log('绘制公共交通路线完成');
