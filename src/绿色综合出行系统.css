@@ -1187,7 +1187,9 @@ color: aliceblue;
 }
 
 #favorites {
-    display: none;
+    display: block;
+    height:300px;
+    overflow-y: scroll;
 }
 
 #CReduction {
@@ -1224,7 +1226,7 @@ body {
     overflow: hidden;
 }
 
-#routeContent, #routeContentMul{
+#routeContent, #routeContent2, #routeContentMul{
     color:rgb(0, 0, 0);
     max-height: 300px;
     overflow-y: scroll;
@@ -1320,7 +1322,6 @@ body {
     text-overflow:ellipsis;
     white-space:nowrap;
 }
-
 .tripModeSeelect{
     position: relative;
     display: block;
