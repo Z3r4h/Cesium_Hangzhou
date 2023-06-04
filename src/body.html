@@ -147,12 +147,14 @@
             <h4>步行 - 最短时间</h4>
             <div id="routeContent" class="generateRoute"></div>
             <span>
-                <button id = 'shoucang1'>收藏</button>
-                <button id = 'chuxing1'>出行</button>
                 <span id="carbonReduction" calss="carbonReduction"
                     style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;"></span>
             </span>
             </span>
+        </div>
+        <div class="sc_cx_box">
+            <button class="sc_cx_btn" id = 'shoucang1'>收藏</button>
+            <button class="sc_cx_btn" id = 'chuxing1'>出行</button>
         </div>
     </div>
 
@@ -160,16 +162,22 @@
     <div id="extendedBar2" class="extendedBar" style="display:none;">
         <h3>多点出行</h3>
         <div id="search-box3">
-            <input id="search-text3" type="text" placeholder="请输入起点">
-            <div class="buttons" style="display: inline-block;">
+            <div class="inputBox">
+                <input type="text" id="search-text3" required="required">
+                <span>请输入起点</span>
+            </div>
+            <div class="buttons" id='jj_buttons'>
                 <button id="add-button1">+</button>
                 <button id="delete-button1"> - </button>
             </div>
             <div id="extra-inputs"></div>
-            <input id="search-text4" type="text" placeholder="请输入终点">
+            <div class="inputBox">
+                <input type="text" id="search-text4" required="required">
+                <span>请输入终点</span>
+            </div>
         </div>
         <div id="search-box4">
-            <button id="search-button" onclick="routePlanMul()" value=0>搜索</button>
+            <button class="sb_button2" id="search-button2" onclick="routePlanMul()" value=0>搜索</button>
         </div>
         <div id="tab21" class="tabcontent2" style="display:block">
             <div id="routeContentMul" class="generateRoute">
@@ -177,12 +185,16 @@
                 </div>
             </div>
             <span>
-                <button id="reGenerateBtn">重新规划</button>
-                <button>收藏</button>
-                <button>出行</button>
+                <button id="reGenerateBtn" >
+                    重新规划
+                </button>
                 <span id="carbonReduction-mul" calss="carbonReduction"
                     style="background-color: rgba(19, 235, 255, 0.47); width:30px; height: 20px;" value=0></span>
             </span>
+            <div class="sc_cx_box">
+                <button class="sc_cx_btn">收藏</button>
+                <button class="sc_cx_btn">出行</button>
+            </div>
         </div>
 
     </div>

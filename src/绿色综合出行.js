@@ -305,6 +305,15 @@ function openTab(event, subBtnId, titleContent) {
     tripModeBtnId = subBtnId;
 }
 
+const sb_button = document.querySelector("#search-button");
+        sb_button.addEventListener("click", (e) => {
+        e.preventDefault;
+        sb_button.classList.add("animate");
+        setTimeout(() => {
+        sb_button.classList.remove("animate");
+        }, 600);
+});
+
 // 拓展栏2
 const searchBox3 = document.getElementById("search-box3");
 const addButton1 = document.getElementById("add-button1");
@@ -318,6 +327,9 @@ addButton1.addEventListener("click", () => {
         input.id = `pass-search-text${counter++}`;
         input.type = "text";
         input.placeholder = "请输入中间点";
+        input.style.fontSize = "14px"; // 设置placeholder文本字号为14像素
+        input.style.border = "none";
+        input.style.outline = "2px solid rgba(35, 146, 34, 0.5)";
         input.classList.add("searchtext");
         searchBox3.insertBefore(input, searchBox3.lastChild.previousSibling);
         addButton1.value = counter - 1; // add-button1的value记录存在的中间输入框
@@ -408,7 +420,14 @@ function openTab(event, subBtnId, titleContent) {
     tripModeBtnId = subBtnId;
 }
 
-
+const sb_button2 = document.querySelector("#search-button2");
+        sb_button2.addEventListener("click", (e) => {
+        e.preventDefault;
+        sb_button2.classList.add("animate");
+        setTimeout(() => {
+        sb_button2.classList.remove("animate");
+        }, 600);
+});
 // 拓展栏3
 // 工具箱 
 function toolPanelOpen(event, toolButton, toolPanelId) {

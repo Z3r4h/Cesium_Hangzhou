@@ -520,6 +520,11 @@ body {
     margin: 2px;
 }
 
+#extendedBar1 #search-box2{
+    position: relative;
+    top: -15px;
+}
+
 #extendedBar1 #search-text1,
 #extendedBar1 #search-text2 {
     width: 200px;
@@ -666,8 +671,33 @@ body {
     border-top: none;
 }
 
+.sc_cx_box{
+    position: absolute;
+    top: 85%;
+    left: 50%;
+}
 
-
+.sc_cx_btn{
+    width: 60px;
+    height: 30px;
+    border-radius: 5px;
+    color: rgb(47, 134, 39);
+    font-size: 15px;
+    font-weight: 600;
+    background-color: rgb(87, 216, 90);
+    transition: background-color .2s ease-in-out, color .3s ease-in-out;
+    border-style:none;
+    border-width: 2px;
+    border-color: rgb(17, 83, 11);
+  }
+.sc_cx_btn:hover{
+background-color: rgb(17, 83, 11);
+color: aliceblue;
+}
+.sc_cx_btn:active{
+background-color: rgb(32, 177, 170);
+color: aliceblue;
+}
 
 
 
@@ -704,6 +734,11 @@ body {
     margin: 2px;
 }
 
+#extendedBar2 #search-box4{
+    position: relative;
+    top: -25px;
+}
+
 #extendedBar2 #search-text3,
 #extendedBar2 #search-text4 {
     width: 200px;
@@ -727,7 +762,7 @@ body {
     font-size: 16px;
 }
 
-#extendedBar2 #search-button {
+ /*#extendedBar2 #search-button {
     background-color: #0072C6;
     color: #fff;
     border-radius: 5px;
@@ -736,7 +771,7 @@ body {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-}
+}*/
 
 #extendedBar2 #tab02 {
     width: 254px;
@@ -776,10 +811,118 @@ body {
     border-top: none;
 }
 
+#jj_buttons{
+    position: absolute;
+    top:62px;
+    left:225px;
+}
 
+#add-button1,#delete-button1{
+    width: 18px;
+    height: 18px;
+}
 
-
-
+.sb_button2 {
+    position: relative;
+    left: 5px;
+    top: 10px;
+    margin: 15px;
+    padding: 10px 22px;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    background-color: #137427;
+    transition: all 0.2s ease;
+  }
+  .sb_button2:active {
+    transform: scale(0.9);
+  }
+  .sb_button2:before,
+  .sb_button2:after {
+    position: absolute;
+    content: "";
+    width: 150%;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    z-index: -1000;
+    background-repeat: no-repeat;
+  }
+  .sb_button2.animate::before {
+    top: -70%;
+    background-image: radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, transparent 20%, #137427 20%, transparent 30%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, transparent 10%, #137427 15%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+      10% 10%, 18% 18%;
+    animation: greentopBubbles ease-in-out 0.6s forwards infinite;
+  }
+  @keyframes greentopBubbles {
+    0% {
+      background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+        40% 90%, 55% 90%, 70% 90%;
+    }
+    50% {
+      background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+        50% 50%, 65% 20%, 90% 30%;
+    }
+    100% {
+      background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+        50% 40%, 65% 10%, 90% 20%;
+      background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+  }
+  .sb_button2.animate::after {
+    bottom: -70%;
+    background-image: radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, transparent 10%, #137427 15%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%),
+      radial-gradient(circle, #137427 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+    animation: greenbottomBubbles ease-in-out 0.6s forwards infinite;
+  }
+  @keyframes greenbottomBubbles {
+    0% {
+      background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+        70% -10%, 70% 0%;
+    }
+    50% {
+      background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+        105% 0%;
+    }
+    100% {
+      background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+        110% 10%;
+      background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+  }
+  
+#reGenerateBtn{
+    position: relative;
+    width: 80px;
+    height: 30px;
+    color: rgb(15, 58, 2);
+    font-size: 16px;
+    font-weight: 600;
+    border-color: #1f9c1c;
+    background-color: rgb(240, 240, 240);
+    transition: background-color .2s ease-in-out, color .3s ease-in-out;
+  }
+  #reGenerateBtn:hover{
+    border-color: white;
+background-color: rgb(17, 83, 11);
+color: aliceblue;
+}
 /* 拓展栏3：拓展功能 */
 
 /* 扩展栏面板 标题 */
