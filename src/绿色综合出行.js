@@ -305,7 +305,6 @@ function openTab(event, subBtnId, titleContent) {
     tripModeBtnId = subBtnId;
 }
 
-
 // 拓展栏2
 const searchBox3 = document.getElementById("search-box3");
 const addButton1 = document.getElementById("add-button1");
@@ -798,6 +797,7 @@ function personalPanelOpen(event, personalBtn, personalPanelId) {
         buttonClick.style.backgroundColor = "#ffffff";
         personalPanelSelected.style.display = "block";
     }
+
 }
 
 var chuxing1 = document.getElementById('chuxing1');
