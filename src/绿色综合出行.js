@@ -7,6 +7,7 @@ var extendedBars = document.getElementsByClassName("extendedBar");
 var activeIndex = 0;
 
 
+
 //拓展栏1
 function changeButton(index) {
     if (index !== activeIndex + 1) {
@@ -948,7 +949,8 @@ function personalPanelOpen(event, personalBtn, personalPanelId) {
     }
 
 }
-
+    
+var distance = 0;
 var chuxing1 = document.getElementById('chuxing1');
 var historyPanel = document.getElementById('history');
 var historyCount = 0;
@@ -1011,8 +1013,10 @@ chuxing1.addEventListener('click', function () {
     historyDocDiv.appendChild(historyCarb);
     historyDocDiv.appendChild(docLinkKg);
     historyPanel.appendChild(historyDocDiv);
+    distance = distance + Number(disNow);
     historyCount++;
 });
+
 
 var favoritePanel = document.getElementById('favorites');
 var favoriteCount = 0;

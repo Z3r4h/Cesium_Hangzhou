@@ -17,7 +17,9 @@
 
 <style>
   body {
-    background-color: #a9a9a9;
+    background-image: url("assets/niko.jpg");
+    background-repeat: no-repeat; /* 可选：设置图片不重复 */
+    background-size: cover; /* 可选：设置图片铺满整个屏幕 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,7 +40,7 @@
     justify-content: center;
     margin-bottom: 20px;
     background-color: #ffffff;
-    width: 600px;
+    width: 800px;
     height: 600px;
   }
   .chart-container1 {
@@ -48,7 +50,7 @@
     justify-content: center;
     margin-bottom: 20px;
     background-color: #ffffff;
-    width: 600px;
+    width: 800px;
     height: 300px;
   }
   #barChartContainer,
@@ -63,9 +65,6 @@
   <div class="chart-wrapper">
     <div class="chart-container1">
       <div id="pieChartContainer"></div>
-    </div>
-    <div class="chart-container">
-      <div id="barChartContainer"></div>
     </div>
     <div class="chart-container">
       <div id="barChartContainer"></div>
@@ -111,14 +110,15 @@
         // y轴线
         yAxis:{},
         // 设置数据
+
         series:[
           {
             // 数据名称
-            name:"睡眠时长",
+            name:"排放量(单位kg)",
             // 类型为柱状图
             type:"bar",
             // 数据data
-            data:[0.27,1,1,1],
+            data:[7.3,2.9,0.1,7.2],
             // color:["#ac4cff"]
             itemStyle:{
               color:linear,
@@ -127,7 +127,7 @@
           },]
         };
         barChart.setOption(barOption);
-        
+
         var pieChart = echarts.init(document.getElementById("pieChartContainer"));
         var pieOption = {
           title:{
@@ -148,11 +148,11 @@
             // 位移
             // 数据
             data:[
-              {name:"步行行进距离",value:90},
-              {name:"公交行进距离",value:85,itemStyle:{
+              {name:"步行行进距离",value:0.26},
+              {name:"公交行进距离",value:0.42,itemStyle:{
                 color:"#ffaa00"
               }},
-              {name:"骑行行进距离",value:90,
+              {name:"骑行行进距离",value:0.32,
                itemStyle:{
                  normal:{color:"#93da6c"},
                  emphasis:{color:"#bcff57"}
@@ -164,6 +164,7 @@
       }
       pieChart.setOption(pieOption);
     </script>
+    <script src="绿色综合出行.js"></script>
 </body>
 
 </html>
