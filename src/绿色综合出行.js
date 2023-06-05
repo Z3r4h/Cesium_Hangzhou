@@ -213,20 +213,20 @@ function showPM10Map() {
 var mainmap = document.getElementById('mainmap');
 var mapNavigation = document.getElementById('mapNavigation');
 
-function openAmap(){
-    if(mainmap.style.display == "block"){
+function openAmap() {
+    if (mainmap.style.display == "block") {
         mainmap.style.display = "none";
     }
-    if(mapNavigation.style.display == "none"){
+    if (mapNavigation.style.display == "none") {
         mapNavigation.style.display = "block";
     }
 }
 
-function openglmap(){
-    if(mapNavigation.style.display == "block"){
-    mapNavigation.style.display = "none";
+function openglmap() {
+    if (mapNavigation.style.display == "block") {
+        mapNavigation.style.display = "none";
     }
-    if(mainmap.style.display == "none"){
+    if (mainmap.style.display == "none") {
         mainmap.style.display = "block";
     }
 }
@@ -235,13 +235,13 @@ const Btn1 = document.getElementById("button1");
 const Btn2 = document.getElementById("button2");
 const Btn3 = document.getElementById("button3");
 
-Btn1.addEventListener('click',() =>{
-        openAmap();
+Btn1.addEventListener('click', () => {
+    openAmap();
 });
-Btn2.addEventListener('click',() =>{
-         openAmap();
+Btn2.addEventListener('click', () => {
+    openAmap();
 });
-Btn3.addEventListener('click',() =>{
+Btn3.addEventListener('click', () => {
     openglmap();
 });
 
@@ -306,12 +306,12 @@ function openTab(event, subBtnId, titleContent) {
 }
 
 const sb_button = document.querySelector("#search-button");
-        sb_button.addEventListener("click", (e) => {
-        e.preventDefault;
-        sb_button.classList.add("animate");
-        setTimeout(() => {
+sb_button.addEventListener("click", (e) => {
+    e.preventDefault;
+    sb_button.classList.add("animate");
+    setTimeout(() => {
         sb_button.classList.remove("animate");
-        }, 600);
+    }, 600);
 });
 
 // 拓展栏2
@@ -421,12 +421,12 @@ function openTab(event, subBtnId, titleContent) {
 }
 
 const sb_button2 = document.querySelector("#search-button2");
-        sb_button2.addEventListener("click", (e) => {
-        e.preventDefault;
-        sb_button2.classList.add("animate");
-        setTimeout(() => {
+sb_button2.addEventListener("click", (e) => {
+    e.preventDefault;
+    sb_button2.classList.add("animate");
+    setTimeout(() => {
         sb_button2.classList.remove("animate");
-        }, 600);
+    }, 600);
 });
 // 拓展栏3
 // 工具箱 
@@ -954,15 +954,6 @@ var historyPanel = document.getElementById('history');
 var historyCount = 0;
 var searchSta = document.getElementById('search-text1');
 var searchEnd = document.getElementById('search-text2');
-let docLink = document.createElement('b');
-let docLinkM = document.createElement('b');
-let docLinkKg = document.createElement('b');
-docLink.classList.add('docLink');
-docLinkM.classList.add('docLink');
-docLinkKg.classList.add('docLink');
-docLink.innerHTML = ' > '
-docLinkM.innerHTML = ' m '
-docLinkKg.innerHTML = ' kg '
 chuxing1.addEventListener('click', function () {
     let historyDocDiv = document.createElement('div');
     let historyDoc = document.createElement('div');
@@ -971,8 +962,17 @@ chuxing1.addEventListener('click', function () {
     let historyMode = document.createElement('b');
     let historyDist = document.createElement('b');
     let historyCarb = document.createElement('b');
+    let docLink = document.createElement('b');
+    let docLinkM = document.createElement('b');
+    let docLinkKg = document.createElement('b');
+    docLink.classList.add('docLink');
+    docLinkM.classList.add('docLinkUnit');
+    docLinkKg.classList.add('docLinkUnit');
+    docLink.innerHTML = ' > '
+    docLinkM.innerHTML = 'm'
+    docLinkKg.innerHTML = 'kg'
     // id
-    historyDocDiv.id = "historyDocDiv"+historyCount;
+    historyDocDiv.id = "historyDocDiv" + historyCount;
     historyDoc.id = "historyDoc" + historyCount;
     historyDocSta.id = "historyDocSta" + historyCount;
     historyDocEnd.id = "historyDocEnd" + historyCount;
@@ -990,14 +990,14 @@ chuxing1.addEventListener('click', function () {
     historyDocSta.innerHTML = searchSta.value;
     historyDocEnd.innerHTML = searchEnd.value;
     let strategy = getStratery();
-    if(strategy=='walking-LeastTime') strategy='步行-最短时间';
-    else if(strategy=='walking-MostComfort') strategy='步行-最舒适';
-    else if(strategy=='riding-LeastTime') strategy='骑行-最短时间';
-    else if(strategy=='riding-MostComfort') strategy='骑行-最舒适';
-    else if(strategy=='transfer-LeastTime') strategy='公交-最短时间';
-    else if(strategy=='transfer-LeastWalk') strategy='公交-最少步行';
-    else if(strategy=='transfer-LeastTransit') strategy='公交-最少换乘';
-    else if(strategy=='transfer-MostComfort') strategy='公交-最舒适';
+    if (strategy == 'walking-LeastTime') strategy = '步行-最短时间';
+    else if (strategy == 'walking-MostComfort') strategy = '步行-最舒适';
+    else if (strategy == 'riding-LeastTime') strategy = '骑行-最短时间';
+    else if (strategy == 'riding-MostComfort') strategy = '骑行-最舒适';
+    else if (strategy == 'transfer-LeastTime') strategy = '公交-最短时间';
+    else if (strategy == 'transfer-LeastWalk') strategy = '公交-最少步行';
+    else if (strategy == 'transfer-LeastTransit') strategy = '公交-最少换乘';
+    else if (strategy == 'transfer-MostComfort') strategy = '公交-最舒适';
     historyMode.innerHTML = strategy;
     historyDist.innerHTML = disNow;
     historyCarb.innerHTML = carbRedNow.toFixed(2);
@@ -1026,8 +1026,17 @@ shoucang1.addEventListener('click', function () {
     let favoriteMode = document.createElement('b');
     let favoriteDist = document.createElement('b');
     let favoriteCarb = document.createElement('b');
+    let docLink = document.createElement('b');
+    let docLinkM = document.createElement('b');
+    let docLinkKg = document.createElement('b');
+    docLink.classList.add('docLink');
+    docLinkM.classList.add('docLinkUnit');
+    docLinkKg.classList.add('docLinkUnit');
+    docLink.innerHTML = ' > '
+    docLinkM.innerHTML = 'm'
+    docLinkKg.innerHTML = 'kg'
     // id
-    favoriteDocDiv.id = "favoriteDocDiv"+favoriteCount;
+    favoriteDocDiv.id = "favoriteDocDiv" + favoriteCount;
     favoriteDoc.id = "favoriteDoc" + favoriteCount;
     favoriteDocSta.id = "favoriteDocSta" + favoriteCount;
     favoriteDocEnd.id = "favoriteDocEnd" + favoriteCount;
@@ -1045,14 +1054,14 @@ shoucang1.addEventListener('click', function () {
     favoriteDocSta.innerHTML = searchSta.value;
     favoriteDocEnd.innerHTML = searchEnd.value;
     let strategy = getStratery();
-    if(strategy=='walking-LeastTime') strategy='步行-最短时间';
-    else if(strategy=='walking-MostComfort') strategy='步行-最舒适';
-    else if(strategy=='riding-LeastTime') strategy='骑行-最短时间';
-    else if(strategy=='riding-MostComfort') strategy='骑行-最舒适';
-    else if(strategy=='transfer-LeastTime') strategy='公交-最短时间';
-    else if(strategy=='transfer-LeastWalk') strategy='公交-最少步行';
-    else if(strategy=='transfer-LeastTransit') strategy='公交-最少换乘';
-    else if(strategy=='transfer-MostComfort') strategy='公交-最舒适';
+    if (strategy == 'walking-LeastTime') strategy = '步行-最短时间';
+    else if (strategy == 'walking-MostComfort') strategy = '步行-最舒适';
+    else if (strategy == 'riding-LeastTime') strategy = '骑行-最短时间';
+    else if (strategy == 'riding-MostComfort') strategy = '骑行-最舒适';
+    else if (strategy == 'transfer-LeastTime') strategy = '公交-最短时间';
+    else if (strategy == 'transfer-LeastWalk') strategy = '公交-最少步行';
+    else if (strategy == 'transfer-LeastTransit') strategy = '公交-最少换乘';
+    else if (strategy == 'transfer-MostComfort') strategy = '公交-最舒适';
     favoriteMode.innerHTML = strategy;
     favoriteDist.innerHTML = disNow;
     favoriteCarb.innerHTML = carbRedNow.toFixed(2);

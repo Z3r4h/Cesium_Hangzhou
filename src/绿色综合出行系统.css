@@ -1149,6 +1149,7 @@ color: aliceblue;
 .personalPanel {
     position: absolute;
     margin-left: 0;
+    margin-top: 8px;;
     width: 242px;
     height: 620px;
     background-color: #ffffff;
@@ -1354,11 +1355,16 @@ body {
 /* 个人中心 */
 .docDiv{
     position: relative;
-    width: 210px;
+    margin-left: -10px;
+    width: 220px;
     height: 60px;
     left: 13px;
     border-style: solid;
     border-width: 1px;
+    border-color: #97999ad0;
+}
+.docDiv:hover{
+    background-color: #b5dbe34f;
 }
 
 .document{
@@ -1370,11 +1376,14 @@ body {
 
 .docSta, .docEnd{
     display: inline-block;
-    max-width: 80px;
+    height: 30px;
+    width: 95px;
+    text-align: center;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
     font-size: 14px;
+    color:#0089c8
 }
 
 .docLink{
@@ -1382,14 +1391,45 @@ body {
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size: 12px;
+    font-size: 15px;
+    line-height: 30px;
+    color:#03a8b0;
 }
 
 .docMode, .docDist, .docCarb{
+    margin: 0;
+    display: inline;
     position: relative;
-    bottom: 20px;
-    margin-left: 12px;
+    bottom: 10px;
+    margin-left: 8px;
     font-size: 12px;
+    color:#3e7fc5e4;
+}
+
+.docMode::after{
+    content: '|';
+    margin-left: 8px;
+    color:#26a6f6da;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.docCarb::before{
+    content: '|';
+    margin-right: 8px;
+    color:#26a6f6da;
+    font-size: 18px;
+    font-weight: 100;
+}
+
+.docLinkUnit{
+    margin: 0;
+    display: inline;
+    position: relative;
+    bottom: 10px;
+    margin-left: 1px;
+    font-size: 12px;
+    color:#3e7fc5e4;    
 }
 
 /* 减碳量提示 */
