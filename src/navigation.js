@@ -563,7 +563,7 @@ async function getRoute(startPosition, endPosition, strategy) {
                 result.plans[0].railway_distance / 1000];
                 disNow = 0;
                 for(let i=0; i<4; i++){
-                    disNow+=result.plans[i];
+                    disNow+=tripDis[i];
                 }
                 carbonReduction = carbonCalcMul(tripMode, tripDis);
                 carbRedNow = carbonReduction;

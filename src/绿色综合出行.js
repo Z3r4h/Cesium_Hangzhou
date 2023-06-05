@@ -959,6 +959,8 @@ chuxing1.addEventListener('click', function () {
     let historyDoc = document.createElement('div');
     let historyDocSta = document.createElement('b');
     let historyDocEnd = document.createElement('b');
+    let historyDocSta1 = document.createElement('b');
+    let historyDocEnd1 = document.createElement('b');
     let historyMode = document.createElement('b');
     let historyDist = document.createElement('b');
     let historyCarb = document.createElement('b');
@@ -976,6 +978,8 @@ chuxing1.addEventListener('click', function () {
     historyDoc.id = "historyDoc" + historyCount;
     historyDocSta.id = "historyDocSta" + historyCount;
     historyDocEnd.id = "historyDocEnd" + historyCount;
+    historyDocSta1.id = "historyDocSta1" + historyCount;
+    historyDocEnd1.id = "historyDocEnd1" + historyCount;
     historyMode.id = "historyMode" + historyCount;
     historyDist.id = "historyDist" + historyCount;
     historyCarb.id = "historyCarb" + historyCount;
@@ -989,6 +993,8 @@ chuxing1.addEventListener('click', function () {
     historyCarb.classList.add("docCarb");
     historyDocSta.innerHTML = searchSta.value;
     historyDocEnd.innerHTML = searchEnd.value;
+    historyDocSta1.innerHTML = searchSta.value;
+    historyDocEnd1.innerHTML = searchEnd.value;
     let strategy = getStratery();
     if (strategy == 'walking-LeastTime') strategy = '步行-最短时间';
     else if (strategy == 'walking-MostComfort') strategy = '步行-最舒适';
@@ -1011,6 +1017,11 @@ chuxing1.addEventListener('click', function () {
     historyDocDiv.appendChild(historyCarb);
     historyDocDiv.appendChild(docLinkKg);
     historyPanel.appendChild(historyDocDiv);
+
+    document.getElementById("historyDocDiv" + historyCount).addEventListener('click', async ()=>{
+        await routePlan(historyDocSta1.id, historyDocEnd1.id, strategy);
+    })
+    
     historyCount++;
 });
 
@@ -1023,6 +1034,8 @@ shoucang1.addEventListener('click', function () {
     let favoriteDoc = document.createElement('div');
     let favoriteDocSta = document.createElement('b');
     let favoriteDocEnd = document.createElement('b');
+    let favoriteDocSta1 = document.createElement('b');
+    let favoriteDocEnd1 = document.createElement('b');
     let favoriteMode = document.createElement('b');
     let favoriteDist = document.createElement('b');
     let favoriteCarb = document.createElement('b');
@@ -1040,6 +1053,8 @@ shoucang1.addEventListener('click', function () {
     favoriteDoc.id = "favoriteDoc" + favoriteCount;
     favoriteDocSta.id = "favoriteDocSta" + favoriteCount;
     favoriteDocEnd.id = "favoriteDocEnd" + favoriteCount;
+    favoriteDocSta1.id = "favoriteDocSta1" + favoriteCount;
+    favoriteDocEnd1.id = "favoriteDocEnd1" + favoriteCount;
     favoriteMode.id = "favoriteMode" + favoriteCount;
     favoriteDist.id = "favoriteDist" + favoriteCount;
     favoriteCarb.id = "favoriteCarb" + favoriteCount;
@@ -1053,6 +1068,8 @@ shoucang1.addEventListener('click', function () {
     favoriteCarb.classList.add("docCarb");
     favoriteDocSta.innerHTML = searchSta.value;
     favoriteDocEnd.innerHTML = searchEnd.value;
+    favoriteDocSta1.innerHTML = searchSta.value;
+    favoriteDocEnd1.innerHTML = searchEnd.value;
     let strategy = getStratery();
     if (strategy == 'walking-LeastTime') strategy = '步行-最短时间';
     else if (strategy == 'walking-MostComfort') strategy = '步行-最舒适';
@@ -1075,5 +1092,10 @@ shoucang1.addEventListener('click', function () {
     favoriteDocDiv.appendChild(favoriteCarb);
     favoriteDocDiv.appendChild(docLinkKg);
     favoritePanel.appendChild(favoriteDocDiv);
+
+    document.getElementById("favoriteDocDiv" + favoriteCount).addEventListener('click', async ()=>{
+        await routePlan(favoriteDocSta1.id, favoriteDocEnd1.id, strategy);
+    })
+
     favoriteCount++;
 });
